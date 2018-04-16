@@ -1,10 +1,14 @@
 ﻿using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
+using System.IO;
+using ECC_DataLayer.Helpers;
 
 namespace ECC_DataLayer.Repositories
 {
@@ -26,7 +30,13 @@ namespace ECC_DataLayer.Repositories
 
         public static string ConnectionString()
         {
-            return Settings1.Default.ECCDBConnectionString;
+            string _dataSource = ConfigurationSettings.AppSettings.Get("ECC_DB_DataSource");
+            string _userId = ConfigurationSettings.AppSettings.Get("ECC_DB_UserId");
+            string _password = CryptoProvider.Decrypt_Aes(ConfigurationSettings.AppSettings.Get("ECC_DB_Password"));
+
+            string _connectionString = string.Format("Data Source={0};User Id={1};Password={2};", _dataSource, _userId, _password);
+
+            return _connectionString;
         }
     }
 }
