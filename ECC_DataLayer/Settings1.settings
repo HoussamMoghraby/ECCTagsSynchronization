@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="ECCDBConnectionString" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Data Source=urOracle;User Id=urUsername;Password=urPassword;DBA Privilege=SYSDBA;</Value>
+      <Value Profile="(Default)">Data Source=epat;User Id=pltr;Password=pltr123456;</Value>
     </Setting>
   </Settings>
 </SettingsFile>

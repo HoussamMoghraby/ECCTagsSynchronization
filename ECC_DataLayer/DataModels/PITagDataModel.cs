@@ -1,0 +1,58 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ECC_DataLayer.DataModels
+{
+    public class PITagDataModel
+    {
+
+        //Basic Attributes
+        public string AREA_PI_TAG_NAME { get; set; }
+        public string PI_TAG_DESCRIPTOR { get; set; }
+        public string SRC_PI_SERVER_CD { get; set; }
+        public int AREA_POINT_ID { get; set; }
+
+        //Advanded Attributes
+        public string ECCPI_DIGITAL_SET { get; set; }
+        public string ENGUNITS { get; set; }
+        public string POINTTYPE { get; set; }
+        public decimal? LOCATION2 { get; set; }
+        public decimal? LOCATION3 { get; set; }
+        public decimal? LOCATION5 { get; set; }
+        public decimal? USERINT1 { get; set; }
+        public decimal? USERINT2 { get; set; }
+        public decimal? USERREAL1 { get; set; }
+        public decimal? USERREAL2 { get; set; }
+        public string COMPRESSING { get; set; }
+        public decimal? COMPDEV { get; set; }
+        public decimal? COMPMAX { get; set; }
+        public decimal? COMPMIN { get; set; }
+        public decimal? COMPDEVPERCENT { get; set; }
+        public decimal? EXCDEV { get; set; }
+        public decimal? EXCMAX { get; set; }
+        public decimal? EXCMIN { get; set; }
+        public decimal? EXCDEVPERCENT { get; set; }
+        public decimal? SPAN { get; set; }
+        public decimal? STEP { get; set; }
+        public decimal? TYPICALVALUE { get; set; }
+        public decimal? ZERO { get; set; }
+
+
+        public PITagDataModel()
+        {
+            //Parameterless contructor
+        }
+
+        public PITagDataModel(string areaTagName, string tagDescriptor, string sourcePIServerCode, int areaPIPointId)
+        {
+            this.AREA_PI_TAG_NAME = areaTagName.Replace("'", "");
+            this.PI_TAG_DESCRIPTOR = tagDescriptor.Replace("'", "");
+            this.SRC_PI_SERVER_CD = sourcePIServerCode.Replace("'", "");
+            this.AREA_POINT_ID = areaPIPointId;
+        }
+
+    }
+}

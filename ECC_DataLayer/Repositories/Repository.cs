@@ -14,20 +14,20 @@ namespace ECC_DataLayer.Repositories
         public async Task<IEnumerable<T>> GetAsync(string query, object arguments)
         {
             using (var connection = await ConnectionFactory.GetConnectionAsync())
-                return await connection.QueryAsync<T>(query, arguments, commandType: CommandType.StoredProcedure);
+                return await connection.QueryAsync<T>(query, arguments, commandType: CommandType.Text);
         }
 
         public async Task<int> UpdateAsync(string query, object arguments)
         {
             using (var connection = await ConnectionFactory.GetConnectionAsync())
-                return await connection.ExecuteAsync(query, arguments, commandType: CommandType.StoredProcedure);
+                return await connection.ExecuteAsync(query, arguments, commandType: CommandType.Text);
         }
 
         public async Task<T> GetSingleOrDefaultAsync(string query, object arguments)
         {
             using (var connection = await ConnectionFactory.GetConnectionAsync())
             {
-                var result = await connection.QueryAsync<T>(query, arguments, commandType: CommandType.StoredProcedure);
+                var result = await connection.QueryAsync<T>(query, arguments, commandType: CommandType.Text);
 
                 return result.FirstOrDefault();
             }
@@ -36,26 +36,26 @@ namespace ECC_DataLayer.Repositories
         public async Task<int> ExecuteScalarAsync(string query, object arguments)
         {
             using (var connection = await ConnectionFactory.GetConnectionAsync())
-                return await connection.ExecuteScalarAsync<int>(query, arguments, commandType: CommandType.StoredProcedure);
+                return await connection.ExecuteScalarAsync<int>(query, arguments, commandType: CommandType.Text);
         }
 
         public async Task<string> ExecuteScalarAsyncStr(string query, object arguments)
         {
             using (var connection = await ConnectionFactory.GetConnectionAsync())
-                return await connection.ExecuteScalarAsync<string>(query, arguments, commandType: CommandType.StoredProcedure);
+                return await connection.ExecuteScalarAsync<string>(query, arguments, commandType: CommandType.Text);
         }
 
         public async Task<Guid> ExecuteScalarAsyncGuid(string query, object arguments)
         {
             using (var connection = await ConnectionFactory.GetConnectionAsync())
-                return await connection.ExecuteScalarAsync<Guid>(query, arguments, commandType: CommandType.StoredProcedure);
+                return await connection.ExecuteScalarAsync<Guid>(query, arguments, commandType: CommandType.Text);
         }
 
         public T GetSingleOrDefault(string query, object arguments)
         {
             using (var connection = new OracleConnection(ConnectionFactory.ConnectionString()))
             {
-                var result = connection.Query<T>(query, arguments, commandType: CommandType.StoredProcedure);
+                var result = connection.Query<T>(query, arguments, commandType: CommandType.Text);
 
                 return result.FirstOrDefault();
             }
