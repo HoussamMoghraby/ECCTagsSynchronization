@@ -56,6 +56,7 @@
     <Compile Include="Area_PITags_Searcher_Service.Designer.cs">
       <DependentUpon>Area_PITags_Searcher_Service.cs</DependentUpon>
     </Compile>
+    <Compile Include="Filters\CustomExpectionHandler.cs" />
     <Compile Include="Helpers\IWService.cs" />
     <Compile Include="Helpers\QJobs.cs" />
     <Compile Include="Program.cs" />
@@ -66,6 +67,7 @@
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AreaService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -87,9 +89,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Filters\" />
     <Folder Include="Models\" />
-    <Folder Include="Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
