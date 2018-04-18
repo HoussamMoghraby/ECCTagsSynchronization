@@ -1,6 +1,6 @@
 ﻿namespace ECC_IFields_Services
 {
-    partial class Area_PITags_Searcher_Service
+    partial class ECCPIAreaSearcher
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,8 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            this.ServiceName = "Area_PITags_Searcher_Service";
+            // 
+            // ECCPIAreaSearcher
+            // 
+            this.ServiceName = "ECCPIAreaSearcher";
+
         }
 
         #endregion

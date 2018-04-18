@@ -1,34 +1,44 @@
-﻿using ECC_PIAFServices_Layer.Services;
+﻿using ECC_AFServices_Layer.Services.Abstract;
+using ECC_PIAFServices_Layer.Services;
 using Quartz;
 using Quartz.Impl;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ECC_IFields_Services.Helpers
 {
-    public static class QJobs
+    public class QJobs
     {
-        private class JobWrapper : IJob
+        public static IECCService _serviceInstance;
+
+        public QJobs(IECCService serviceInstance)
+        {
+            _serviceInstance = serviceInstance;
+        }
+
+        public class JobWrapper : IJob
         {
             async Task IJob.Execute(IJobExecutionContext context)
             {
                 //run the service
-                AreaSearcherService _service = new AreaSearcherService();
-                await _service.Start();
+                //AreaSearcherService _serviceInstance = new AreaSearcherService();
+                Debugger.Launch();
+                await _serviceInstance.Start();
             }
         }
 
-        public static async void ScheduleJob()
+        public async void ScheduleJob()
         {
             IScheduler scheduler = await StdSchedulerFactory.GetDefaultScheduler();
             await scheduler.Start();
             IJobDetail job = JobBuilder.Create<JobWrapper>().Build();
             ITrigger trigger = TriggerBuilder.Create()
-                .WithIdentity("ServiceJob", "ServiceNextSchedule")
+                .WithIdentity("ServiceSJob", "ServiceNextSSchedule")
                 .WithCronSchedule(GetConfigurationSchedule()) // @1:00AM schedule
                                                               //.StartAt(DateTime.UtcNow)
                 .WithPriority(1)
@@ -61,10 +71,12 @@ namespace ECC_IFields_Services.Helpers
                     case "yearly":
                         _cronSchedule = string.Format("0 {0} {1} 1 1 ? *", _minute, _hour);
                         break;
+                    case "minute":
+                        _cronSchedule = "0 0/1 * 1/1 * ? *";
+                        break;
                     default:
                         break;
                 }
-
             }
             return _cronSchedule;
 

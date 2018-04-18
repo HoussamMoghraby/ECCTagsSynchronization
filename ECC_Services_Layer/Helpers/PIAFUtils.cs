@@ -11,22 +11,9 @@ namespace ECC_PIAFServices_Layer.Helpers
 {
     public static class PIAFUtils
     {
-        public static PISystem piSystem { get; set; }
+        //TODO: Implement abstract services that communicates with PI and AF.
 
-        //public static void TestConnection()
-        //{
-        //    PISystems piSystems = new PISystems(true);
-        //    piSystem = piSystems.DefaultPISystem;
-        //    piSystem.Connect();
-        //    try
-        //    {
-        //        EventLog.WriteEntry("Area Searcher Module", "Connection Successful", EventLogEntryType.Information);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        EventLog.WriteEntry("Area Searcher Module", e.Message, EventLogEntryType.Error);
-        //    }
-        //}
+        public static PISystem piSystem { get; set; }
 
         public static PIServer GetPIServer(string name)
         {
@@ -34,8 +21,6 @@ namespace ECC_PIAFServices_Layer.Helpers
             PIServer piServer = piServers[name];
             return piServer;
         }
-
-
-        //TODO: Implement abstract services that communicates with PI and AF.
+        
     }
 }

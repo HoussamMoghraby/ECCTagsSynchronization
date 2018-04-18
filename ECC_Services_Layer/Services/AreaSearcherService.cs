@@ -41,9 +41,6 @@ namespace ECC_PIAFServices_Layer.Services
                             //TODO: change the tag descriptor
                             if (!string.IsNullOrEmpty(piTag.Name))
                             {
-                                //var insertPITag = await _areaStore.InsertAreaTags(piTag.Name, (piTag.GetAttribute("Descriptor") != null) ? piTag.GetAttribute("Descriptor").ToString() : null, area.PI_SERVER_CD, piTag.ID);
-                                //var _tag = new PITagDataModel(areaTagName: piTag.Name, tagDescriptor: (piTag.GetAttribute("Descriptor") != null) ? piTag.GetAttribute("Descriptor").ToString() : null, sourcePIServerCode: area.PI_SERVER_CD, areaPIPointId: piTag.ID);
-                                //var _tag = new PITagDataModel(areaTagName: piTag.Name, tagDescriptor: "test-css-" + piTag.GetAttribute("Descriptor"), sourcePIServerCode: area.PI_SERVER_CD, areaPIPointId: piTag.ID);
                                 var _tag = piTag.MapToPITagDataModel(area.PI_SERVER_CD);
                                 var insertPITag = await _areaStore.InsertAreaTags(_tag);
 

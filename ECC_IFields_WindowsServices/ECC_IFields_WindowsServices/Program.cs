@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using ECC_IFields_WindowsServices;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECC_IFields_Services
 {
@@ -17,7 +13,8 @@ namespace ECC_IFields_Services
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
-                new Area_PITags_Searcher_Service() 
+                new ECCPIAreaSearcher(),
+                new ECCPITagCreator()
             };
             ServiceBase.Run(ServicesToRun);
         }

@@ -23,5 +23,13 @@ namespace ECC_DataLayer.Stores.Abstract
                 return 0;
             }
         }
+
+        public dynamic ResolveQueryParam(dynamic value)
+        {
+            if (value != null)
+                return value;
+            else
+                return "null";
+        }
     }
 }

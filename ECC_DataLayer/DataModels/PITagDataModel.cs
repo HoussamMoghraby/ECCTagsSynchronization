@@ -9,6 +9,9 @@ namespace ECC_DataLayer.DataModels
     public class PITagDataModel
     {
 
+        public long EAWFT_NUM { get; set; }
+        public string ECCPI_TAG_NAME { get; set; }
+        public string ECCPI_TAG_CRE_FLG { get; set; }
         //Basic Attributes
         public string AREA_PI_TAG_NAME { get; set; }
         public string PI_TAG_DESCRIPTOR { get; set; }
@@ -52,6 +55,16 @@ namespace ECC_DataLayer.DataModels
             this.PI_TAG_DESCRIPTOR = tagDescriptor.Replace("'", "");
             this.SRC_PI_SERVER_CD = sourcePIServerCode.Replace("'", "");
             this.AREA_POINT_ID = areaPIPointId;
+        }
+
+
+        public IDictionary<string, object> GetAttributes()
+        {
+            var tag = this;
+            IDictionary<string, object> attrs = new Dictionary<string, object>();
+            attrs.Add("descriptor", "CME-TEST");
+            attrs.Add("engunits", 999);
+            return attrs;
         }
 
     }

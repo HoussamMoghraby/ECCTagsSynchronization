@@ -6,7 +6,7 @@ using System.Configuration.Install;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ECC_IFields_Services
+namespace ECC_IFields_WindowsServices
 {
     [RunInstaller(true)]
     public partial class ProjectInstaller : System.Configuration.Install.Installer
@@ -14,16 +14,6 @@ namespace ECC_IFields_Services
         public ProjectInstaller()
         {
             InitializeComponent();
-        }
-
-        private void serviceInstaller1_AfterInstall(object sender, InstallEventArgs e)
-        {
-
-        }
-
-        private void serviceProcessInstaller1_AfterInstall(object sender, InstallEventArgs e)
-        {
-
         }
     }
 }

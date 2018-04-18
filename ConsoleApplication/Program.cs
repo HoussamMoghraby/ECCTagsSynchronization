@@ -31,8 +31,14 @@ namespace ConsoleApplication
                         break;
                     case "enc":
                         Console.WriteLine("Enter password to be encypted");
-                        var passEntry = "Synchr0n1ze18";
+                        var passEntry = "ecc123321A";
                         Console.WriteLine(string.Format("The ecryption text is: {0}", encryptString(passEntry)));
+                        break;
+                    case "testoracle":
+                        Console.WriteLine("Testing Orcacle Connection");
+                        var conn = ConnectionFactory.GetConnection();
+                        var res = (new AreaSearcherStore()).GetAreasPIServers().Result;
+                        Console.WriteLine(conn.State);
                         break;
                     default:
 
@@ -70,7 +76,7 @@ namespace ConsoleApplication
         static void CryptoTest()
         {
             // Encrypt the string to an array of bytes.
-            byte[] encrypted = CryptoProvider.Encrypt_Aes("pltr123456");
+            byte[] encrypted = CryptoProvider.Encrypt_Aes("ecc123321A");
             string encString = Convert.ToBase64String(encrypted);
             byte[] encBytes = Convert.FromBase64String(encString);
 

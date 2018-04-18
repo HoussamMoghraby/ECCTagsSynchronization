@@ -1,4 +1,5 @@
-﻿using ECC_IFields_Services.Helpers;
+﻿using ECC_AFServices_Layer.Services;
+using ECC_IFields_Services.Helpers;
 using ECC_PIAFServices_Layer.Services;
 using System;
 using System.Collections.Generic;
@@ -12,21 +13,21 @@ using System.Threading.Tasks;
 
 namespace ECC_IFields_Services
 {
-    partial class Area_PITags_Searcher_Service : ServiceBase, IWService
+    partial class ECCPIAreaSearcher : ServiceBase, IWService
     {
         private AreaSearcherService _service = new AreaSearcherService();
 
-        public Area_PITags_Searcher_Service()
+        public ECCPIAreaSearcher()
         {
-            //Debugger.Launch();
+
             log4net.Config.XmlConfigurator.Configure(); // Added to point log4net for log4net.config
             InitializeComponent();
-            InitializeSchedule();
         }
 
         public void InitializeSchedule()
         {
-            QJobs.ScheduleJob();
+            QJobs _job = new QJobs(_service);
+            _job.ScheduleJob(/*_service*/);
         }
 
         /// <summary>
@@ -37,8 +38,12 @@ namespace ECC_IFields_Services
         /// <param name="args"></param>
         protected override void OnStart(string[] args)
         {
+
+            Debugger.Launch();
+            InitializeSchedule();
             // TODO: Add code here to start your service.           
             _service.Start();
+
         }
 
         protected override void OnStop()

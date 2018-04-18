@@ -12,6 +12,21 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,6 +47,16 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Local|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Local\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
@@ -46,6 +71,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,15 +81,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Area_PITags_Searcher_Service.cs">
+    <Compile Include="ECCPIAreaSearcherService.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Area_PITags_Searcher_Service.Designer.cs">
-      <DependentUpon>Area_PITags_Searcher_Service.cs</DependentUpon>
+    <Compile Include="ECCPIAreaSearcherService.Designer.cs">
+      <DependentUpon>ECCPIAreaSearcherService.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ECCPITagCreatorService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ECCPITagCreatorService.Designer.cs">
+      <DependentUpon>ECCPITagCreatorService.cs</DependentUpon>
     </Compile>
     <Compile Include="Filters\CustomExpectionHandler.cs" />
     <Compile Include="Helpers\IWService.cs" />
     <Compile Include="Helpers\QJobs.cs" />
+    <Compile Include="Installers\AreaSearcherInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Installers\AreaSearcherInstaller.Designer.cs">
+      <DependentUpon>AreaSearcherInstaller.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Installers\TagCreatorInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Installers\TagCreatorInstaller.Designer.cs">
+      <DependentUpon>TagCreatorInstaller.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
@@ -72,7 +116,6 @@
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\AreaService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -92,12 +135,36 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ECCPIAreaSearcherService.resx">
+      <DependentUpon>ECCPIAreaSearcherService.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Installers\AreaSearcherInstaller.resx">
+      <DependentUpon>AreaSearcherInstaller.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Installers\TagCreatorInstaller.resx">
+      <DependentUpon>TagCreatorInstaller.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProjectInstaller.resx">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
