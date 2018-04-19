@@ -20,6 +20,7 @@ namespace ECC_AFServices_Layer.Services
     {
         private TagCreatorStore _tagCreatorStore = new TagCreatorStore();
         private string _eccPIServerName = ConfigurationSettings.AppSettings.Get("ECC_PI_ServerName");
+
         public async Task<bool> Start()
         {
             try
@@ -41,9 +42,8 @@ namespace ECC_AFServices_Layer.Services
                         //Receive results, and update the status of each inserted tag
                         if (_insertResult != null && _insertResult.Results != null && _insertResult.Results.Count() > 0)
                         {
-
                             IList<PIPoint> _successResults = _insertResult.Results;
-                            var successTags = tags.Where(t => t.ECCPI_TAG_NAME == _successResults.Where(sr => sr.Name == t.ECCPI_TAG_NAME).FirstOrDefault().Name);
+                            var successTags = tags.Where(t => _successResults.Where(sr => sr.Name == t.ECCPI_TAG_NAME).FirstOrDefault() != null && t.ECCPI_TAG_NAME == _successResults.Where(sr => sr.Name == t.ECCPI_TAG_NAME).FirstOrDefault().Name);
                             if (_insertResult.HasErrors)
                             {
                                 successTags = successTags.Where(st => !_insertResult.Errors.Select(e => e.Key).Contains(st.ECCPI_TAG_NAME));

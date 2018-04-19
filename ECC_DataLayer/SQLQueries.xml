@@ -6,8 +6,6 @@
 
   <query name="UpdatePIServerLastPullDate">UPDATE ECCPI_SERVERS_LIST set PI_LAST_TAG_PULL_DT = CURRENT_DATE where PI_SERVER_CD LIKE '{0}'</query>
 
-  <!--<query name="GetNonCreatedTags">SELECT t.area_pi_tag_name, t.area_point_id, t.area_digital_set, t.eccpi_tag_name, t.eccpi_point_id, t.eccpi_digital_set, t.eccpi_tag_cre_flg, t.eccpi_tag_cre_rem, t.pi_tag_sel_flg, t.pointtype, t.pi_tag_sel_user_id, m.w_af_attrb_full_path, m.w_af_attrb_scrty, m.w_gnr_name, m.w_eqp_attrib_name FROM eccpi_af_well_eqp_tag_masks m, eccpi_af_well_found_tags t WHERE t.eawetm_num = m.eawetm_num AND t.pi_tag_sel_flg = 'Y'</query>-->
-
   <query name="GetNonCreatedTags">SELECT t.*, m.w_af_attrb_full_path, m.w_af_attrb_scrty, m.w_gnr_name, m.w_eqp_attrib_name FROM eccpi_af_well_eqp_tag_masks m, eccpi_af_well_found_tags t WHERE t.eawetm_num = m.eawetm_num AND t.pi_tag_sel_flg = 'Y' and t.eccpi_tag_cre_flg = 'N'</query>
 
   <query name="UpdateCreatedTag">UPDATE eccpi_af_well_found_tags set eccpi_tag_cre_flg = '{0}', eccpi_tag_cre_rem='{1}' WHERE eawft_num = {2}</query>

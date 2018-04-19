@@ -1,15 +1,22 @@
 ﻿using ECC_AFServices_Layer.Helpers;
 using ECC_AFServices_Layer.Services;
 using ECC_AFServices_Layer.Services.Abstract;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
+using System.Linq;
 using System.ServiceProcess;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace ECC_IFields_WindowsServices
+namespace ECCPITagCreatorService
 {
-    partial class ECCPITagCreator : ServiceBase, IWService
+    public partial class ECCPITagCreatorService : ServiceBase, IWService
     {
         private TagCreatorService _service = new TagCreatorService();
-        public ECCPITagCreator()
+        public ECCPITagCreatorService()
         {
             log4net.Config.XmlConfigurator.Configure(); // Added to point log4net for log4net.config
             InitializeComponent();
@@ -31,7 +38,6 @@ namespace ECC_IFields_WindowsServices
 
         protected override void OnStop()
         {
-            // TODO: Add code here to perform any tear-down necessary to stop your service.
         }
     }
 }

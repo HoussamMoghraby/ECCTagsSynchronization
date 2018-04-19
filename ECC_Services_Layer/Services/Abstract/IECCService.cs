@@ -10,4 +10,9 @@ namespace ECC_AFServices_Layer.Services.Abstract
     {
         Task<bool> Start();
     }
+
+    public interface IWService
+    {
+        void InitializeSchedule();
+    }
 }

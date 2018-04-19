@@ -1,5 +1,4 @@
 ﻿using ECC_AFServices_Layer.Services.Abstract;
-using ECC_PIAFServices_Layer.Services;
 using Quartz;
 using Quartz.Impl;
 using System;
@@ -10,13 +9,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECC_IFields_Services.Helpers
+namespace ECC_AFServices_Layer.Helpers
 {
-    public class QJobs
+    public class BackgroundJob
     {
         public static IECCService _serviceInstance;
 
-        public QJobs(IECCService serviceInstance)
+        public BackgroundJob(IECCService serviceInstance)
         {
             _serviceInstance = serviceInstance;
         }
@@ -26,8 +25,6 @@ namespace ECC_IFields_Services.Helpers
             async Task IJob.Execute(IJobExecutionContext context)
             {
                 //run the service
-                //AreaSearcherService _serviceInstance = new AreaSearcherService();
-                Debugger.Launch();
                 await _serviceInstance.Start();
             }
         }

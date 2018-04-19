@@ -156,9 +156,12 @@ namespace ECC_AFServices_Layer.Helpers
             if (tag.ZERO != null)
                 attrs.Add("zero", tag.ZERO);
 
+            if (tag.W_AF_ATTRB_SCRTY != null)
+                attrs.Add("ptsecurity", tag.W_AF_ATTRB_SCRTY);
+
             // TODO: REMOVE_TEST
             if (withDescriptor)
-                attrs.Add("descriptor", "test-cme-" + tag.PI_TAG_DESCRIPTOR);
+                attrs.Add("descriptor", tag.PI_TAG_DESCRIPTOR);
             return attrs;
         }
 

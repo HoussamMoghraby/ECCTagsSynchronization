@@ -94,8 +94,7 @@
       <DependentUpon>ECCPITagCreatorService.cs</DependentUpon>
     </Compile>
     <Compile Include="Filters\CustomExpectionHandler.cs" />
-    <Compile Include="Helpers\IWService.cs" />
-    <Compile Include="Helpers\QJobs.cs" />
+    <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Installers\AreaSearcherInstaller.cs">
       <SubType>Component</SubType>
     </Compile>

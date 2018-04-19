@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ECC_IFields_WindowsServices.Helpers;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ECC_IFields_WindowsServices.Installers
 {
-    [RunInstaller(true)]
+    [RunInstaller(Constants.DeployPackages.ECCPITagCreator)]
     public partial class TagCreatorInstaller : System.Configuration.Install.Installer
     {
         public TagCreatorInstaller()

@@ -43,6 +43,8 @@ namespace ECC_DataLayer.DataModels
         public decimal? TYPICALVALUE { get; set; }
         public decimal? ZERO { get; set; }
 
+        public string W_AF_ATTRB_SCRTY { get; set; }
+
 
         public PITagDataModel()
         {

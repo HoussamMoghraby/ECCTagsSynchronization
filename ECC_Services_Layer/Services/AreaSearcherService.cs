@@ -18,11 +18,12 @@ namespace ECC_PIAFServices_Layer.Services
     {
         private AreaSearcherStore _areaStore = new AreaSearcherStore();
         private string _eccPIServerName = ConfigurationSettings.AppSettings.Get("ECC_PI_ServerName");
+
         public async Task<bool> Start()
         {
             try
             {
-                Logger.Info("Area Searcher Service", "Service Started");
+                Logger.Info("ECCPIAreaSearcher", "Service Started");
                 //Get the tag masks from ECCPI_AF_WELL_EQP_TAG_MASKS table that were not processed
                 IEnumerable<AreaPIServer> areas = await _areaStore.GetAreasPIServers();
                 //Get all the tags created on each server area the area last pull date
@@ -49,7 +50,7 @@ namespace ECC_PIAFServices_Layer.Services
                             }
                         }
 
-                        Logger.Info("Area Searcher Service", string.Format("{0} was inserted for area {1}", _tagsInserted, area.PI_SERVER_NAME));
+                        Logger.Info("ECCPIAreaSearcher", string.Format("{0} was inserted for area {1}", _tagsInserted, area.PI_SERVER_NAME));
                         //Commit oracle changes after each batch of requests
                         await _areaStore.Commit();
 
@@ -58,15 +59,15 @@ namespace ECC_PIAFServices_Layer.Services
                     }
                     catch (Exception e)
                     {
-                        Logger.Error("Area Searcher Service", e);
+                        Logger.Error("ECCPIAreaSearcher", e);
                     }
                 }
-                Logger.Info("Area Searcher Service", "Service Ended");
+                Logger.Info("ECCPIAreaSearcher", "Service Ended");
                 return true;
             }
             catch (Exception e)
             {
-                Logger.Error("Area Searcher Service", e);
+                Logger.Error("ECCPIAreaSearcher", e);
                 return false;
             }
         }
