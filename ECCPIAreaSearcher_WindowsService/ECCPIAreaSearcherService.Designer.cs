@@ -1,6 +1,6 @@
-﻿namespace ECCPITagCreatorService
+﻿namespace ECCPIAreaSearcher_Service
 {
-    partial class ECCPITagCreatorService
+    partial class ECCPIAreaSearcherService
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            this.ServiceName = "ECCPITagCreator";
+            this.ServiceName = "ECCPIAreaSearcher";
         }
 
         #endregion

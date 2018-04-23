@@ -10,7 +10,7 @@ namespace ECC_IFields_WindowsServices.Helpers
     {
         public class DeployPackages
         {
-            public const bool ECCPIAreaSearcher = true;
+            public const bool ECCPIAreaSearcher = false;
             public const bool ECCPITagCreator = true;
         }
     }

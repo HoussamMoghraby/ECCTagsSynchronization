@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECC_IFields_WindowsServices", "ECC_IFields_WindowsServices\ECC_IFields_WindowsServices\ECC_IFields_WindowsServices.csproj", "{26B7BF1C-BD02-4C32-8F7A-9E929AF3A983}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECC_Services_Layer", "ECC_Services_Layer\ECC_Services_Layer.csproj", "{EF087EEB-48B1-48D2-902D-1C82132B5709}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECC_DataLayer", "ECC_DataLayer\ECC_DataLayer.csproj", "{341A561B-A3A6-42D9-9CD6-EA38C6F891B6}"
@@ -13,7 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication", "Conso
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ECCPI_Services_Installer", "Area Searcher Service Setup\Area Searcher Service Setup.vdproj", "{ED347182-1386-4B93-88B2-5CA8D480B584}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECCPITagCreatorService", "ECCPITagCreatorService\ECCPITagCreatorService.csproj", "{6FE60FE6-AA55-457A-99CC-E1C6EE6B9080}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECCPITagCreator_Service", "ECCPITagCreatorService\ECCPITagCreator_Service.csproj", "{6FE60FE6-AA55-457A-99CC-E1C6EE6B9080}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECCPIAreaSearcher_Service", "ECCPIAreaSearcher_WindowsService\ECCPIAreaSearcher_Service.csproj", "{EEEB2E65-12AA-42BF-8135-C33F120F733D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,12 +22,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{26B7BF1C-BD02-4C32-8F7A-9E929AF3A983}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{26B7BF1C-BD02-4C32-8F7A-9E929AF3A983}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{26B7BF1C-BD02-4C32-8F7A-9E929AF3A983}.Local|Any CPU.ActiveCfg = Local|Any CPU
-		{26B7BF1C-BD02-4C32-8F7A-9E929AF3A983}.Local|Any CPU.Build.0 = Local|Any CPU
-		{26B7BF1C-BD02-4C32-8F7A-9E929AF3A983}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{26B7BF1C-BD02-4C32-8F7A-9E929AF3A983}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EF087EEB-48B1-48D2-902D-1C82132B5709}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EF087EEB-48B1-48D2-902D-1C82132B5709}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF087EEB-48B1-48D2-902D-1C82132B5709}.Local|Any CPU.ActiveCfg = Local|Any CPU
@@ -55,6 +49,12 @@ Global
 		{6FE60FE6-AA55-457A-99CC-E1C6EE6B9080}.Local|Any CPU.Build.0 = Release|Any CPU
 		{6FE60FE6-AA55-457A-99CC-E1C6EE6B9080}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FE60FE6-AA55-457A-99CC-E1C6EE6B9080}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEEB2E65-12AA-42BF-8135-C33F120F733D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEEB2E65-12AA-42BF-8135-C33F120F733D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEEB2E65-12AA-42BF-8135-C33F120F733D}.Local|Any CPU.ActiveCfg = Release|Any CPU
+		{EEEB2E65-12AA-42BF-8135-C33F120F733D}.Local|Any CPU.Build.0 = Release|Any CPU
+		{EEEB2E65-12AA-42BF-8135-C33F120F733D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEEB2E65-12AA-42BF-8135-C33F120F733D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

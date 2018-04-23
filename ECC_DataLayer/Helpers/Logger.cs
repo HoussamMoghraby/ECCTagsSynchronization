@@ -12,8 +12,13 @@ namespace ECC_DataLayer.Helpers
     public static class Logger
     {
         private static bool _logActivated = true;
-        private static readonly ILog _txtLogger = log4net.LogManager.GetLogger
+        private static readonly ILog _txtLogger = LogManager.GetLogger
             (MethodBase.GetCurrentMethod().DeclaringType);
+
+        public static void Initialize()
+        {
+            log4net.Config.XmlConfigurator.Configure(); // Added to point log4net for log4net.config
+        }
 
         public static void Info(string source, string message)
         {

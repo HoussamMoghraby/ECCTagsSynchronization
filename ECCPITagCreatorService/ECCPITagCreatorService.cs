@@ -1,6 +1,7 @@
 ﻿using ECC_AFServices_Layer.Helpers;
 using ECC_AFServices_Layer.Services;
 using ECC_AFServices_Layer.Services.Abstract;
+using ECC_DataLayer.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,7 +19,7 @@ namespace ECCPITagCreatorService
         private TagCreatorService _service = new TagCreatorService();
         public ECCPITagCreatorService()
         {
-            log4net.Config.XmlConfigurator.Configure(); // Added to point log4net for log4net.config
+            Logger.Initialize();
             InitializeComponent();
         }
 

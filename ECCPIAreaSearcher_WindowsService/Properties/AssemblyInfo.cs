@@ -5,15 +5,14 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ECC_IFields_WindowsServices")]
+[assembly: AssemblyTitle("ECCPIAreaSearcher_WindowsService")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ECC_IFields_WindowsServices")]
+[assembly: AssemblyProduct("ECCPIAreaSearcher_WindowsService")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-//[assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
@@ -21,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("26b7bf1c-bd02-4c32-8f7a-9e929af3a983")]
+[assembly: Guid("eeeb2e65-12aa-42bf-8135-c33f120f733d")]
 
 // Version information for an assembly consists of the following four values:
 //
