@@ -21,7 +21,7 @@ namespace ECC_AFServices_Layer.Services
         private TagCreatorStore _tagCreatorStore = new TagCreatorStore();
         private string _eccPIServerName = ConfigurationSettings.AppSettings.Get("ECC_PI_ServerName");
 
-        public async Task<bool> Start()
+        public async Task<bool> StartAsync()
         {
             try
             {

@@ -31,9 +31,11 @@ namespace ECCPIAreaSearcher_Service
 
         protected override void OnStart(string[] args)
         {
-            Debugger.Launch();
-            // TODO: Add code here to start your service.           
-            _service.Start();
+            //Debugger.Launch();
+            // TODO: Add code here to start your service.       
+            Logger.Info("ECCPIAreaSearcher", "Job Started");
+            _service.StartAsync();
+            Logger.Info("ECCPIAreaSearcher", "Job Ended");
             InitializeSchedule();
         }
 

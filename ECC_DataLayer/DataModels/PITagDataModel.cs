@@ -45,6 +45,11 @@ namespace ECC_DataLayer.DataModels
 
         public string W_AF_ATTRB_SCRTY { get; set; }
 
+        public string W_AF_ATTRB_FULL_PATH { get; set; }
+        public string W_GNR_NAME { get; set; }
+        public string W_EQP_ATTRIB_NAME { get; set; }
+
+
 
         public PITagDataModel()
         {

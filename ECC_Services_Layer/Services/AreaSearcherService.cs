@@ -19,7 +19,7 @@ namespace ECC_PIAFServices_Layer.Services
         private AreaSearcherStore _areaStore = new AreaSearcherStore();
         private string _eccPIServerName = ConfigurationSettings.AppSettings.Get("ECC_PI_ServerName");
 
-        public async Task<bool> Start()
+        public async Task<bool> StartAsync()
         {
             try
             {

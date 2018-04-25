@@ -175,5 +175,16 @@ namespace ECC_AFServices_Layer.Helpers
             }
             return tagsDefs;
         }
+
+
+        public static IEnumerable<string> MapToListOfAttributePath(this IEnumerable<PITagDataModel> tags)
+        {
+            List<string> _pathList = new List<string>();
+            foreach (var tag in tags)
+            {
+                _pathList.Add(tag.W_AF_ATTRB_FULL_PATH);
+            }
+            return _pathList;
+        }
     }
 }

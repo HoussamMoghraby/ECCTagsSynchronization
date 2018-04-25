@@ -12,12 +12,12 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECCPITagCreatorService
+namespace ECCPITagAssetMapper_Service
 {
-    public partial class ECCPITagCreatorService : ServiceBase, IWService
+    public partial class ECCPITagAssetMapperService : ServiceBase, IWService
     {
-        private TagCreatorService _service = new TagCreatorService();
-        public ECCPITagCreatorService()
+        private TagAssetMapperService _service = new TagAssetMapperService();
+        public ECCPITagAssetMapperService()
         {
             Logger.Initialize();
             InitializeComponent();
@@ -32,10 +32,10 @@ namespace ECCPITagCreatorService
         protected override void OnStart(string[] args)
         {
             //Debugger.Launch();
-            // TODO: Add code here to start your service.   
-            Logger.Info("ECCPITagCreator", "Job Started");
+            // TODO: Add code here to start your service.           
+            Logger.Info("ECCPITagAssetMapper", "Job Started");
             _service.StartAsync();
-            Logger.Info("ECCPITagCreator", "Job Ended");
+            Logger.Info("ECCPITagAssetMapper", "Job Ended");
             InitializeSchedule();
         }
 

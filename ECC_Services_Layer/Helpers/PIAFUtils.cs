@@ -21,6 +21,13 @@ namespace ECC_PIAFServices_Layer.Helpers
             PIServer piServer = piServers[name];
             return piServer;
         }
-        
+
+        public static PISystem GetPISystem(string name)
+        {
+            PISystems piSystems = new PISystems();
+            PISystem piSystem = piSystems[name];
+            return piSystem;
+        }
+
     }
 }

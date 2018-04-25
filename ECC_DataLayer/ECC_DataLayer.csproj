@@ -74,6 +74,7 @@
     <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Stores\AreaSearcherStore.cs" />
     <Compile Include="Stores\Abstract\DataStore.cs" />
+    <Compile Include="Stores\TagAssetMapperStore.cs" />
     <Compile Include="Stores\TagCreatorStore.cs" />
   </ItemGroup>
   <ItemGroup>

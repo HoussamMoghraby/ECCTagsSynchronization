@@ -5,7 +5,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECCPITagCreator
+namespace ECCPITagAssetMapper_Service
 {
     static class Program
     {
@@ -17,7 +17,7 @@ namespace ECCPITagCreator
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
-                new Service1()
+                new ECCPITagAssetMapperService()
             };
             ServiceBase.Run(ServicesToRun);
         }

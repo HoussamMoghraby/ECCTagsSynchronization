@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ECCPITagCreator")]
+[assembly: AssemblyTitle("ECCPITagAssetMapper_Service")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ECCPITagCreator")]
+[assembly: AssemblyProduct("ECCPITagAssetMapper_Service")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("ebc3dd6d-2b0f-4481-8c6c-d00e0b2dad07")]
+[assembly: Guid("2f9acd9b-ce50-432e-9d29-57e3b4d32ac2")]
 
 // Version information for an assembly consists of the following four values:
 //

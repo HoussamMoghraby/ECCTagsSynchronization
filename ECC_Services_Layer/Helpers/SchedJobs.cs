@@ -14,6 +14,7 @@ namespace ECC_AFServices_Layer.Helpers
     public class BackgroundJob
     {
         public static IECCService _serviceInstance;
+        
 
         public BackgroundJob(IECCService serviceInstance)
         {
@@ -25,12 +26,13 @@ namespace ECC_AFServices_Layer.Helpers
             async Task IJob.Execute(IJobExecutionContext context)
             {
                 //run the service
-                await _serviceInstance.Start();
+                await _serviceInstance.StartAsync();
             }
         }
 
         public async void ScheduleJob()
         {
+            Quartz.Logging.LogProvider.IsDisabled = true;
             IScheduler scheduler = await StdSchedulerFactory.GetDefaultScheduler();
             await scheduler.Start();
             IJobDetail job = JobBuilder.Create<JobWrapper>().Build();

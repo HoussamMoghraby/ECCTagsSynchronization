@@ -8,7 +8,7 @@ namespace ECC_AFServices_Layer.Services.Abstract
 {
     public interface IECCService
     {
-        Task<bool> Start();
+        Task<bool> StartAsync();
     }
 
     public interface IWService
