@@ -23,7 +23,6 @@ namespace ECC_PIAFServices_Layer.Services
         {
             try
             {
-                Logger.Info("ECCPIAreaSearcher", "Service Started");
                 //Get the tag masks from ECCPI_AF_WELL_EQP_TAG_MASKS table that were not processed
                 IEnumerable<AreaPIServer> areas = await _areaStore.GetAreasPIServers();
                 //Get all the tags created on each server area the area last pull date
@@ -62,7 +61,7 @@ namespace ECC_PIAFServices_Layer.Services
                         Logger.Error("ECCPIAreaSearcher", e);
                     }
                 }
-                Logger.Info("ECCPIAreaSearcher", "Service Ended");
+
                 return true;
             }
             catch (Exception e)
