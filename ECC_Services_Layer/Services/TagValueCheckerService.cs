@@ -25,7 +25,6 @@ namespace ECC_AFServices_Layer.Services
 
         public async Task<bool> StartAsync()
         {
-
             try
             {
                 //Get the tags created from oracle database
@@ -35,15 +34,11 @@ namespace ECC_AFServices_Layer.Services
                     //For each tag, get the area tag value at today midnight and from ECCPI server as well
 
                     //Values check on ECC Server
-                    IEnumerable<PIPoint> queryResult = FindPointsOnPIServer(_eccPIServerName, tags, queryECCServer: true);
+                    IEnumerable<PIPoint> queryResult = FindPointsByName(_eccPIServerName, tags, queryECCServer: true);
                     foreach (var result in queryResult)
                     {
                         AFValue _recordedValue = GetPointRecordedValue(result);
-                        tags.Where(t => t.ECCPI_TAG_NAME == result.Name).ForEach(t =>
-                        {
-                            t.ECCServerValue = (_recordedValue.IsGood) ? _recordedValue.Value : _recordedValue.Value.ToString();
-                        });
-
+                        AssignRecordedValueToOriginalTagsCollection(tags: tags, tagName: result.Name, recordedValue: _recordedValue);
                     }
                     //Values check on Area Servers
                     var grouppedTags = tags.GroupBy(t => t.PI_SERVER_NAME);
@@ -51,14 +46,11 @@ namespace ECC_AFServices_Layer.Services
                     {
                         try
                         {
-                            IEnumerable<PIPoint> _areaQueryResult = FindPointsOnPIServer(group.Key, group, queryECCServer: false);
+                            IEnumerable<PIPoint> _areaQueryResult = FindPointsByName(group.Key, group, queryECCServer: false);
                             foreach (var result in _areaQueryResult)
                             {
                                 AFValue _recordedValue = GetPointRecordedValue(result);
-                                tags.Where(t => t.AREA_PI_TAG_NAME == result.Name).ForEach(t =>
-                                {
-                                    t.AreaServerValue = (_recordedValue.IsGood) ? _recordedValue.Value : _recordedValue.Value.ToString();
-                                });
+                                AssignRecordedValueToOriginalTagsCollection(tags: tags, tagName: result.Name, recordedValue: _recordedValue, isECCServerValue: false);
                             }
                         }
                         catch (Exception e)
@@ -81,6 +73,18 @@ namespace ECC_AFServices_Layer.Services
         }
 
 
+        private void AssignRecordedValueToOriginalTagsCollection(IEnumerable<PITagValueCheckDataModel> tags, string tagName, AFValue recordedValue, bool isECCServerValue = true)
+        {
+            tags.Where(t => (t.ECCPI_TAG_NAME == tagName && isECCServerValue == true) || (t.AREA_PI_TAG_NAME == tagName && isECCServerValue == false)).ForEach(t =>
+              {
+                  dynamic _value = (recordedValue.IsGood) ? recordedValue.Value : recordedValue.Value.ToString();
+                  if (isECCServerValue == true)
+                      t.ECCServerValue = _value;
+                  else
+                      t.AreaServerValue = _value;
+              });
+            //return tags;
+        }
 
         private async Task UpdateCheckedTagsAsync(IEnumerable<PITagValueCheckDataModel> tags)
         {
@@ -96,13 +100,16 @@ namespace ECC_AFServices_Layer.Services
             Logger.Info("ECCPITagValueChecker", string.Format("{0} Tags Not Matched", checkedTags.Where(t => t.AreaServerValue != t.ECCServerValue).Count()));
         }
 
-        private IEnumerable<PIPoint> FindPointsOnPIServer(string serverName, IEnumerable<PITagValueCheckDataModel> tags, bool queryECCServer = true)
+        private IEnumerable<PIPoint> FindPointsByName(string serverName, IEnumerable<PITagValueCheckDataModel> tags, bool queryECCServer = true)
         {
+            //if (serverName == "GPDPISRV")
+            //    serverName = "ECC-PISRV1"; //TODO: Remove when done testing locally
             PIServer _piServer = PIAFUtils.GetPIServer(serverName);
             string _query = string.Empty;
             foreach (var tag in tags)
             {
-                string tagName = (queryECCServer == true) ? tag.ECCPI_TAG_NAME : tag.AreaServerValue;
+                //TODO: Fix naming here when done testing locally to AREA_PI_TAG_NAME when queryECCServer = false
+                string tagName = (queryECCServer == true) ? tag.ECCPI_TAG_NAME : tag.AREA_PI_TAG_NAME;
                 if (string.IsNullOrEmpty(_query))
                     _query = "name:=\"" + tagName + "\"";
                 else
