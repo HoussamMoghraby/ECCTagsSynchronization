@@ -1,6 +1,5 @@
 ﻿using ECC_AFServices_Layer.Helpers;
 using ECC_AFServices_Layer.Services;
-using ECC_AFServices_Layer.Services.Abstract;
 using ECC_DataLayer.Helpers;
 using System;
 using System.Collections.Generic;
@@ -12,12 +11,12 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECCPITagAssetMapper_Service
+namespace ECCPITagValueChecker_Service
 {
-    public partial class ECCPITagAssetMapperService : ServiceBase, IWService
+    public partial class ECCPITagValueCheckerService : ServiceBase
     {
-        private TagAssetMapperService _service = new TagAssetMapperService();
-        public ECCPITagAssetMapperService()
+        private TagValueCheckerService _service = new TagValueCheckerService();
+        public ECCPITagValueCheckerService()
         {
             Logger.Initialize();
             InitializeComponent();
@@ -32,10 +31,10 @@ namespace ECCPITagAssetMapper_Service
         protected override void OnStart(string[] args)
         {
             Debugger.Launch();
-            // TODO: Add code here to start your service.           
-            Logger.Info("ECCPITagAssetMapper", "Job Started");
+            // TODO: Add code here to start your service.   
+            Logger.Info("ECCPITagValueChecker", "Job Started");
             _service.StartAsync();
-            Logger.Info("ECCPITagAssetMapper", "Job Ended");
+            Logger.Info("ECCPITagValueChecker", "Job Ended");
             InitializeSchedule();
         }
 

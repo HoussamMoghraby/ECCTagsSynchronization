@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="DataModels\AreaPIServer.cs" />
     <Compile Include="DataModels\PITagDataModel.cs" />
+    <Compile Include="DataModels\PITagValueCheckDataModel.cs" />
     <Compile Include="Helpers\CryptoProvider.cs" />
     <Compile Include="Helpers\Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Stores\Abstract\DataStore.cs" />
     <Compile Include="Stores\TagAssetMapperStore.cs" />
     <Compile Include="Stores\TagCreatorStore.cs" />
+    <Compile Include="Stores\TagValueCheckerStore.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="log4net.config">

@@ -78,6 +78,7 @@
     <Compile Include="Services\AreaSearcherService.cs" />
     <Compile Include="Services\TagAssetMapperService.cs" />
     <Compile Include="Services\TagCreatorService.cs" />
+    <Compile Include="Services\TagValueCheckerService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ECC_DataLayer\ECC_DataLayer.csproj">

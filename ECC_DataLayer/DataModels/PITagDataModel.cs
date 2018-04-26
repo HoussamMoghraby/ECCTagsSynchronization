@@ -50,6 +50,9 @@ namespace ECC_DataLayer.DataModels
         public string W_EQP_ATTRIB_NAME { get; set; }
 
 
+        public string PI_SERVER_NAME { get; set; }
+        public string PI_TAG_FLOW_FLG { get; set; }
+
 
         public PITagDataModel()
         {

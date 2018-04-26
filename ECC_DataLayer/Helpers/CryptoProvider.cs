@@ -15,6 +15,11 @@ namespace ECC_DataLayer.Helpers
         public static byte[] IV = Encoding.ASCII.GetBytes("0987654321098765");
         public static byte[] Key = Encoding.ASCII.GetBytes("CCABR44571!AASAB");
 
+        public static string Encrypt_Aes_String(string plainText)
+        {
+            return Convert.ToBase64String(Encrypt_Aes(plainText));
+        }
+
         public static byte[] Encrypt_Aes(string plainText)
         {
             // Check arguments.

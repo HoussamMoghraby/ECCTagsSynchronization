@@ -62,7 +62,7 @@ namespace ConsoleApplication
         {
             Console.WriteLine(string.Format("Service Start at {0}", DateTime.Now.ToString("MM-dd-yyyy HH:mm:ss")));
             var _service = new AreaSearcherService();
-            await _service.Start();
+            await _service.StartAsync();
             //var cc = ConnectionFactory.ConnectionString();
             //CryptoTest();
         }

@@ -16,5 +16,10 @@
   <query name="GetUnmappedTags">SELECT t.eawft_num,t.ECCPI_TAG_NAME, m.w_af_attrb_full_path, m.w_af_attrb_scrty, m.w_gnr_name, m.w_eqp_attrib_name FROM eccpi_af_well_eqp_tag_masks m, eccpi_af_well_found_tags t WHERE t.eawetm_num = m.eawetm_num AND t.pi_tag_sel_flg = 'Y' and t.eccpi_tag_cre_flg = 'Y' and t.eccpi_af_mapped_flg = 'N'</query>
 
   <query name="UpdateMappedTag">UPDATE eccpi_af_well_found_tags set eccpi_af_mapped_flg = '{0}', ECCPI_AF_MAP_REM='{1}' WHERE eawft_num = {2}</query>
+  
+  <!--ECCPITagValueChecker-->
+  <query name="GetCreatedTagsForValueChecking">SELECT t.eawft_num, s.PI_SERVER_NAME, t.area_pi_tag_name, t.area_point_id, t.eccpi_tag_name, t.eccpi_point_id, t.eccpi_digital_set, t.eccpi_tag_cre_flg, t.eccpi_tag_cre_rem, t.pi_tag_sel_flg, t.PointType, t.pi_tag_sel_user_id FROM  eccpi_af_well_found_tags t , eccpi_servers_list s WHERE t.src_pi_server_cd = s.PI_SERVER_CD  and t.eccpi_tag_cre_flg = 'Y' and (t.PI_TAG_FLOW_FLG = 'N' OR t.PI_TAG_FLOW_FLG IS NULL)</query>
+
+  <query name="UpdateTagMatchingStatus">UPDATE eccpi_af_well_found_tags t SET t.pi_tag_flow_flg = '{0}' WHERE  t.eawft_num = {1}</query>
 
 </queries>

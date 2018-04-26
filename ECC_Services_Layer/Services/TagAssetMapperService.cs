@@ -36,7 +36,7 @@ namespace ECC_AFServices_Layer.Services
                 var tags = await _tagMapperStore.GetUnmappedTags();
                 if (tags != null && tags.Count() > 0)
                 {
-                    tags = tags.DistinctBy(t => t.ECCPI_TAG_NAME).DistinctBy(t => t.W_AF_ATTRB_FULL_PATH);
+                    //tags = tags.DistinctBy(t => t.ECCPI_TAG_NAME).DistinctBy(t => t.W_AF_ATTRB_FULL_PATH);
                     var queryAttributes = AFAttribute.FindAttributesByPath(tags.MapToListOfAttributePath(), null);
                     IList<AFAttribute> attributes = new List<AFAttribute>();
                     IList<string> configStrings = new List<string>();
