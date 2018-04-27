@@ -44,14 +44,20 @@ namespace ECC_AFServices_Layer.Services
                         {
                             IList<PIPoint> _successResults = _insertResult.Results;
                             var successTags = tags.Where(t => _successResults.Where(sr => sr.Name == t.ECCPI_TAG_NAME).FirstOrDefault() != null && t.ECCPI_TAG_NAME == _successResults.Where(sr => sr.Name == t.ECCPI_TAG_NAME).FirstOrDefault().Name);
+
                             if (_insertResult.HasErrors)
                             {
                                 successTags = successTags.Where(st => !_insertResult.Errors.Select(e => e.Key).Contains(st.ECCPI_TAG_NAME));
                             }
 
+                            successTags.ForEach(st =>
+                            {
+                                st.ECCPI_POINT_ID = _successResults.Where(sr => sr.Name == st.ECCPI_TAG_NAME).FirstOrDefault().ID;
+                            });
+
                             foreach (var tag in successTags)
                             {
-                                var updateStatus = await _tagCreatorStore.UpdateCreatedTag(tag.EAWFT_NUM, string.Format("Tag Created Successfully in {0}", _eccPIServerName), 'Y');
+                                var updateStatus = await _tagCreatorStore.UpdateCreatedTag(tag.EAWFT_NUM, tag.ECCPI_POINT_ID, string.Format("Tag Created Successfully in {0}", _eccPIServerName), 'Y');
                             }
                             Logger.Info("ECCPITagCreator", string.Format("{0} Inserted Tags", (successTags != null) ? successTags.Count() : 0));
                             await _tagCreatorStore.Commit();
@@ -68,7 +74,7 @@ namespace ECC_AFServices_Layer.Services
                             {
                                 foreach (var tag in existingTags)
                                 {
-                                    var updateStatus = await _tagCreatorStore.UpdateCreatedTag(tag.EAWFT_NUM, string.Format("Tag Already Exists in {0}", _eccPIServerName), 'Y');
+                                    var updateStatus = await _tagCreatorStore.UpdateCreatedTag(tag.EAWFT_NUM, tag.ECCPI_POINT_ID, string.Format("Tag Already Exists in {0}", _eccPIServerName), 'Y');
                                 }
                                 Logger.Info("ECCPITagCreator", string.Format("{0} Existing Tags", existingTags.Count()));
                                 await _tagCreatorStore.Commit();
@@ -80,7 +86,7 @@ namespace ECC_AFServices_Layer.Services
                             {
                                 foreach (var tag in otherErrorTags)
                                 {
-                                    var updateStatus = await _tagCreatorStore.UpdateCreatedTag(tag.EAWFT_NUM, _insertResult.Errors.Where(e => e.Key == tag.ECCPI_TAG_NAME).FirstOrDefault().Value.Message, 'N');
+                                    var updateStatus = await _tagCreatorStore.UpdateCreatedTag(tag.EAWFT_NUM, null, _insertResult.Errors.Where(e => e.Key == tag.ECCPI_TAG_NAME).FirstOrDefault().Value.Message, 'N');
                                 }
                                 Logger.Info("ECCPITagCreator", string.Format("{0} Errors Upon Creation", otherErrorTags.Count()));
                                 await _tagCreatorStore.Commit();

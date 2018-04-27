@@ -26,9 +26,13 @@ namespace ECC_DataLayer.Stores
         }
 
 
-        public async Task<int> UpdateCreatedTag(long id, string remark, char eccCreationFlag = 'Y')
+        public async Task<int> UpdateCreatedTag(long id, int? eccPointId, string remark, char eccCreationFlag = 'Y')
         {
-            string _query = string.Format(QueryReader.ReadQuery("UpdateCreatedTag"), eccCreationFlag, remark, id);
+            string _query = string.Format(QueryReader.ReadQuery("UpdateCreatedTag"),
+                eccCreationFlag,
+                (eccPointId.HasValue) ? string.Format(" ECCPI_POINT_ID = {0}, ", eccPointId.Value) : "",
+                remark,
+                id);
             var result = await _tagCreatorRepo.ExecuteScalarAsync(_query, new { });
             return result;
         }

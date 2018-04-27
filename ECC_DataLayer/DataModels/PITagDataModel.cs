@@ -18,6 +18,8 @@ namespace ECC_DataLayer.DataModels
         public string SRC_PI_SERVER_CD { get; set; }
         public int AREA_POINT_ID { get; set; }
 
+        public int? ECCPI_POINT_ID { get; set; }
+
         //Advanded Attributes
         public string ECCPI_DIGITAL_SET { get; set; }
         public string ENGUNITS { get; set; }
