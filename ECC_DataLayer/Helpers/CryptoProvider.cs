@@ -12,8 +12,8 @@ namespace ECC_DataLayer.Helpers
     {
         private static PaddingMode Padding = PaddingMode.PKCS7;
         private static int KeySize = 128;
+        public static byte[] Key = Encoding.ASCII.GetBytes("EP1T5AYYT4451A77");
         public static byte[] IV = Encoding.ASCII.GetBytes("0987654321098765");
-        public static byte[] Key = Encoding.ASCII.GetBytes("CCABR44571!AASAB");
 
         public static string Encrypt_Aes_String(string plainText)
         {
