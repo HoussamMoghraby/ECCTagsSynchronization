@@ -50,6 +50,7 @@ namespace ECC_AFServices_Layer.Services
                                 successTags = successTags.Where(st => !_insertResult.Errors.Select(e => e.Key).Contains(st.ECCPI_TAG_NAME));
                             }
 
+                            //Fill ECCPI_POINT_ID in successfull tags to be updating in oracle db
                             successTags.ForEach(st =>
                             {
                                 st.ECCPI_POINT_ID = _successResults.Where(sr => sr.Name == st.ECCPI_TAG_NAME).FirstOrDefault().ID;
