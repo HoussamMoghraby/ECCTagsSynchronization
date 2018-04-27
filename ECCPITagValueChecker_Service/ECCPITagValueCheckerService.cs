@@ -1,5 +1,6 @@
 ﻿using ECC_AFServices_Layer.Helpers;
 using ECC_AFServices_Layer.Services;
+using ECC_AFServices_Layer.Services.Abstract;
 using ECC_DataLayer.Helpers;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace ECCPITagValueChecker_Service
 {
-    public partial class ECCPITagValueCheckerService : ServiceBase
+    public partial class ECCPITagValueCheckerService : ServiceBase, IWService
     {
         private TagValueCheckerService _service = new TagValueCheckerService();
         public ECCPITagValueCheckerService()
