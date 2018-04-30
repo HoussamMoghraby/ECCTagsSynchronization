@@ -1,4 +1,5 @@
-﻿using ECC_DataLayer.DataModels;
+﻿using ECC_AFServices_Layer.Services;
+using ECC_DataLayer.DataModels;
 using ECC_DataLayer.Helpers;
 using ECC_DataLayer.Repositories;
 using ECC_DataLayer.Stores;
@@ -26,8 +27,11 @@ namespace ConsoleApplication
             if (entry != null)
                 switch (entry.ToString().ToLower())
                 {
-                    case "start":
+                    case "area_searcher":
                         StartAreaSearcherService();
+                        break;
+                    case "tag_creator":
+                        TestTagCreator();
                         break;
                     case "enc":
                         Console.WriteLine("Enter password to be encypted");
@@ -55,6 +59,12 @@ namespace ConsoleApplication
             //var cc3 = QueryReader.ReadQuery("UpdatePIServerLastPullDate");
             //Logger.Info("ConsoleECC","Test the logs 1");
             //Console.ReadLine();
+        }
+
+        private static void TestTagCreator()
+        {
+            var service = new TagCreatorService();
+            var cc = service.StartAsync().Result;
         }
 
         public static async

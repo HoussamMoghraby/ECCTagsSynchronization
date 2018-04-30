@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataModels\AreaPIServer.cs" />
+    <Compile Include="DataModels\PointSourceDataModel.cs" />
     <Compile Include="DataModels\PITagDataModel.cs" />
     <Compile Include="DataModels\PITagValueCheckDataModel.cs" />
     <Compile Include="Helpers\CryptoProvider.cs" />

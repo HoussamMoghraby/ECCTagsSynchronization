@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2015
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECC_Services_Layer", "ECC_Services_Layer\ECC_Services_Layer.csproj", "{EF087EEB-48B1-48D2-902D-1C82132B5709}"
 EndProject
@@ -21,8 +21,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECCPITagValueChecker_Servic
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installers", "Installers", "{67641F58-1738-4BF3-925D-B24CB296B739}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ECCPIEncyptor", "Installers\ECCPI_Encyptor_App\ECCPI_Encyptor_App.vdproj", "{33A72645-63AC-46AD-B018-242A1B7EAE8A}"
-EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ECCPIAreaSearcher", "Installers\ECCPIAreaSearcher\ECCPIAreaSearcher.vdproj", "{D77D1530-0FA9-443A-8B98-F5FDF005D528}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ECCPITagCreator", "Installers\ECCPITagCreator\ECCPITagCreator.vdproj", "{AE2C7CB1-F34E-48A4-867F-61E2A023F43A}"
@@ -30,6 +28,10 @@ EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ECCPITagAssetMapper", "Installers\ECCPITagAssetMapper\ECCPITagAssetMapper.vdproj", "{3E48D0C2-AB5A-4596-A9DD-28FD5943E655}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ECCPITagValueChecker", "Installers\ECCPITagValueChecker\ECCPITagValueChecker.vdproj", "{149ADFC5-7197-427A-8FE1-D86863B43B55}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ECCPIEncryptor", "Installers\ECCPIEncryptor\ECCPIEncryptor.vdproj", "{D2E5FA9A-64EB-40C4-BF8F-361F8BBDBFF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECCPITagCreator_Service_2", "ECCPITagCreator_Service_2\ECCPITagCreator_Service_2.csproj", "{B1E5B0A3-E8CF-4271-BAB6-9F7E9B1C2CB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,9 +88,6 @@ Global
 		{D579AD75-13F6-427B-85D2-94DB52EBCA16}.Local|Any CPU.Build.0 = Release|Any CPU
 		{D579AD75-13F6-427B-85D2-94DB52EBCA16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D579AD75-13F6-427B-85D2-94DB52EBCA16}.Release|Any CPU.Build.0 = Release|Any CPU
-		{33A72645-63AC-46AD-B018-242A1B7EAE8A}.Debug|Any CPU.ActiveCfg = Debug
-		{33A72645-63AC-46AD-B018-242A1B7EAE8A}.Local|Any CPU.ActiveCfg = Release
-		{33A72645-63AC-46AD-B018-242A1B7EAE8A}.Release|Any CPU.ActiveCfg = Release
 		{D77D1530-0FA9-443A-8B98-F5FDF005D528}.Debug|Any CPU.ActiveCfg = Debug
 		{D77D1530-0FA9-443A-8B98-F5FDF005D528}.Local|Any CPU.ActiveCfg = Release
 		{D77D1530-0FA9-443A-8B98-F5FDF005D528}.Release|Any CPU.ActiveCfg = Release
@@ -101,16 +100,25 @@ Global
 		{149ADFC5-7197-427A-8FE1-D86863B43B55}.Debug|Any CPU.ActiveCfg = Debug
 		{149ADFC5-7197-427A-8FE1-D86863B43B55}.Local|Any CPU.ActiveCfg = Release
 		{149ADFC5-7197-427A-8FE1-D86863B43B55}.Release|Any CPU.ActiveCfg = Release
+		{D2E5FA9A-64EB-40C4-BF8F-361F8BBDBFF6}.Debug|Any CPU.ActiveCfg = Debug
+		{D2E5FA9A-64EB-40C4-BF8F-361F8BBDBFF6}.Local|Any CPU.ActiveCfg = Release
+		{D2E5FA9A-64EB-40C4-BF8F-361F8BBDBFF6}.Release|Any CPU.ActiveCfg = Release
+		{B1E5B0A3-E8CF-4271-BAB6-9F7E9B1C2CB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1E5B0A3-E8CF-4271-BAB6-9F7E9B1C2CB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1E5B0A3-E8CF-4271-BAB6-9F7E9B1C2CB9}.Local|Any CPU.ActiveCfg = Release|Any CPU
+		{B1E5B0A3-E8CF-4271-BAB6-9F7E9B1C2CB9}.Local|Any CPU.Build.0 = Release|Any CPU
+		{B1E5B0A3-E8CF-4271-BAB6-9F7E9B1C2CB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1E5B0A3-E8CF-4271-BAB6-9F7E9B1C2CB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{33A72645-63AC-46AD-B018-242A1B7EAE8A} = {67641F58-1738-4BF3-925D-B24CB296B739}
 		{D77D1530-0FA9-443A-8B98-F5FDF005D528} = {67641F58-1738-4BF3-925D-B24CB296B739}
 		{AE2C7CB1-F34E-48A4-867F-61E2A023F43A} = {67641F58-1738-4BF3-925D-B24CB296B739}
 		{3E48D0C2-AB5A-4596-A9DD-28FD5943E655} = {67641F58-1738-4BF3-925D-B24CB296B739}
 		{149ADFC5-7197-427A-8FE1-D86863B43B55} = {67641F58-1738-4BF3-925D-B24CB296B739}
+		{D2E5FA9A-64EB-40C4-BF8F-361F8BBDBFF6} = {67641F58-1738-4BF3-925D-B24CB296B739}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6E945827-AB64-4565-B483-E9E96B4ACE49}

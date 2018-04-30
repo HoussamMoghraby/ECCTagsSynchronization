@@ -3,15 +3,12 @@ using ECC_AFServices_Layer.Services.Abstract;
 using ECC_DataLayer.Helpers;
 using ECC_DataLayer.Stores;
 using ECC_PIAFServices_Layer.Helpers;
-using MoreLinq;
 using OSIsoft.AF;
 using OSIsoft.AF.Asset;
-using OSIsoft.AF.PI;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ECC_AFServices_Layer.Services

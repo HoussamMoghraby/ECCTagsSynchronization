@@ -1,11 +1,6 @@
 ﻿using OSIsoft.AF;
 using OSIsoft.AF.PI;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECC_PIAFServices_Layer.Helpers
 {
@@ -19,6 +14,17 @@ namespace ECC_PIAFServices_Layer.Helpers
         {
             PIServers piServers = new PIServers();
             PIServer piServer = piServers[name];
+            if (piServer != null)
+            {
+                try
+                {
+                    PICollectiveMember pMember = piServer.Collective.Members[0];
+                    pMember.ConnectionTimeOut = new TimeSpan(1, 0, 0);
+                }
+                catch (Exception)
+                {
+                }
+            }
             return piServer;
         }
 
@@ -26,6 +32,14 @@ namespace ECC_PIAFServices_Layer.Helpers
         {
             PISystems piSystems = new PISystems();
             PISystem piSystem = piSystems[name];
+            try
+            {
+                piSystem.ConnectionInfo.TimeOut = new TimeSpan(1, 0, 0);
+            }
+            catch (Exception)
+            {
+
+            }
             return piSystem;
         }
 
