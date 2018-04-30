@@ -12,10 +12,12 @@ namespace ECC_DataLayer.Stores
     public class TagCreatorStore : DataStore
     {
         private Repository<PITagDataModel> _tagCreatorRepo = new Repository<PITagDataModel>();
+        private Repository<PointSourceDataModel> _pointSourceRepo = new Repository<PointSourceDataModel>();
 
         public TagCreatorStore()
         {
             _tagCreatorRepo = new Repository<PITagDataModel>();
+            _pointSourceRepo = new Repository<PointSourceDataModel>();
         }
 
 
@@ -32,10 +34,44 @@ namespace ECC_DataLayer.Stores
                 eccCreationFlag,
                 (eccPointId.HasValue) ? string.Format(" ECCPI_POINT_ID = {0}, ", eccPointId.Value) : "",
                 remark,
+                (eccCreationFlag == 'Y') ? " , eccpi_exst_tag_name = eccpi_tag_name " : "",
                 id);
             var result = await _tagCreatorRepo.ExecuteScalarAsync(_query, new { });
             return result;
         }
+
+
+        public async Task<int> UpdateExistingTag(long id, string existingTagName, bool renamedInPIServerFlag = false)
+        {
+            string _query = string.Format(QueryReader.ReadQuery("UpdateExistingTag"),
+                existingTagName,
+                "Y",
+                "Instrument tag already exist",
+                (renamedInPIServerFlag == true) ? " ,ECCPI_TAG_HAS_REN_FLG = 'Y' " : null,
+                id
+                );
+            var result = await _tagCreatorRepo.ExecuteScalarAsync(_query, new { });
+            return result;
+        }
+
+        public async Task<PointSourceDataModel> GetServerPointSource(string serverCode)
+        {
+            //TODO: to be implemented -- write the query
+            string _query = string.Format(QueryReader.ReadQuery("GetServerPointSource"), serverCode);
+            var result = await _pointSourceRepo.GetAsync(_query, new { });
+            return result.FirstOrDefault();
+        }
+
+
+        public async Task<int> UpdatePointSource(long id, long numberOfTags)
+        {
+            string _query = string.Format(QueryReader.ReadQuery("UpdatePointSource"),
+                numberOfTags,
+                id);
+            var result = await _tagCreatorRepo.ExecuteScalarAsync(_query, new { });
+            return result;
+        }
+
 
     }
 }

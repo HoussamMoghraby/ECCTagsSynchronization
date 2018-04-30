@@ -55,6 +55,13 @@ namespace ECC_DataLayer.DataModels
         public string PI_SERVER_NAME { get; set; }
         public string PI_TAG_FLOW_FLG { get; set; }
 
+        public string ECCPI_AF_MAPPED_FLG { get; set; }
+
+        public string ECCPI_EXST_TAG_NAME { get; set; }
+
+        public string ECCPI_TAG_REN_RQST_FLG { get; set; }
+
+        public string ECCPI_TAG_HAS_REN_FLG { get; set; }
 
         public PITagDataModel()
         {
@@ -78,6 +85,5 @@ namespace ECC_DataLayer.DataModels
             attrs.Add("engunits", 999);
             return attrs;
         }
-
     }
 }
