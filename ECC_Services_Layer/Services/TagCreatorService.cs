@@ -1,6 +1,5 @@
 ﻿using ECC_AFServices_Layer.Helpers;
 using ECC_AFServices_Layer.Services.Abstract;
-using ECC_DataLayer.DataModels;
 using ECC_DataLayer.Helpers;
 using ECC_DataLayer.Stores;
 using ECC_PIAFServices_Layer.Helpers;
@@ -11,7 +10,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using MoreLinq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ECC_AFServices_Layer.Services
