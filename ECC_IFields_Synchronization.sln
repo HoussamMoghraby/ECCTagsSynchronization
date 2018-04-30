@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECC_DataLayer", "ECC_DataLa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication", "ConsoleApplication\ConsoleApplication.csproj", "{6059A14C-78EA-49A7-8BFB-FA81BA2BD2D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECCPITagCreator_Service", "ECCPITagCreatorService\ECCPITagCreator_Service.csproj", "{6FE60FE6-AA55-457A-99CC-E1C6EE6B9080}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECCPITagCreator_Service", "ECCPITagCreator_Service\ECCPITagCreator_Service.csproj", "{6FE60FE6-AA55-457A-99CC-E1C6EE6B9080}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECCPIAreaSearcher_Service", "ECCPIAreaSearcher_Service\ECCPIAreaSearcher_Service.csproj", "{EEEB2E65-12AA-42BF-8135-C33F120F733D}"
 EndProject

@@ -22,13 +22,9 @@ namespace ECC_AFServices_Layer.Services
         private PIServer piServer;
         private List<PointSourceDataModel> _areasPointSources = new List<PointSourceDataModel>();
 
-        public TagCreatorService()
-        {
-            piServer = PIAFUtils.GetPIServer(_eccPIServerName);
-        }
-
         public async Task<bool> StartAsync()
         {
+            piServer = PIAFUtils.GetPIServer(_eccPIServerName);
             try
             {
                 var tags = await _tagCreatorStore.GetTagsForCreation();

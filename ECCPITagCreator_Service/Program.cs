@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ECCPITagCreatorService;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceProcess;
@@ -17,6 +18,7 @@ namespace ECCPITagCreatorService
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
+                //new ECCPITagCreatorService(),
                 new ECCPITagCreatorService()
             };
             ServiceBase.Run(ServicesToRun);

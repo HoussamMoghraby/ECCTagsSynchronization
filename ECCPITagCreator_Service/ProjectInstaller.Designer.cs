@@ -34,19 +34,20 @@
             // serviceProcessInstaller1
             // 
             this.serviceProcessInstaller1.Account = System.ServiceProcess.ServiceAccount.LocalSystem;
+            this.serviceProcessInstaller1.Installers.AddRange(new System.Configuration.Install.Installer[] {
+            this.serviceInstaller1});
             this.serviceProcessInstaller1.Password = null;
             this.serviceProcessInstaller1.Username = null;
             // 
             // serviceInstaller1
             // 
-            this.serviceInstaller1.DisplayName = "ECCPITagCreator2";
-            this.serviceInstaller1.ServiceName = "ECCPITagCreator2";
+            this.serviceInstaller1.DisplayName = "ECCPITagCreator";
+            this.serviceInstaller1.ServiceName = "ECCPITagCreator";
             // 
             // ProjectInstaller
             // 
             this.Installers.AddRange(new System.Configuration.Install.Installer[] {
-            this.serviceProcessInstaller1,
-            this.serviceInstaller1});
+            this.serviceProcessInstaller1});
 
         }
 

@@ -32,12 +32,12 @@ namespace ECCPITagCreatorService
 
         protected override void OnStart(string[] args)
         {
-            //Debugger.Launch();
+            Debugger.Launch();
             // TODO: Add code here to start your service.   
             Logger.Info("ECCPITagCreator", "Job Started");
             var execute = _service.StartAsync().Result;
             Logger.Info("ECCPITagCreator", "Job Ended");
-            InitializeSchedule();
+            //InitializeSchedule();
         }
 
         protected override void OnStop()
