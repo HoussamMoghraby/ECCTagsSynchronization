@@ -1,6 +1,7 @@
 ﻿using OSIsoft.AF;
 using OSIsoft.AF.PI;
 using System;
+using System.Linq;
 
 namespace ECC_PIAFServices_Layer.Helpers
 {
@@ -34,7 +35,7 @@ namespace ECC_PIAFServices_Layer.Helpers
             PISystem piSystem = piSystems[name];
             try
             {
-                piSystem.ConnectionInfo.TimeOut = new TimeSpan(1, 0, 0);
+                piSystem.ConnectionInfo.TimeOut = new TimeSpan(0, 10, 0);
             }
             catch (Exception)
             {
@@ -43,5 +44,17 @@ namespace ECC_PIAFServices_Layer.Helpers
             return piSystem;
         }
 
+        internal static AFPlugIn GetDataReferencePlugin(PISystem piSystem, string dataReferenceName = DataReference.PIPoint)
+        {
+            var dataReferences = piSystem.DataReferencePlugIns.Where(dr => dr.Name.ToLower() == dataReferenceName.ToLower());
+            return dataReferences.FirstOrDefault();
+        }
+
+        public static class DataReference
+        {
+            public const string PIPoint = "PI Point";
+            public const string PIPointArray = "PI Point Array";
+            public const string Formula = "Formula";
+        }
     }
 }

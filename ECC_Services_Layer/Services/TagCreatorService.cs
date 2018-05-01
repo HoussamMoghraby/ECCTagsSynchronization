@@ -149,7 +149,6 @@ namespace ECC_AFServices_Layer.Services
             int _foundTagsNum = 0;
             int _start = 0;
             int _limit = 500;
-            //tags = tags.Take(10);
             while (_start <= tags.Count())
             {
                 var _iTags = tags.Skip(_start).Take(_limit);

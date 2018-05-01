@@ -1,8 +1,10 @@
 ﻿using ECC_AFServices_Layer.Helpers;
 using ECC_AFServices_Layer.Services.Abstract;
+using ECC_DataLayer.DataModels;
 using ECC_DataLayer.Helpers;
 using ECC_DataLayer.Stores;
 using ECC_PIAFServices_Layer.Helpers;
+using MoreLinq;
 using OSIsoft.AF;
 using OSIsoft.AF.Asset;
 using System;
@@ -17,7 +19,24 @@ namespace ECC_AFServices_Layer.Services
     {
         private TagAssetMapperStore _tagMapperStore = new TagAssetMapperStore();
         private string _eccAFServerName = ConfigurationSettings.AppSettings.Get("ECC_AF_ServerName");
+        private string _eccPIServerName = ConfigurationSettings.AppSettings.Get("ECC_PI_ServerName");
 
+
+        public bool Test()
+        {
+            PISystem piSystem = PIAFUtils.GetPISystem(_eccAFServerName);
+            var _dataReference_PointArray = PIAFUtils.GetDataReferencePlugin(piSystem, PIAFUtils.DataReference.PIPointArray);
+            IList<AFAttribute> attributes = new List<AFAttribute>();
+            IList<string> configStrings = new List<string>();
+            AFPlugIn _dataReferencePlugin = AFDataReference.GetPIPointDataReference(piSystem);
+            AFAttribute attr = AFAttribute.FindAttribute(@"\\ECCPIAFTEST\ECC PI AF\Saudi Aramco Fields\Southern Area\KHRS\KHRS-740\WH|Upper_Annuli_Pressure", null);
+            attr.DataReferencePlugIn = _dataReference_PointArray;
+            attributes.Add(attr);
+            configStrings.Add(@"\\fa-ep15w6\KHRS-0740-PI-0001.PV|KHRS-0740-PI-0002.PV");
+            AFAttribute.SetConfigStrings(attributes, configStrings);
+            piSystem.CheckIn(AFCheckedOutMode.ObjectsCheckedOutToMe);
+            return true;
+        }
         /// <summary>
         /// Get the Tags created in ECCPITagCreatorModule joined with the associated AF element  
         ///  if the attribute exists => update the data reference with new tag created
@@ -30,30 +49,52 @@ namespace ECC_AFServices_Layer.Services
             PISystem piSystem = PIAFUtils.GetPISystem(_eccAFServerName);
             try
             {
-                var tags = await _tagMapperStore.GetUnmappedTags();
+                
+                Dictionary<string, AFPlugIn> _dataReferences = new Dictionary<string, AFPlugIn>()
+                    {
+                        { PIAFUtils.DataReference.PIPoint, PIAFUtils.GetDataReferencePlugin(piSystem) },
+                        { PIAFUtils.DataReference.PIPointArray, PIAFUtils.GetDataReferencePlugin(piSystem,PIAFUtils.DataReference.PIPointArray) }
+                    };
+                var tags = (await _tagMapperStore.GetUnmappedTags());
                 if (tags != null && tags.Count() > 0)
                 {
                     //tags = tags.DistinctBy(t => t.ECCPI_TAG_NAME).DistinctBy(t => t.W_AF_ATTRB_FULL_PATH);
-                    var queryAttributes = AFAttribute.FindAttributesByPath(tags.MapToListOfAttributePath(), null);
+                    Logger.Info("ECCPITagAssetMapper", "Finding Attributes");
+                    var queryAttributes = AFAttribute.FindAttributesByPath(tags.DistinctBy(t => t.W_AF_ATTRB_FULL_PATH).MapToListOfAttributePath(), null);
+                    Logger.Info("ECCPITagAssetMapper", string.Format("Found {0} Attributes", queryAttributes.Count()));
+                    //queryAttributes.Results.Add("aa", AFAttribute.FindAttribute(tags.DistinctBy(t => t.W_AF_ATTRB_FULL_PATH).MapToListOfAttributePath().FirstOrDefault(), null));
                     IList<AFAttribute> attributes = new List<AFAttribute>();
                     IList<string> configStrings = new List<string>();
-                    AFPlugIn _dataReferencePlugin = AFDataReference.GetPIPointDataReference(piSystem);
+                    //AFPlugIn _dataReferencePlugin = AFDataReference.GetPIPointDataReference(piSystem);
                     foreach (var res in queryAttributes.Results)
                     {
-                        string _configString = tags.Where(t => t.W_AF_ATTRB_FULL_PATH == res.Value.GetPath()).FirstOrDefault().ECCPI_TAG_NAME;
+                        IEnumerable<PITagDataModel> _attributeTags = tags.Where(t => t.W_AF_ATTRB_FULL_PATH == res.Value.GetPath());
+                        bool _isDataReferenceArray = (_attributeTags.Count() > 1);
+                        string _configString = string.Empty;
+                        _attributeTags.ForEach(at =>
+                        {
+                            if (string.IsNullOrEmpty(_configString))
+                                _configString = at.ECCPI_EXST_TAG_NAME;
+                            else
+                                _configString += string.Format("|{0}", at.ECCPI_EXST_TAG_NAME);
+                        });
+
                         if (!string.IsNullOrEmpty(_configString))
                         {
                             AFAttribute attr = res.Value;
-                            attr.DataReferencePlugIn = _dataReferencePlugin;
+                            attr.DataReferencePlugIn = (_isDataReferenceArray) ? _dataReferences[PIAFUtils.DataReference.PIPointArray] : _dataReferences[PIAFUtils.DataReference.PIPoint];
                             attributes.Add(attr);
-                            configStrings.Add(string.Format(@"\\{0}\{1}", _eccAFServerName, _configString));
+                            configStrings.Add(string.Format(@"\\{0}\{1}", _eccPIServerName, _configString));
                         }
                     }
                     try
                     {
+                        //TODO: uncomment the below
                         //Update the found attributes each with its PITag ConfigString
+                        Logger.Info("ECCPITagAssetMapper", "Updating AF");
                         AFAttribute.SetConfigStrings(attributes, configStrings);
                         piSystem.CheckIn(AFCheckedOutMode.ObjectsCheckedOutToMe);
+                        Logger.Info("ECCPITagAssetMapper", "AF Checked in");
                         //Update the Tag flags and status in Oracle database
                         var successTags = tags.Where(t => attributes.Select(attr => attr.GetPath()).Contains(t.W_AF_ATTRB_FULL_PATH));
                         foreach (var successTag in successTags)

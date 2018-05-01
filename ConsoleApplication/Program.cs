@@ -33,6 +33,9 @@ namespace ConsoleApplication
                     case "tag_creator":
                         TestTagCreator();
                         break;
+                    case "asset_mapper":
+                        TestAssetMapper();
+                        break;
                     case "enc":
                         Console.WriteLine("Enter password to be encypted");
                         var passEntry = "ecc123321A";
@@ -59,6 +62,12 @@ namespace ConsoleApplication
             //var cc3 = QueryReader.ReadQuery("UpdatePIServerLastPullDate");
             //Logger.Info("ConsoleECC","Test the logs 1");
             //Console.ReadLine();
+        }
+
+        private static void TestAssetMapper()
+        {
+            var _service = new TagAssetMapperService();
+            var exec = _service.StartAsync().Result;
         }
 
         private static void TestTagCreator()

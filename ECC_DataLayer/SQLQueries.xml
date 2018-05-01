@@ -19,7 +19,7 @@
   <query name="UpdatePointSource">update ECCPI_POINT_SOURCES set NUM_OF_TAGS = (NUM_OF_TAGS + {0}) where EPS_NUM = {1}</query>
 
   <!--ECCPITagAssetMapper-->
-  <query name="GetUnmappedTags">SELECT t.eawft_num,t.ECCPI_TAG_NAME, m.w_af_attrb_full_path, m.w_af_attrb_scrty, m.w_gnr_name, m.w_eqp_attrib_name FROM eccpi_af_well_eqp_tag_masks m, eccpi_af_well_found_tags t WHERE t.eawetm_num = m.eawetm_num AND t.pi_tag_sel_flg = 'Y' and t.eccpi_tag_cre_flg = 'Y' and t.eccpi_af_mapped_flg = 'N'</query>
+  <query name="GetUnmappedTags">SELECT t.eawft_num,t.eccpi_exst_tag_name, m.w_af_attrb_full_path, m.w_af_attrb_scrty, m.w_gnr_name, m.w_eqp_attrib_name FROM eccpi_af_well_eqp_tag_masks m, eccpi_af_well_found_tags t WHERE t.eawetm_num = m.eawetm_num AND t.pi_tag_sel_flg = 'Y' and t.eccpi_tag_cre_flg = 'Y' and t.eccpi_af_mapped_flg = 'N'</query>
 
   <query name="UpdateMappedTag">UPDATE eccpi_af_well_found_tags set eccpi_af_mapped_flg = '{0}', ECCPI_AF_MAP_REM='{1}' WHERE eawft_num = {2}</query>
 
