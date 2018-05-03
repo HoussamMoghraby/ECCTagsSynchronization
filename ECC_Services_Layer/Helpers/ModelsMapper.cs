@@ -19,7 +19,7 @@ namespace ECC_AFServices_Layer.Helpers
             //if (adAttrs.ContainsKey("engunits") && adAttrs["engunits"] != null)
             //    _piTag.ENGUNITS = adAttrs["engunits"].ToString();
             _piTag.ENGUNITS = adAttrs.AssignAttributeValue("engunits");
-            _piTag.ECCPI_DIGITAL_SET = adAttrs.AssignAttributeValue("digitalset");
+            _piTag.AREA_DIGITAL_SET = adAttrs.AssignAttributeValue("digitalset");
             _piTag.POINTTYPE = adAttrs.AssignAttributeValue("pointtype");
             _piTag.LOCATION2 = adAttrs.AssignAttributeValue("location2", isNumeric: true);
             _piTag.LOCATION3 = adAttrs.AssignAttributeValue("location3", isNumeric: true);

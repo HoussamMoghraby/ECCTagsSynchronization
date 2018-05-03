@@ -24,9 +24,11 @@ namespace ECC_DataLayer.Stores
             return result;
         }
 
-        public async Task<int> UpdateTagMatchingStatus(long id, char eccMatchingFlag = 'Y')
+        public async Task<int> UpdateTagMatchingStatus(long id, char eccMatchingFlag = 'Y', string remark = null)
         {
-            string _query = string.Format(QueryReader.ReadQuery("UpdateTagMatchingStatus"), eccMatchingFlag, id);
+            string _query = string.Format(QueryReader.ReadQuery("UpdateTagMatchingStatus"), eccMatchingFlag,
+                (!string.IsNullOrEmpty(remark)) ? string.Format(" ,t.pi_tag_flow_rem = '{0}'", remark) : null,
+                id);
             var result = await _tagCheckerRepo.ExecuteScalarAsync(_query, new { });
             return result;
         }

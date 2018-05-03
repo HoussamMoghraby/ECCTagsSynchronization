@@ -21,22 +21,6 @@ namespace ECC_AFServices_Layer.Services
         private string _eccAFServerName = ConfigurationSettings.AppSettings.Get("ECC_AF_ServerName");
         private string _eccPIServerName = ConfigurationSettings.AppSettings.Get("ECC_PI_ServerName");
 
-
-        public bool Test()
-        {
-            PISystem piSystem = PIAFUtils.GetPISystem(_eccAFServerName);
-            var _dataReference_PointArray = PIAFUtils.GetDataReferencePlugin(piSystem, PIAFUtils.DataReference.PIPointArray);
-            IList<AFAttribute> attributes = new List<AFAttribute>();
-            IList<string> configStrings = new List<string>();
-            AFPlugIn _dataReferencePlugin = AFDataReference.GetPIPointDataReference(piSystem);
-            AFAttribute attr = AFAttribute.FindAttribute(@"\\ECCPIAFTEST\ECC PI AF\Saudi Aramco Fields\Southern Area\KHRS\KHRS-740\WH|Upper_Annuli_Pressure", null);
-            attr.DataReferencePlugIn = _dataReference_PointArray;
-            attributes.Add(attr);
-            configStrings.Add(@"\\fa-ep15w6\KHRS-0740-PI-0001.PV|KHRS-0740-PI-0002.PV");
-            AFAttribute.SetConfigStrings(attributes, configStrings);
-            piSystem.CheckIn(AFCheckedOutMode.ObjectsCheckedOutToMe);
-            return true;
-        }
         /// <summary>
         /// Get the Tags created in ECCPITagCreatorModule joined with the associated AF element  
         ///  if the attribute exists => update the data reference with new tag created
@@ -49,7 +33,7 @@ namespace ECC_AFServices_Layer.Services
             PISystem piSystem = PIAFUtils.GetPISystem(_eccAFServerName);
             try
             {
-                
+
                 Dictionary<string, AFPlugIn> _dataReferences = new Dictionary<string, AFPlugIn>()
                     {
                         { PIAFUtils.DataReference.PIPoint, PIAFUtils.GetDataReferencePlugin(piSystem) },
@@ -82,9 +66,20 @@ namespace ECC_AFServices_Layer.Services
                         if (!string.IsNullOrEmpty(_configString))
                         {
                             AFAttribute attr = res.Value;
-                            attr.DataReferencePlugIn = (_isDataReferenceArray) ? _dataReferences[PIAFUtils.DataReference.PIPointArray] : _dataReferences[PIAFUtils.DataReference.PIPoint];
-                            attributes.Add(attr);
-                            configStrings.Add(string.Format(@"\\{0}\{1}", _eccPIServerName, _configString));
+                            //Check if attribute has already a tag assigned
+                            bool _overrideConfigString = (!string.IsNullOrEmpty(_attributeTags.FirstOrDefault().ECCPI_AF_MAP_OVR_FLG) && _attributeTags.FirstOrDefault().ECCPI_AF_MAP_OVR_FLG == "Y");
+                            bool _currentConfigStringIsdefault = attr.ConfigString.Contains((attr.Element.Name + "." + attr.Name));
+                            if (_currentConfigStringIsdefault || _overrideConfigString == true)
+                            {
+                                attr.DataReferencePlugIn = (_isDataReferenceArray) ? _dataReferences[PIAFUtils.DataReference.PIPointArray] : _dataReferences[PIAFUtils.DataReference.PIPoint];
+                                attributes.Add(attr);
+                                _attributeTags.ForEach(at => at.IsValidForAssetMapping = true);
+                                configStrings.Add(string.Format(@"\\{0}\{1}", _eccPIServerName, _configString));
+                            }
+
+                            //Log the existing tags if it's not default
+                            if (!_currentConfigStringIsdefault)
+                                _attributeTags.ForEach(at => at.ECCPI_AF_MAP_REM = attr.ConfigString);
                         }
                     }
                     try
@@ -96,12 +91,22 @@ namespace ECC_AFServices_Layer.Services
                         piSystem.CheckIn(AFCheckedOutMode.ObjectsCheckedOutToMe);
                         Logger.Info("ECCPITagAssetMapper", "AF Checked in");
                         //Update the Tag flags and status in Oracle database
-                        var successTags = tags.Where(t => attributes.Select(attr => attr.GetPath()).Contains(t.W_AF_ATTRB_FULL_PATH));
+                        var successTags = tags.Where(t => attributes.Select(attr => attr.GetPath()).Contains(t.W_AF_ATTRB_FULL_PATH) && t.IsValidForAssetMapping == true);
                         foreach (var successTag in successTags)
                         {
-                            var updateStatus = await _tagMapperStore.UpdateMappedTag(successTag.EAWFT_NUM, string.Format("Tag Mapped Successfully in {0}", _eccAFServerName), 'Y');
+                            var updateStatus = await _tagMapperStore.UpdateMappedTag(successTag.EAWFT_NUM, string.Format("Tag Mapped Successfully in {0}{1}", _eccAFServerName, (successTag.IsValidForAssetMapping == true) ? string.Format(" & Replaced {0}", successTag.ECCPI_AF_MAP_REM) : null), 'Y');
                         }
                         Logger.Info("ECCPITagAssetMapper", string.Format("{0} Mapped Tags", (successTags != null) ? successTags.Count() : 0));
+
+                        //Update skipped tags
+                        var skippedTags = tags.Where(t => attributes.Select(attr => attr.GetPath()).Contains(t.W_AF_ATTRB_FULL_PATH) && t.IsValidForAssetMapping == false);
+                        foreach (var skippedTag in skippedTags)
+                        {
+                            var updateStatus = await _tagMapperStore.UpdateMappedTag(skippedTag.EAWFT_NUM, skippedTag.ECCPI_AF_MAP_REM, 'N');
+                        }
+                        Logger.Info("ECCPITagAssetMapper", string.Format("{0} Skipped Tags", (skippedTags != null) ? skippedTags.Count() : 0));
+
+
                         await _tagMapperStore.Commit();
                     }
                     catch (Exception e)
@@ -127,8 +132,8 @@ namespace ECC_AFServices_Layer.Services
             catch (Exception e)
             {
                 Logger.Error("ECCPITagAssetMapper", e);
-                piSystem.CheckIn(AFCheckedOutMode.ObjectsCheckedOutToMe);
-                piSystem.Disconnect();
+                //piSystem.CheckIn(AFCheckedOutMode.ObjectsCheckedOutToMe);
+                //piSystem.Disconnect();
                 return false;
             }
             piSystem.CheckIn(AFCheckedOutMode.ObjectsCheckedOutToMe);

@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -36,10 +37,16 @@ namespace ConsoleApplication
                     case "asset_mapper":
                         TestAssetMapper();
                         break;
+                    case "value_checker":
+                        TestValueChecker();
+                        break;
                     case "enc":
                         Console.WriteLine("Enter password to be encypted");
                         var passEntry = "ecc123321A";
                         Console.WriteLine(string.Format("The ecryption text is: {0}", encryptString(passEntry)));
+                        break;
+                    case "test_numbers":
+                        TestNumbersEquality();
                         break;
                     case "testoracle":
                         Console.WriteLine("Testing Orcacle Connection");
@@ -62,6 +69,33 @@ namespace ConsoleApplication
             //var cc3 = QueryReader.ReadQuery("UpdatePIServerLastPullDate");
             //Logger.Info("ConsoleECC","Test the logs 1");
             //Console.ReadLine();
+        }
+
+        private static void TestNumbersEquality()
+        {
+            dynamic ECCValue, AreaValue;
+            ECCValue = "No Data";
+            AreaValue = "No Data";
+            string _matchingRemark = null;
+            bool _isValuesMatching = false;
+            var isECCNumber = Regex.IsMatch(ECCValue.ToString(), @"\d");
+            var isAreaNumber = Regex.IsMatch(AreaValue.ToString(), @"\d");
+            if (isECCNumber && isAreaNumber)
+                _isValuesMatching = Math.Round(ECCValue, 2) == Math.Round(AreaValue, 2);
+            else if (!isECCNumber && !isAreaNumber)
+            {
+                _isValuesMatching = ECCValue.ToString() == AreaValue.ToString();
+                if (_isValuesMatching)
+                    _matchingRemark = string.Format("Matching with no value: {0}", ECCValue.ToString());
+            }
+            char _matchingStatus = _isValuesMatching ? 'Y' : 'N';
+            Console.WriteLine("Value Matching? = " + _isValuesMatching);
+        }
+
+        private static void TestValueChecker()
+        {
+            var _service = new TagValueCheckerService();
+            var exec = _service.StartAsync().Result;
         }
 
         private static void TestAssetMapper()

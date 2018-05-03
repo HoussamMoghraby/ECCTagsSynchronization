@@ -43,7 +43,7 @@ namespace ECC_DataLayer.Stores
                     ResolveQueryParam(tag.AREA_POINT_ID),
 
                     ResolveQueryParam(tag.ENGUNITS),
-                    ResolveQueryParam(tag.ECCPI_DIGITAL_SET),
+                    ResolveQueryParam(tag.AREA_DIGITAL_SET),
                     ResolveQueryParam(tag.POINTTYPE),
                     ResolveQueryParam(tag.LOCATION2),
                     ResolveQueryParam(tag.LOCATION3),

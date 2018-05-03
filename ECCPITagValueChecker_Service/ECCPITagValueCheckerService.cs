@@ -34,7 +34,7 @@ namespace ECCPITagValueChecker_Service
             //Debugger.Launch();
             // TODO: Add code here to start your service.   
             Logger.Info("ECCPITagValueChecker", "Job Started");
-            _service.StartAsync();
+            var execute = _service.StartAsync().Result;
             Logger.Info("ECCPITagValueChecker", "Job Ended");
             InitializeSchedule();
         }

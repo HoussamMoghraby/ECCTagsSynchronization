@@ -21,6 +21,7 @@ namespace ECC_DataLayer.DataModels
         public int? ECCPI_POINT_ID { get; set; }
 
         //Advanded Attributes
+        public string AREA_DIGITAL_SET { get; set; }
         public string ECCPI_DIGITAL_SET { get; set; }
         public string ENGUNITS { get; set; }
         public string POINTTYPE { get; set; }
@@ -62,6 +63,12 @@ namespace ECC_DataLayer.DataModels
         public string ECCPI_TAG_REN_RQST_FLG { get; set; }
 
         public string ECCPI_TAG_HAS_REN_FLG { get; set; }
+
+        public string ECCPI_AF_MAP_OVR_FLG { get; set; } = "N";
+
+        public string ECCPI_AF_MAP_REM { get; set; }
+
+        public bool IsValidForAssetMapping { get; set; }
 
         public PITagDataModel()
         {

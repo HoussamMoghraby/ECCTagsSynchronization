@@ -10,5 +10,7 @@ namespace ECC_DataLayer.DataModels
     {
         public dynamic AreaServerValue { get; set; }
         public dynamic ECCServerValue { get; set; }
+        public bool IsValuesMatching { get; set; }
+        public string MatchingValuesRemark { get; set; }
     }
 }
