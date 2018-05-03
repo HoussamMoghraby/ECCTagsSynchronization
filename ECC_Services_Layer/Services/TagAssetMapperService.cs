@@ -66,9 +66,15 @@ namespace ECC_AFServices_Layer.Services
                         if (!string.IsNullOrEmpty(_configString))
                         {
                             AFAttribute attr = res.Value;
+                            string _attrConfigString = attr.ConfigString;
+                            string[] _splittedConfigString = _attrConfigString.Split(new string[] { @"\" }, StringSplitOptions.None);
                             //Check if attribute has already a tag assigned
                             bool _overrideConfigString = (!string.IsNullOrEmpty(_attributeTags.FirstOrDefault().ECCPI_AF_MAP_OVR_FLG) && _attributeTags.FirstOrDefault().ECCPI_AF_MAP_OVR_FLG == "Y");
-                            bool _currentConfigStringIsdefault = attr.ConfigString.Contains((attr.Element.Name + "." + attr.Name));
+                            bool _currentConfigStringIsdefault = (
+                                _attrConfigString.Contains((attr.Element.Name + "." + attr.Name)) ||
+                                _attrConfigString == @"\\%Server%\%Element%.%Attribute%" ||
+                                _splittedConfigString[_splittedConfigString.GetLength(0) - 1].Contains("%Element%.%Attribute%")
+                                );
                             if (_currentConfigStringIsdefault || _overrideConfigString == true)
                             {
                                 attr.DataReferencePlugIn = (_isDataReferenceArray) ? _dataReferences[PIAFUtils.DataReference.PIPointArray] : _dataReferences[PIAFUtils.DataReference.PIPoint];
@@ -78,8 +84,13 @@ namespace ECC_AFServices_Layer.Services
                             }
 
                             //Log the existing tags if it's not default
-                            if (!_currentConfigStringIsdefault)
-                                _attributeTags.ForEach(at => at.ECCPI_AF_MAP_REM = attr.ConfigString);
+                            //if (!_currentConfigStringIsdefault)
+                            else
+                                _attributeTags.ForEach(at =>
+                                {
+                                    at.ECCPI_AF_MAP_REM = attr.ConfigString;
+                                    at.IsValidForAssetMapping = false;
+                                });
                         }
                     }
                     try
@@ -91,7 +102,8 @@ namespace ECC_AFServices_Layer.Services
                         piSystem.CheckIn(AFCheckedOutMode.ObjectsCheckedOutToMe);
                         Logger.Info("ECCPITagAssetMapper", "AF Checked in");
                         //Update the Tag flags and status in Oracle database
-                        var successTags = tags.Where(t => attributes.Select(attr => attr.GetPath()).Contains(t.W_AF_ATTRB_FULL_PATH) && t.IsValidForAssetMapping == true);
+                        //var successTags = tags.Where(t => attributes.Select(attr => attr.GetPath()).Contains(t.W_AF_ATTRB_FULL_PATH) && t.IsValidForAssetMapping == true);
+                        var successTags = tags.Where(t => t.IsValidForAssetMapping.HasValue && t.IsValidForAssetMapping.Value == true);
                         foreach (var successTag in successTags)
                         {
                             var updateStatus = await _tagMapperStore.UpdateMappedTag(successTag.EAWFT_NUM, string.Format("Tag Mapped Successfully in {0}{1}", _eccAFServerName, (successTag.IsValidForAssetMapping == true) ? string.Format(" & Replaced {0}", successTag.ECCPI_AF_MAP_REM) : null), 'Y');
@@ -99,7 +111,8 @@ namespace ECC_AFServices_Layer.Services
                         Logger.Info("ECCPITagAssetMapper", string.Format("{0} Mapped Tags", (successTags != null) ? successTags.Count() : 0));
 
                         //Update skipped tags
-                        var skippedTags = tags.Where(t => attributes.Select(attr => attr.GetPath()).Contains(t.W_AF_ATTRB_FULL_PATH) && t.IsValidForAssetMapping == false);
+                        //var skippedTags = tags.Where(t => attributes.Select(attr => attr.GetPath()).Contains(t.W_AF_ATTRB_FULL_PATH) && t.IsValidForAssetMapping == false);
+                        var skippedTags = tags.Where(t => t.IsValidForAssetMapping.HasValue && t.IsValidForAssetMapping.Value == false);
                         foreach (var skippedTag in skippedTags)
                         {
                             var updateStatus = await _tagMapperStore.UpdateMappedTag(skippedTag.EAWFT_NUM, skippedTag.ECCPI_AF_MAP_REM, 'N');

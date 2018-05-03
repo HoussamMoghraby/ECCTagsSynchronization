@@ -68,7 +68,7 @@ namespace ECC_DataLayer.DataModels
 
         public string ECCPI_AF_MAP_REM { get; set; }
 
-        public bool IsValidForAssetMapping { get; set; }
+        public bool? IsValidForAssetMapping { get; set; } = null;
 
         public PITagDataModel()
         {
