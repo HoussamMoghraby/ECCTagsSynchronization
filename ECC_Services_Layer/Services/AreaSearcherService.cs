@@ -17,21 +17,29 @@ namespace ECC_PIAFServices_Layer.Services
         private AreaSearcherStore _areaStore = new AreaSearcherStore();
         private string _eccPIServerName = ConfigurationSettings.AppSettings.Get("ECC_PI_ServerName");
 
+        /// <summary>
+        /// Search for newly created PI Points on each field server and insert the tags in central orcale database.
+        /// </summary>
+        /// <returns>boolean</returns>
         public async Task<bool> StartAsync()
         {
             try
             {
-                //Get the tag masks from ECCPI_AF_WELL_EQP_TAG_MASKS table that were not processed
+                // Get the areas PI Servers
                 IEnumerable<AreaPIServer> areas = await _areaStore.GetAreasPIServers();
-                //Get all the tags created on each server area the area last pull date
+                // Itterate each area
                 foreach (var area in areas)
                 {
                     try
                     {
-                        PIServer piServer = PIAFUtils.GetPIServer(area.PI_SERVER_NAME); //TODO: return the area.PI_SERVER_NAME param
+                        PIServer piServer = PIAFUtils.GetPIServer(area.PI_SERVER_NAME);
+                        // Construct the query syntaxt to query by creationDate and changeDate based on area's last pull date
                         string _query = string.Format("CreationDate:>\"{0}\" OR ChangeDate:>\"{0}\"", (area.PI_LAST_TAG_PULL_DT.HasValue ? area.PI_LAST_TAG_PULL_DT.Value.ToString("yyyy-MM-dd HH:mm:ss") : DateTime.Today.ToString("yyyy-MM-dd 00:00:00")));
 
+                        //Execute the search query
                         IEnumerable<PIPoint> _piPoints = QueryPIPoints(piServer, _query);
+
+                        // Insert the results and flag the required flags in oracle database
                         await InsertPIPointsAsync(_piPoints, sourcePIServerCode: area.PI_SERVER_CD);
                     }
                     catch (Exception e)
@@ -39,7 +47,6 @@ namespace ECC_PIAFServices_Layer.Services
                         Logger.Error(ServiceName, e);
                     }
                 }
-
                 return true;
             }
             catch (Exception e)
@@ -49,7 +56,12 @@ namespace ECC_PIAFServices_Layer.Services
             }
         }
 
-
+        /// <summary>
+        /// Execute the query to get list of PI Points on a certain PI server
+        /// </summary>
+        /// <param name="piServer">Target PI Server</param>
+        /// <param name="querySyntax">Query syntax to be executed</param>
+        /// <returns>IEnumerable<PIPoint></returns>
         private IEnumerable<PIPoint> QueryPIPoints(PIServer piServer, string querySyntax)
         {
             IEnumerable<PIPoint> queryResult = PIPoint.FindPIPoints(piServer, query: querySyntax, searchNameAndDescriptor: false, attributeNames: new List<string>() { PICommonPointAttributes.Descriptor });
@@ -57,13 +69,17 @@ namespace ECC_PIAFServices_Layer.Services
         }
 
 
+        /// <summary>
+        /// Insert the resulted queries into oracle database and finally update last pull date of pi server
+        /// </summary>
+        /// <param name="points">PI Points to be inserted</param>
+        /// <param name="sourcePIServerCode">Area source server code</param>
         private async Task InsertPIPointsAsync(IEnumerable<PIPoint> points, string sourcePIServerCode)
         {
             int _tagsInserted = 0;
             foreach (var point in points)
             {
                 //Store the results found in the ECCPI_AF_WELL_FOUND_TAGS table
-                //TODO: change the tag descriptor
                 if (!string.IsNullOrEmpty(point.Name))
                 {
                     var _tag = point.MapToPITagDataModel(sourcePIServerCode);
