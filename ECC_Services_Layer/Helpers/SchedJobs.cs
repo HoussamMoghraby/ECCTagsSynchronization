@@ -1,4 +1,5 @@
 ﻿using ECC_AFServices_Layer.Services.Abstract;
+using ECC_DataLayer.Helpers;
 using Quartz;
 using Quartz.Impl;
 using System.Configuration;
@@ -20,13 +21,14 @@ namespace ECC_AFServices_Layer.Helpers
         {
             async Task IJob.Execute(IJobExecutionContext context)
             {
-                //run the service
+                // run the service
                 await _serviceInstance.StartAsync();
             }
         }
 
         public async void ScheduleJob()
         {
+            Logger.Info("","Next execution is scheduled");
             Quartz.Logging.LogProvider.IsDisabled = true;
             IScheduler scheduler = await StdSchedulerFactory.GetDefaultScheduler();
             await scheduler.Start();

@@ -154,7 +154,7 @@ namespace ECC_AFServices_Layer.Helpers
                 attrs.Add(PICommonPointAttributes.Location4, pointSourceDefinition.LOCATION4);
             }
 
-            //Set Defaults
+            //Override Defaults
             attrs.Add(PICommonPointAttributes.Shutdown, 0);
             attrs.Add(PICommonPointAttributes.Scan, 1);
             attrs.Add(PICommonPointAttributes.Archiving, 1);
