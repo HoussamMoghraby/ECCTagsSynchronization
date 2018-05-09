@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace ECC_AFServices_Layer.Helpers
 {
-    public static class ModelsMapper //TODO: remove this and use automapper instead
+    public static class ModelsMapper 
     {
 
         public static PITagDataModel MapToPITagDataModel(this PIPoint piPoint, string sourcePIServerCode)

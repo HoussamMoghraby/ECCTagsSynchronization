@@ -74,15 +74,7 @@ namespace ECC_AFServices_Layer.Helpers
             }
             return _cronSchedule;
 
-        }
-
-
-
-
-        //public static void ScheduleJobs(string serviceName)
-        //{
-        //    //TODO: Schedule job for taget service  
-        //}
+        }       
 
     }
 }

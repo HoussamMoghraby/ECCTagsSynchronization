@@ -56,7 +56,6 @@ namespace ECC_DataLayer.Stores
 
         public async Task<PointSourceDataModel> GetServerPointSource(string serverCode)
         {
-            //TODO: to be implemented -- write the query
             string _query = string.Format(QueryReader.ReadQuery("GetServerPointSource"), serverCode);
             var result = await _pointSourceRepo.GetAsync(_query, new { });
             return result.FirstOrDefault();

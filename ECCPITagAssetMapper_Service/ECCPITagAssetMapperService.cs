@@ -31,8 +31,6 @@ namespace ECCPITagAssetMapper_Service
 
         protected override void OnStart(string[] args)
         {
-            //Debugger.Launch();
-            // TODO: Add code here to start your service.           
             Logger.Info(_service.ServiceName, "Job Started");
             var execute = _service.StartAsync().Result;
             Logger.Info(_service.ServiceName, "Job Ended");
