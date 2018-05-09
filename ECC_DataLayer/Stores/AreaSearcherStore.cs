@@ -21,15 +21,7 @@ namespace ECC_DataLayer.Stores
 
         public async Task<IEnumerable<AreaPIServer>> GetAreasPIServers()
         {
-            try
-            {
-                return await _areaRepo.GetAsync(QueryReader.ReadQuery("GetAreasPIServers"), new { });
-            }
-            catch (Exception e)
-            {
-                Logger.Error("Area Searcher Service", e);
-                throw e;
-            }
+            return await _areaRepo.GetAsync(QueryReader.ReadQuery("GetAreasPIServers"), new { });
         }
 
         public async Task<int> InsertAreaTags(PITagDataModel tag)
@@ -71,7 +63,7 @@ namespace ECC_DataLayer.Stores
             }
             catch (Exception e)
             {
-                Logger.Error("Area Searcher Service", e);
+                Logger.Error("AreaSearcherService", e);
                 await Commit();
                 return 0;
             }
@@ -89,7 +81,7 @@ namespace ECC_DataLayer.Stores
             }
             catch (Exception e)
             {
-                Logger.Error("Area Searcher Service", e);
+                Logger.Error("AreaSearcherService", e);
                 return 0;
             }
         }
