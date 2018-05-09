@@ -102,5 +102,8 @@
   <ItemGroup>
     <None Include="Resources\security-crypto-cyber-encryption-network-protection-smart-technology-icon-33146017ced8f0bd-512x512.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Graphicloads-Colorful-Long-Shadow-Unlock.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

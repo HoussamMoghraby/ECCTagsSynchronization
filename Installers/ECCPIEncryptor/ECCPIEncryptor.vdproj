@@ -15,26 +15,8 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_02F46E0665F493FF437DB6CA3732067C"
-        "OwnerKey" = "8:_2A69DD29B92846D9ACD38DB10915B2BB"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_09FBC9AF63EDAF102856D9EAA1CC3755"
         "OwnerKey" = "8:_2A69DD29B92846D9ACD38DB10915B2BB"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_1F6866FA8B6879DBBF50F3D6B8CB8234"
-        "OwnerKey" = "8:_2A69DD29B92846D9ACD38DB10915B2BB"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_1F6866FA8B6879DBBF50F3D6B8CB8234"
-        "OwnerKey" = "8:_02F46E0665F493FF437DB6CA3732067C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -45,32 +27,50 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_6191DEDF58C840ACB48AF3B719C55B49"
+        "MsmKey" = "8:_52276EA3700D7D8B6EE67D5520F1AE60"
+        "OwnerKey" = "8:_2A69DD29B92846D9ACD38DB10915B2BB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_6D5CB8818C15B7BBB07A615906D66A80"
+        "OwnerKey" = "8:_52276EA3700D7D8B6EE67D5520F1AE60"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_6D5CB8818C15B7BBB07A615906D66A80"
+        "OwnerKey" = "8:_2A69DD29B92846D9ACD38DB10915B2BB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_6DBBBBF1816D666D486BBDB268908447"
+        "OwnerKey" = "8:_52276EA3700D7D8B6EE67D5520F1AE60"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_6DBBBBF1816D666D486BBDB268908447"
+        "OwnerKey" = "8:_2A69DD29B92846D9ACD38DB10915B2BB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_7ED7D86D3CAB473FA06F95E1D7ADB024"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_7378672A88FCFDB48FDB75F7B3154DBB"
-        "OwnerKey" = "8:_02F46E0665F493FF437DB6CA3732067C"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_7378672A88FCFDB48FDB75F7B3154DBB"
+        "MsmKey" = "8:_8338E6FB90052DB767ACD29AC82FB1B4"
         "OwnerKey" = "8:_2A69DD29B92846D9ACD38DB10915B2BB"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_A8EB6A24F794FE7B4C488F04ECF80218"
-        "OwnerKey" = "8:_02F46E0665F493FF437DB6CA3732067C"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_A8EB6A24F794FE7B4C488F04ECF80218"
-        "OwnerKey" = "8:_2A69DD29B92846D9ACD38DB10915B2BB"
+        "MsmKey" = "8:_8338E6FB90052DB767ACD29AC82FB1B4"
+        "OwnerKey" = "8:_52276EA3700D7D8B6EE67D5520F1AE60"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -82,25 +82,25 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_02F46E0665F493FF437DB6CA3732067C"
+        "OwnerKey" = "8:_52276EA3700D7D8B6EE67D5520F1AE60"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A8EB6A24F794FE7B4C488F04ECF80218"
+        "OwnerKey" = "8:_6D5CB8818C15B7BBB07A615906D66A80"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7378672A88FCFDB48FDB75F7B3154DBB"
+        "OwnerKey" = "8:_6DBBBBF1816D666D486BBDB268908447"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_1F6866FA8B6879DBBF50F3D6B8CB8234"
+        "OwnerKey" = "8:_8338E6FB90052DB767ACD29AC82FB1B4"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -260,37 +260,6 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_02F46E0665F493FF437DB6CA3732067C"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:ECC_DataLayer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_02F46E0665F493FF437DB6CA3732067C"
-                    {
-                    "Name" = "8:ECC_DataLayer.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:ECC_DataLayer.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_64CB44EBC316414A85BA52897A38D447"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_09FBC9AF63EDAF102856D9EAA1CC3755"
             {
             "AssemblyRegister" = "3:1"
@@ -322,20 +291,20 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1F6866FA8B6879DBBF50F3D6B8CB8234"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_52276EA3700D7D8B6EE67D5520F1AE60"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Dapper, Version=1.50.4.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:ECC_DataLayer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_1F6866FA8B6879DBBF50F3D6B8CB8234"
+                    "_52276EA3700D7D8B6EE67D5520F1AE60"
                     {
-                    "Name" = "8:Dapper.dll"
+                    "Name" = "8:ECC_DataLayer.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:Dapper.dll"
+            "SourcePath" = "8:ECC_DataLayer.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_64CB44EBC316414A85BA52897A38D447"
@@ -353,12 +322,23 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6191DEDF58C840ACB48AF3B719C55B49"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6D5CB8818C15B7BBB07A615906D66A80"
             {
-            "SourcePath" = "8:C:\\Users\\Houssam\\Downloads\\Graphicloads-Colorful-Long-Shadow-Unlock.ico"
-            "TargetName" = "8:Graphicloads-Colorful-Long-Shadow-Unlock.ico"
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_6D5CB8818C15B7BBB07A615906D66A80"
+                    {
+                    "Name" = "8:Oracle.ManagedDataAccess.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Oracle.ManagedDataAccess.dll"
+            "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_35E63B791A0249369E8D35D7AF78900A"
+            "Folder" = "8:_64CB44EBC316414A85BA52897A38D447"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -370,17 +350,17 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7378672A88FCFDB48FDB75F7B3154DBB"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6DBBBBF1816D666D486BBDB268908447"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_7378672A88FCFDB48FDB75F7B3154DBB"
+                    "_6DBBBBF1816D666D486BBDB268908447"
                     {
                     "Name" = "8:log4net.dll"
                     "Attributes" = "3:512"
@@ -404,20 +384,40 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A8EB6A24F794FE7B4C488F04ECF80218"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7ED7D86D3CAB473FA06F95E1D7ADB024"
+            {
+            "SourcePath" = "8:..\\..\\ECCPI_Encryptor_App\\Assets\\Graphicloads-Colorful-Long-Shadow-Unlock.ico"
+            "TargetName" = "8:Graphicloads-Colorful-Long-Shadow-Unlock.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_35E63B791A0249369E8D35D7AF78900A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8338E6FB90052DB767ACD29AC82FB1B4"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Dapper, Version=1.50.4.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_A8EB6A24F794FE7B4C488F04ECF80218"
+                    "_8338E6FB90052DB767ACD29AC82FB1B4"
                     {
-                    "Name" = "8:Oracle.ManagedDataAccess.dll"
+                    "Name" = "8:Dapper.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:Oracle.ManagedDataAccess.dll"
+            "SourcePath" = "8:Dapper.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_64CB44EBC316414A85BA52897A38D447"
@@ -492,7 +492,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ECCPIEncryptor"
         "ProductCode" = "8:{AFB37084-E43B-434C-9581-6CADFECC6E61}"
-        "PackageCode" = "8:{6E24DD59-04A8-4127-A820-541A65070D15}"
+        "PackageCode" = "8:{86AAF3FE-683C-49D3-8781-E7B797B30DA7}"
         "UpgradeCode" = "8:{181753B5-2802-4EEE-907C-CC3AFD49BDB9}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -623,7 +623,7 @@
             "Target" = "8:_2A69DD29B92846D9ACD38DB10915B2BB"
             "Folder" = "8:_35E63B791A0249369E8D35D7AF78900A"
             "WorkingFolder" = "8:_64CB44EBC316414A85BA52897A38D447"
-            "Icon" = "8:_6191DEDF58C840ACB48AF3B719C55B49"
+            "Icon" = "8:_7ED7D86D3CAB473FA06F95E1D7ADB024"
             "Feature" = "8:"
             }
         }
