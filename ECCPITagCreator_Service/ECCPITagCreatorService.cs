@@ -34,9 +34,9 @@ namespace ECCPITagCreatorService
         {
             //Debugger.Launch();
             // TODO: Add code here to start your service.   
-            Logger.Info("ECCPITagCreator", "Job Started");
+            Logger.Info(_service.ServiceName, "Job Started");
             var execute = _service.StartAsync().Result;
-            Logger.Info("ECCPITagCreator", "Job Ended");
+            Logger.Info(_service.ServiceName, "Job Ended");
             //InitializeSchedule();
         }
 

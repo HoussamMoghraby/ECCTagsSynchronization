@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace ECC_AFServices_Layer.Services
 {
-    public class TagValueCheckerService : IECCService
+    public class TagValueCheckerService : ECCServiceBase, IECCService
     {
         private TagValueCheckerStore _tagValueCheckerStore = new TagValueCheckerStore();
         private string _eccPIServerName = ConfigurationSettings.AppSettings.Get("ECC_PI_ServerName");
@@ -36,22 +36,22 @@ namespace ECC_AFServices_Layer.Services
             try
             {
                 //Get the tags created from oracle database
-                Logger.Info("ECCPITagValueChecker", "Getting unchecked tags from database");
+                Logger.Info(ServiceName, "Getting unchecked tags from database");
                 IEnumerable<PITagValueCheckDataModel> tags = (await _tagValueCheckerStore.GetTagsForValueChecking());
                 if (tags != null && tags.Count() > 0)
                 {
                     //For each tag, get the area tag value at today midnight and from ECCPI server as well
 
                     //Values check on ECC Server
-                    Logger.Info("ECCPITagValueChecker", "Querrying ECC PI server for tags by name");
+                    Logger.Info(ServiceName, "Querrying ECC PI server for tags by name");
                     IEnumerable<PIPoint> queryResult = FindPointsByName(_eccPIServerName, tags, queryECCServer: true);
-                    Logger.Info("ECCPITagValueChecker", "Reading recorded value of each tag from ECC PI Server");
+                    Logger.Info(ServiceName, "Reading recorded value of each tag from ECC PI Server");
                     foreach (var result in queryResult)
                     {
                         AFValue _recordedValue = GetPointRecordedValue(result);
                         AssignRecordedValueToOriginalTagsCollection(tags: tags, tagName: result.Name, recordedValue: _recordedValue);
                     }
-                    Logger.Info("ECCPITagValueChecker", "Done Reading");
+                    Logger.Info(ServiceName, "Done Reading");
                     //Values check on Area Servers
                     var grouppedTags = tags.GroupBy(t => t.PI_SERVER_NAME);
 
@@ -60,7 +60,7 @@ namespace ECC_AFServices_Layer.Services
                         try
                         {
                             IEnumerable<PIPoint> _areaQueryResult = FindPointsByName(group.Key, group, queryECCServer: false);
-                            Logger.Info("ECCPITagValueChecker", string.Format("Reading {0} tags values", group.Key));
+                            Logger.Info(ServiceName, string.Format("Reading {0} tags values", group.Key));
                             foreach (var result in _areaQueryResult)
                             {
                                 AFValue _recordedValue = GetPointRecordedValue(result);
@@ -69,7 +69,7 @@ namespace ECC_AFServices_Layer.Services
                         }
                         catch (Exception e)
                         {
-                            Logger.Error("ECCPITagValueChecker", e);
+                            Logger.Error(ServiceName, e);
                         }
                     }
 
@@ -79,7 +79,7 @@ namespace ECC_AFServices_Layer.Services
             }
             catch (Exception e)
             {
-                Logger.Error("ECCPITagValueChecker", e);
+                Logger.Error(ServiceName, e);
                 return false;
             }
 
@@ -102,7 +102,7 @@ namespace ECC_AFServices_Layer.Services
 
         private async Task UpdateCheckedTagsAsync(IEnumerable<PITagValueCheckDataModel> tags)
         {
-            Logger.Info("ECCPITagValueChecker", "Validating values collected");
+            Logger.Info(ServiceName, "Validating values collected");
             var checkedTags = tags.Where(t => (t.AreaServerValue != null && t.ECCServerValue != null));
             foreach (var tag in checkedTags)
             {
@@ -126,8 +126,8 @@ namespace ECC_AFServices_Layer.Services
                 var updateStatus = await _tagValueCheckerStore.UpdateTagMatchingStatus(tag.EAWFT_NUM, eccMatchingFlag: _matchingStatus, remark: _matchingRemark);
             }
             await _tagValueCheckerStore.Commit();
-            Logger.Info("ECCPITagValueChecker", string.Format("{0} Tags Matched", checkedTags.Where(t => t.IsValuesMatching == true).Count()));
-            Logger.Info("ECCPITagValueChecker", string.Format("{0} Tags Not Matched", checkedTags.Where(t => t.IsValuesMatching == false).Count()));
+            Logger.Info(ServiceName, string.Format("{0} Tags Matched", checkedTags.Where(t => t.IsValuesMatching == true).Count()));
+            Logger.Info(ServiceName, string.Format("{0} Tags Not Matched", checkedTags.Where(t => t.IsValuesMatching == false).Count()));
         }
 
         private IEnumerable<PIPoint> FindPointsByName(string serverName, IEnumerable<PITagValueCheckDataModel> tags, bool queryECCServer = true)

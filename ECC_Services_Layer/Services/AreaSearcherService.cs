@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ECC_PIAFServices_Layer.Services
 {
-    public class AreaSearcherService : IECCService
+    public class AreaSearcherService : ECCServiceBase, IECCService
     {
         private AreaSearcherStore _areaStore = new AreaSearcherStore();
         private string _eccPIServerName = ConfigurationSettings.AppSettings.Get("ECC_PI_ServerName");
@@ -47,7 +47,7 @@ namespace ECC_PIAFServices_Layer.Services
                             }
                         }
 
-                        Logger.Info("ECCPIAreaSearcher", string.Format("{0} was inserted for area {1}", _tagsInserted, area.PI_SERVER_NAME));
+                        Logger.Info(ServiceName, string.Format("{0} was inserted for area {1}", _tagsInserted, area.PI_SERVER_NAME));
                         //Commit oracle changes after each batch of requests
                         await _areaStore.Commit();
 
@@ -56,7 +56,7 @@ namespace ECC_PIAFServices_Layer.Services
                     }
                     catch (Exception e)
                     {
-                        Logger.Error("ECCPIAreaSearcher", e);
+                        Logger.Error(ServiceName, e);
                     }
                 }
 
@@ -64,7 +64,7 @@ namespace ECC_PIAFServices_Layer.Services
             }
             catch (Exception e)
             {
-                Logger.Error("ECCPIAreaSearcher", e);
+                Logger.Error(ServiceName, e);
                 return false;
             }
         }

@@ -33,9 +33,9 @@ namespace ECCPITagAssetMapper_Service
         {
             //Debugger.Launch();
             // TODO: Add code here to start your service.           
-            Logger.Info("ECCPITagAssetMapper", "Job Started");
+            Logger.Info(_service.ServiceName, "Job Started");
             var execute = _service.StartAsync().Result;
-            Logger.Info("ECCPITagAssetMapper", "Job Ended");
+            Logger.Info(_service.ServiceName, "Job Ended");
             InitializeSchedule();
         }
 

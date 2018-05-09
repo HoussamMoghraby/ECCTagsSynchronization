@@ -74,6 +74,7 @@
     <Compile Include="Helpers\PIAFUtils.cs" />
     <Compile Include="Helpers\SchedJobs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Abstract\ECCServiceBase.cs" />
     <Compile Include="Services\Abstract\IECCService.cs" />
     <Compile Include="Services\AreaSearcherService.cs" />
     <Compile Include="Services\TagAssetMapperService.cs" />

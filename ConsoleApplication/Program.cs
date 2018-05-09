@@ -29,6 +29,8 @@ namespace ConsoleApplication
                 switch (entry.ToString().ToLower())
                 {
                     case "area_searcher":
+                        var cc = new AreaSearcherService();
+                        var sn = cc.ServiceName;
                         StartAreaSearcherService();
                         break;
                     case "tag_creator":

@@ -15,7 +15,7 @@ using ECC_DataLayer.DataModels;
 
 namespace ECC_AFServices_Layer.Services
 {
-    public class TagCreatorService : IECCService
+    public class TagCreatorService : ECCServiceBase, IECCService
     {
         private TagCreatorStore _tagCreatorStore = new TagCreatorStore();
         private string _eccPIServerName = ConfigurationSettings.AppSettings.Get("ECC_PI_ServerName");
@@ -45,14 +45,14 @@ namespace ECC_AFServices_Layer.Services
                     }
                     catch (Exception e)
                     {
-                        Logger.Error("ECCPITagCreator", e);
+                        Logger.Error(ServiceName, e);
                     }
                 }
                 return true;
             }
             catch (Exception e)
             {
-                Logger.Error("ECCPITagCreator", e);
+                Logger.Error(ServiceName, e);
                 return false;
             }
         }
@@ -89,7 +89,7 @@ namespace ECC_AFServices_Layer.Services
                 {
                     var updateStatus = await _tagCreatorStore.UpdateCreatedTag(tag.EAWFT_NUM, tag.ECCPI_POINT_ID, string.Format("Tag Created Successfully in {0}", _eccPIServerName), 'Y');
                 }
-                Logger.Info("ECCPITagCreator", string.Format("{0} Inserted Tags", (successTags != null) ? successTags.Count() : 0));
+                Logger.Info(ServiceName, string.Format("{0} Inserted Tags", (successTags != null) ? successTags.Count() : 0));
                 await _tagCreatorStore.Commit();
 
                 //TODO: Update No of Tags
@@ -122,7 +122,7 @@ namespace ECC_AFServices_Layer.Services
                     {
                         var updateStatus = await _tagCreatorStore.UpdateCreatedTag(tag.EAWFT_NUM, tag.ECCPI_POINT_ID, string.Format("Tag Already Exists in {0}", _eccPIServerName), 'Y');
                     }
-                    Logger.Info("ECCPITagCreator", string.Format("{0} Existing Tags", existingTags.Count()));
+                    Logger.Info(ServiceName, string.Format("{0} Existing Tags", existingTags.Count()));
                     await _tagCreatorStore.Commit();
                 }
 
@@ -134,7 +134,7 @@ namespace ECC_AFServices_Layer.Services
                     {
                         var updateStatus = await _tagCreatorStore.UpdateCreatedTag(tag.EAWFT_NUM, null, _insertResult.Errors.Where(e => e.Key == tag.ECCPI_TAG_NAME).FirstOrDefault().Value.Message, 'N');
                     }
-                    Logger.Info("ECCPITagCreator", string.Format("{0} Errors Upon Creation", otherErrorTags.Count()));
+                    Logger.Info(ServiceName, string.Format("{0} Errors Upon Creation", otherErrorTags.Count()));
                     await _tagCreatorStore.Commit();
                 }
             }
@@ -213,6 +213,8 @@ namespace ECC_AFServices_Layer.Services
             }
             return tags.MapToPIPointDefinition(withDescriptor: true, pointSourceDefinitions: pointSources);
         }
+
+        
 
         //public async Task<bool> TestAsync()
         //{
