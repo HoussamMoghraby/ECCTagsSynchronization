@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECC_Services_Layer", "ECC_S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECC_DataLayer", "ECC_DataLayer\ECC_DataLayer.csproj", "{341A561B-A3A6-42D9-9CD6-EA38C6F891B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication", "ConsoleApplication\ConsoleApplication.csproj", "{6059A14C-78EA-49A7-8BFB-FA81BA2BD2D3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECCPITagCreator_Service", "ECCPITagCreator_Service\ECCPITagCreator_Service.csproj", "{6FE60FE6-AA55-457A-99CC-E1C6EE6B9080}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECCPIAreaSearcher_Service", "ECCPIAreaSearcher_Service\ECCPIAreaSearcher_Service.csproj", "{EEEB2E65-12AA-42BF-8135-C33F120F733D}"
@@ -50,12 +48,6 @@ Global
 		{341A561B-A3A6-42D9-9CD6-EA38C6F891B6}.Local|Any CPU.Build.0 = Local|Any CPU
 		{341A561B-A3A6-42D9-9CD6-EA38C6F891B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{341A561B-A3A6-42D9-9CD6-EA38C6F891B6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6059A14C-78EA-49A7-8BFB-FA81BA2BD2D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6059A14C-78EA-49A7-8BFB-FA81BA2BD2D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6059A14C-78EA-49A7-8BFB-FA81BA2BD2D3}.Local|Any CPU.ActiveCfg = Local|Any CPU
-		{6059A14C-78EA-49A7-8BFB-FA81BA2BD2D3}.Local|Any CPU.Build.0 = Local|Any CPU
-		{6059A14C-78EA-49A7-8BFB-FA81BA2BD2D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6059A14C-78EA-49A7-8BFB-FA81BA2BD2D3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6FE60FE6-AA55-457A-99CC-E1C6EE6B9080}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6FE60FE6-AA55-457A-99CC-E1C6EE6B9080}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FE60FE6-AA55-457A-99CC-E1C6EE6B9080}.Local|Any CPU.ActiveCfg = Release|Any CPU
