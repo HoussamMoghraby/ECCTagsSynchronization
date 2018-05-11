@@ -28,7 +28,7 @@ namespace ECC_AFServices_Layer.Helpers
 
         public async void ScheduleJob()
         {
-            Logger.Info("","Next execution is scheduled");
+            Logger.Info("ScheduleJob", "Next execution is scheduled");
             Quartz.Logging.LogProvider.IsDisabled = true;
             IScheduler scheduler = await StdSchedulerFactory.GetDefaultScheduler();
             await scheduler.Start();
