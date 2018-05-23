@@ -23,6 +23,7 @@ namespace ECC_PIAFServices_Layer.Services
         /// <returns>boolean</returns>
         public async Task<bool> StartAsync()
         {
+            LogServiceStart();
             try
             {
                 // Get the areas PI Servers
@@ -47,11 +48,13 @@ namespace ECC_PIAFServices_Layer.Services
                         Logger.Error(ServiceName, e);
                     }
                 }
+                LogServiceEnd();
                 return true;
             }
             catch (Exception e)
             {
                 Logger.Error(ServiceName, e);
+                LogServiceEnd();
                 return false;
             }
         }

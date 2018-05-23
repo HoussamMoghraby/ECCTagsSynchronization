@@ -32,9 +32,7 @@ namespace ECCPITagCreatorService
 
         protected override void OnStart(string[] args)
         {
-            Logger.Info(_service.ServiceName, "Job Started");
             var execute = _service.StartAsync().Result;
-            Logger.Info(_service.ServiceName, "Job Ended");
             InitializeSchedule();
         }
 

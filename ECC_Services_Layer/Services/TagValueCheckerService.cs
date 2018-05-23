@@ -25,6 +25,7 @@ namespace ECC_AFServices_Layer.Services
 
         public async Task<bool> StartAsync()
         {
+            LogServiceStart();
             // Set reading time to be used for comparison
             SetReadingTime();
             try
@@ -87,9 +88,10 @@ namespace ECC_AFServices_Layer.Services
             catch (Exception e)
             {
                 Logger.Error(ServiceName, e);
+                LogServiceEnd();
                 return false;
             }
-
+            LogServiceEnd();
             return true;
         }
 
@@ -144,7 +146,7 @@ namespace ECC_AFServices_Layer.Services
 
                 // Values are numbers => then compare the rounded values
                 if (isECCNumber && isAreaNumber)
-                    _isValuesMatching = Math.Round(tag.ECCServerValue, 2) == Math.Round(tag.AreaServerValue, 2);
+                    _isValuesMatching = Math.Round(Convert.ToDouble(tag.ECCServerValue), 2) == Math.Round(Convert.ToDouble(tag.AreaServerValue), 2);
                 // Not numbers => compare the string values
                 else if (!isECCNumber && !isAreaNumber)
                 {

@@ -23,6 +23,7 @@ namespace ECC_AFServices_Layer.Helpers
             {
                 // run the service
                 await _serviceInstance.StartAsync();
+                Logger.Info("ScheduleJob", "Next execution is scheduled");
             }
         }
 

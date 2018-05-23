@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ECC_DataLayer.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,16 @@ namespace ECC_AFServices_Layer.Services.Abstract
             get { return this.GetType().Name; }
             set { }
         }
+
+        public void LogServiceStart()
+        {
+            Logger.Info(ServiceName, "Job Started");
+        }
+
+        public void LogServiceEnd()
+        {
+            Logger.Info(ServiceName, "Job End");
+        }
+
     }
 }

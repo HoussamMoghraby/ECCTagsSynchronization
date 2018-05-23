@@ -30,6 +30,7 @@ namespace ECC_AFServices_Layer.Services
         /// <returns></returns>
         public async Task<bool> StartAsync()
         {
+            LogServiceStart();
             PISystem piSystem = PIAFUtils.GetPISystem(_eccAFServerName);
             try
             {
@@ -152,10 +153,12 @@ namespace ECC_AFServices_Layer.Services
             catch (Exception e)
             {
                 Logger.Error(ServiceName, e);
+                LogServiceEnd();
                 return false;
             }
             piSystem.CheckIn(AFCheckedOutMode.ObjectsCheckedOutToMe);
             piSystem.Disconnect();
+            LogServiceEnd();
             return true;
         }
     }

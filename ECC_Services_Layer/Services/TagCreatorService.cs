@@ -28,6 +28,7 @@ namespace ECC_AFServices_Layer.Services
         /// <returns></returns>
         public async Task<bool> StartAsync()
         {
+            LogServiceStart();
             piServer = PIAFUtils.GetPIServer(_eccPIServerName);
             try
             {
@@ -52,11 +53,13 @@ namespace ECC_AFServices_Layer.Services
                         Logger.Error(ServiceName, e);
                     }
                 }
+                LogServiceEnd();
                 return true;
             }
             catch (Exception e)
             {
                 Logger.Error(ServiceName, e);
+                LogServiceEnd();
                 return false;
             }
         }
@@ -73,7 +76,7 @@ namespace ECC_AFServices_Layer.Services
 
             // Create the PI Points in PI Server
             var _pointsDefinitions = await GetPointsDefinitions(tags);
-            AFListResults<string, PIPoint> _insertResult = piServer.CreatePIPoints(_pointsDefinitions);            
+            AFListResults<string, PIPoint> _insertResult = piServer.CreatePIPoints(_pointsDefinitions);
 
             //Receive results, and update the status of each inserted tag
             if (_insertResult != null && _insertResult.Results != null && _insertResult.Results.Count() > 0)
@@ -141,7 +144,7 @@ namespace ECC_AFServices_Layer.Services
                     {
                         var updateStatus = await _tagCreatorStore.UpdateCreatedTag(tag.EAWFT_NUM, null, _insertResult.Errors.Where(e => e.Key == tag.ECCPI_TAG_NAME).FirstOrDefault().Value.Message, 'N');
                     }
-                    Logger.Info(ServiceName, string.Format("{0} Errors Upon Creation", otherErrorTags.Count()));
+                    Logger.Info(ServiceName, string.Format("{0} Tags failed to be created, check remarks column for more details)", otherErrorTags.Count()));
                     await _tagCreatorStore.Commit();
                 }
             }
