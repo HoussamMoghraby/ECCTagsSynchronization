@@ -10,6 +10,7 @@ using OSIsoft.AF.Asset;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,6 +21,7 @@ namespace ECC_AFServices_Layer.Services
         private TagAssetMapperStore _tagMapperStore = new TagAssetMapperStore();
         private string _eccAFServerName = ConfigurationSettings.AppSettings.Get("ECC_AF_ServerName");
         private string _eccPIServerName = ConfigurationSettings.AppSettings.Get("ECC_PI_ServerName");
+        private string _eccAFDatabaseName = ConfigurationSettings.AppSettings.Get("ECC_AF_DatabaseName");
 
 
         /// <summary>
@@ -30,6 +32,7 @@ namespace ECC_AFServices_Layer.Services
         /// <returns></returns>
         public async Task<bool> StartAsync()
         {
+            Debugger.Launch();
             LogServiceStart();
             PISystem piSystem = PIAFUtils.GetPISystem(_eccAFServerName);
             try
@@ -47,6 +50,7 @@ namespace ECC_AFServices_Layer.Services
                 {
                     Logger.Info(ServiceName, "Finding Attributes");
 
+                    //piSystem.Connect();
                     // Validate the attributes in AF
                     var queryAttributes = AFAttribute.FindAttributesByPath(tags.DistinctBy(t => t.W_AF_ATTRB_FULL_PATH).MapToListOfAttributePath(), null);
                     Logger.Info(ServiceName, string.Format("Found {0} Attributes", queryAttributes.Count()));
@@ -81,6 +85,7 @@ namespace ECC_AFServices_Layer.Services
                             string[] _splittedConfigString = _attrConfigString.Split(new string[] { @"\" }, StringSplitOptions.None);
                             bool _overrideConfigString = (!string.IsNullOrEmpty(_attributeTags.FirstOrDefault().ECCPI_AF_MAP_OVR_FLG) && _attributeTags.FirstOrDefault().ECCPI_AF_MAP_OVR_FLG == "Y");
                             bool _currentConfigStringIsdefault = (
+                                string.IsNullOrEmpty(_attrConfigString) ||
                                 _attrConfigString.Contains((attr.Element.Name + "." + attr.Name)) ||
                                 _attrConfigString == @"\\%Server%\%Element%.%Attribute%" ||
                                 _splittedConfigString[_splittedConfigString.GetLength(0) - 1].Contains("%Element%.%Attribute%")
@@ -108,7 +113,7 @@ namespace ECC_AFServices_Layer.Services
                         //Update the found attributes each with its PITag ConfigString
                         Logger.Info(ServiceName, "Updating AF");
                         AFAttribute.SetConfigStrings(attributes, configStrings);
-                        piSystem.CheckIn(AFCheckedOutMode.ObjectsCheckedOutToMe);
+                        piSystem.Databases[_eccAFDatabaseName].CheckIn(AFCheckedOutMode.ObjectsCheckedOutToMe);
                         Logger.Info(ServiceName, "AF Checked in");
 
                         //Update the Tag flags and status in Oracle database
@@ -132,6 +137,7 @@ namespace ECC_AFServices_Layer.Services
                     }
                     catch (Exception e)
                     {
+                        piSystem.Databases[_eccAFDatabaseName].CheckIn(AFCheckedOutMode.ObjectsCheckedOutToMe);
                         Logger.Error(ServiceName, e);
                     }
 
@@ -152,12 +158,12 @@ namespace ECC_AFServices_Layer.Services
             }
             catch (Exception e)
             {
+                piSystem.Databases[_eccAFDatabaseName].CheckIn(AFCheckedOutMode.ObjectsCheckedOutToMe);
                 Logger.Error(ServiceName, e);
                 LogServiceEnd();
                 return false;
             }
-            piSystem.CheckIn(AFCheckedOutMode.ObjectsCheckedOutToMe);
-            piSystem.Disconnect();
+            piSystem.Databases[_eccAFDatabaseName].CheckIn(AFCheckedOutMode.ObjectsCheckedOutToMe);
             LogServiceEnd();
             return true;
         }

@@ -17,8 +17,14 @@ namespace ECC_DataLayer.Helpers
 
         public static void Initialize()
         {
-            log4net.Config.XmlConfigurator.Configure(); // Added to point log4net for log4net.config
+            //log4net.Config.XmlConfigurator.Configure(); // Added to point log4net for log4net.config
+            log4net.Config.XmlConfigurator.ConfigureAndWatch(new System.IO.FileInfo("log4net.config"));
         }
+
+        //public static void Refresh()
+        //{
+        //    log4net.Config.XmlConfigurator.ConfigureAndWatch(new System.IO.FileInfo("log4net.config"));
+        //}
 
         public static void Info(string source, string message)
         {

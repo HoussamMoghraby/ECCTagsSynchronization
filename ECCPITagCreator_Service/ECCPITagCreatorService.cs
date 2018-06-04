@@ -19,7 +19,6 @@ namespace ECCPITagCreatorService
         private TagCreatorService _service = new TagCreatorService();
         public ECCPITagCreatorService()
         {
-            //Debugger.Launch();
             Logger.Initialize();
             InitializeComponent();
         }
