@@ -62,17 +62,29 @@ namespace ECC_AFServices_Layer.Services
                         // Find the tags for a found attribute
                         IEnumerable<PITagDataModel> _attributeTags = tags.Where(t => t.W_AF_ATTRB_FULL_PATH == res.Value.GetPath());
                         // Define the data reference type of the target attribute based on tags count
-                        bool _isDataReferenceArray = (_attributeTags.Count() > 1);
+                        bool _isDataReferenceArray = (_attributeTags.Where(t => t.W_AF_ATTRB_ARRY_FLG == "Y").Count() > 0);
                         string _configString = string.Empty;
 
                         // Construct the configuration string based on existing tags name
-                        _attributeTags.ForEach(at =>
+                        if (!_isDataReferenceArray)
                         {
-                            if (string.IsNullOrEmpty(_configString))
-                                _configString = at.ECCPI_EXST_TAG_NAME;
-                            else
-                                _configString += string.Format("|{0}", at.ECCPI_EXST_TAG_NAME);
-                        });
+                            _configString = _attributeTags.FirstOrDefault().ECCPI_EXST_TAG_NAME;
+                            _attributeTags.Where(at => at != _attributeTags.FirstOrDefault()).ForEach(at =>
+                            {
+                                at.ECCPI_AF_MAP_REM = "Could not be mapped: tag is part of an array and the attribute is not configured as an array, only 1 tag will be mapped.";
+                                at.IsValidForAssetMapping = false;
+                            });
+                        }
+                        else
+                        {
+                            _attributeTags.ForEach(at =>
+                            {
+                                if (string.IsNullOrEmpty(_configString))
+                                    _configString = at.ECCPI_EXST_TAG_NAME;
+                                else
+                                    _configString += string.Format("|{0}", at.ECCPI_EXST_TAG_NAME);
+                            });
+                        }
 
                         if (!string.IsNullOrEmpty(_configString))
                         {
@@ -94,9 +106,12 @@ namespace ECC_AFServices_Layer.Services
                             // Attribute is valid to be mapped
                             if (_currentConfigStringIsdefault || _overrideConfigString == true)
                             {
-                                attr.DataReferencePlugIn = (_isDataReferenceArray) ? _dataReferences[PIAFUtils.DataReference.PIPointArray] : _dataReferences[PIAFUtils.DataReference.PIPoint];
                                 attributes.Add(attr);
-                                _attributeTags.ForEach(at => at.IsValidForAssetMapping = true);
+                                if (_isDataReferenceArray)
+                                    _attributeTags.ForEach(at => at.IsValidForAssetMapping = true);
+                                else
+                                    _attributeTags.FirstOrDefault().IsValidForAssetMapping = true;
+
                                 configStrings.Add(string.Format(@"\\{0}\{1}", _eccPIServerName, _configString));
                             }
                             // Attribute is not valid to be mapped
