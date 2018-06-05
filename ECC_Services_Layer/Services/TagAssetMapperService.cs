@@ -32,18 +32,11 @@ namespace ECC_AFServices_Layer.Services
         /// <returns></returns>
         public async Task<bool> StartAsync()
         {
-            Debugger.Launch();
             LogServiceStart();
             PISystem piSystem = PIAFUtils.GetPISystem(_eccAFServerName);
             try
             {
-                //Get the potential data references that could be used in when updating AF attributes
-                Dictionary<string, AFPlugIn> _dataReferences = new Dictionary<string, AFPlugIn>()
-                    {
-                        { PIAFUtils.DataReference.PIPoint, PIAFUtils.GetDataReferencePlugin(piSystem) },
-                        { PIAFUtils.DataReference.PIPointArray, PIAFUtils.GetDataReferencePlugin(piSystem,PIAFUtils.DataReference.PIPointArray) }
-                    };
-
+                
                 // Get the created and unmapped tags from oracle
                 var tags = await _tagMapperStore.GetUnmappedTags();
                 if (tags != null && tags.Count() > 0)
