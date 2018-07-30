@@ -140,8 +140,12 @@ namespace ECC_AFServices_Layer.Helpers
 
             if (tag.W_AF_ATTRB_SCRTY != null)
             {
-                attrs.Add(PICommonPointAttributes.PointSecurity, tag.W_AF_ATTRB_SCRTY);
                 attrs.Add(PICommonPointAttributes.DataSecurity, tag.W_AF_ATTRB_SCRTY);
+            }
+
+            if(tag.W_AF_ATTRB_PT_SCRTY !=null)
+            {
+                attrs.Add(PICommonPointAttributes.PointSecurity, tag.W_AF_ATTRB_PT_SCRTY);
             }
 
             if (withDescriptor)

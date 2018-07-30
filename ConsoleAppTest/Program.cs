@@ -11,7 +11,7 @@ namespace ConsoleAppTest
     {
         static void Main(string[] args)
         {
-            TagAssetMapperService _service = new TagAssetMapperService();
+            TagCreatorService _service = new TagCreatorService();
             var result = _service.StartAsync().Result;
             Console.WriteLine("Execution Result = " + result.ToString());
             Console.ReadLine();

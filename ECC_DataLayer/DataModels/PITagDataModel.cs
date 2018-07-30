@@ -46,7 +46,8 @@ namespace ECC_DataLayer.DataModels
         public decimal? TYPICALVALUE { get; set; }
         public decimal? ZERO { get; set; }
 
-        public string W_AF_ATTRB_SCRTY { get; set; }
+        public string W_AF_ATTRB_SCRTY { get; set; } // For PI Point Data Security
+        public string W_AF_ATTRB_PT_SCRTY { get; set; } // For PI Point Point Security
 
         public string W_AF_ATTRB_FULL_PATH { get; set; }
         public string W_GNR_NAME { get; set; }

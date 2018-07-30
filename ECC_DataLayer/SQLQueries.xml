@@ -8,7 +8,7 @@
   <query name="UpdatePIServerLastPullDate">UPDATE ECCPI_SERVERS_LIST set PI_LAST_TAG_PULL_DT = CURRENT_DATE where PI_SERVER_CD LIKE '{0}'</query>
 
   <!--ECCPITagCreator-->
-  <query name="GetNonCreatedTags">SELECT t.*, m.w_af_attrb_full_path, m.w_af_attrb_scrty, m.w_gnr_name, m.w_eqp_attrib_name FROM eccpi_af_well_eqp_tag_masks m, eccpi_af_well_found_tags t WHERE t.eawetm_num = m.eawetm_num AND t.pi_tag_sel_flg = 'Y' and t.eccpi_tag_cre_flg = 'N'</query>
+  <query name="GetNonCreatedTags">SELECT t.*, m.w_af_attrb_full_path, m.w_af_attrb_scrty, m.w_af_attrb_pt_scrty, m.w_gnr_name, m.w_eqp_attrib_name FROM eccpi_af_well_eqp_tag_masks m, eccpi_af_well_found_tags t WHERE t.eawetm_num = m.eawetm_num AND t.pi_tag_sel_flg = 'Y' and t.eccpi_tag_cre_flg = 'N'</query>
 
   <query name="UpdateExistingTag">UPDATE ECCPI_AF_WELL_FOUND_TAGS set ECCPI_EXST_TAG_NAME = '{0}', ECCPI_TAG_CRE_FLG = '{1}', ECCPI_TAG_CRE_REM = '{2}' {3} where eawft_num ={4}</query>
 
@@ -19,7 +19,7 @@
   <query name="UpdatePointSource">update ECCPI_POINT_SOURCES set NUM_OF_TAGS = (NUM_OF_TAGS + {0}) where EPS_NUM = {1}</query>
 
   <!--ECCPITagAssetMapper-->
-  <query name="GetUnmappedTags">SELECT t.eawft_num,t.eccpi_exst_tag_name,t.eccpi_af_map_ovr_flg, m.W_AF_ATTRB_ARRY_FLG, m.w_af_attrb_full_path, m.w_af_attrb_scrty, m.w_gnr_name, m.w_eqp_attrib_name FROM eccpi_af_well_eqp_tag_masks m, eccpi_af_well_found_tags t WHERE t.eawetm_num = m.eawetm_num AND t.pi_tag_sel_flg = 'Y' and t.eccpi_tag_cre_flg = 'Y' and t.eccpi_af_mapped_flg = 'N'</query>
+  <query name="GetUnmappedTags">SELECT t.eawft_num,t.eccpi_exst_tag_name,t.eccpi_af_map_ovr_flg, m.W_AF_ATTRB_ARRY_FLG, m.w_af_attrb_full_path, m.w_af_attrb_scrty,m.w_af_attrb_pt_scrty, m.w_gnr_name, m.w_eqp_attrib_name FROM eccpi_af_well_eqp_tag_masks m, eccpi_af_well_found_tags t WHERE t.eawetm_num = m.eawetm_num AND t.pi_tag_sel_flg = 'Y' and t.eccpi_tag_cre_flg = 'Y' and t.eccpi_af_mapped_flg = 'N'</query>
 
   <query name="UpdateMappedTag">UPDATE eccpi_af_well_found_tags set eccpi_af_mapped_flg = '{0}', ECCPI_AF_MAP_REM='{1}' {2} WHERE eawft_num = {3}</query>
 
