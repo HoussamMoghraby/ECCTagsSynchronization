@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+VisualStudioVersion = 15.0.26228.17
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECC_Services_Layer", "ECC_Services_Layer\ECC_Services_Layer.csproj", "{EF087EEB-48B1-48D2-902D-1C82132B5709}"
 EndProject
@@ -28,6 +28,8 @@ EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ECCPITagValueChecker", "Installers\ECCPITagValueChecker\ECCPITagValueChecker.vdproj", "{149ADFC5-7197-427A-8FE1-D86863B43B55}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ECCPIEncryptor", "Installers\ECCPIEncryptor\ECCPIEncryptor.vdproj", "{D2E5FA9A-64EB-40C4-BF8F-361F8BBDBFF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppTest", "ConsoleAppTest\ConsoleAppTest.csproj", "{040A0B01-24DD-4607-B69C-57591C448748}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +95,12 @@ Global
 		{D2E5FA9A-64EB-40C4-BF8F-361F8BBDBFF6}.Debug|Any CPU.ActiveCfg = Debug
 		{D2E5FA9A-64EB-40C4-BF8F-361F8BBDBFF6}.Local|Any CPU.ActiveCfg = Release
 		{D2E5FA9A-64EB-40C4-BF8F-361F8BBDBFF6}.Release|Any CPU.ActiveCfg = Release
+		{040A0B01-24DD-4607-B69C-57591C448748}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{040A0B01-24DD-4607-B69C-57591C448748}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{040A0B01-24DD-4607-B69C-57591C448748}.Local|Any CPU.ActiveCfg = Release|Any CPU
+		{040A0B01-24DD-4607-B69C-57591C448748}.Local|Any CPU.Build.0 = Release|Any CPU
+		{040A0B01-24DD-4607-B69C-57591C448748}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{040A0B01-24DD-4607-B69C-57591C448748}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

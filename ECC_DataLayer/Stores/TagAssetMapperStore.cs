@@ -25,9 +25,11 @@ namespace ECC_DataLayer.Stores
             return result;
         }
 
-        public async Task<int> UpdateMappedTag(long id, string remark, char eccMappingFlag = 'Y')
+        public async Task<int> UpdateMappedTag(long id, string remark, char eccMappingFlag = 'Y', DateTime? mappingDate=null)
         {
-            string _query = string.Format(QueryReader.ReadQuery("UpdateMappedTag"), eccMappingFlag, remark, id);
+            string _query = string.Format(QueryReader.ReadQuery("UpdateMappedTag"), eccMappingFlag, remark, 
+                (mappingDate.HasValue) ? string.Format(" , ECCPI_AF_MAP_DT = to_date('{0}', 'mm/dd/yyyy hh24:mi:ss') ", mappingDate.Value.ToString("MM/dd/yyyy HH:mm:ss")) : ""
+                , id);
             var result = await _tagMapperRepo.ExecuteScalarAsync(_query, new { });
             return result;
         }

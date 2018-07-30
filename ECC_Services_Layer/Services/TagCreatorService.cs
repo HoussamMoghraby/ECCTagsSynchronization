@@ -78,6 +78,8 @@ namespace ECC_AFServices_Layer.Services
             var _pointsDefinitions = await GetPointsDefinitions(tags);
             AFListResults<string, PIPoint> _insertResult = piServer.CreatePIPoints(_pointsDefinitions);
 
+            DateTime creationDate = DateTime.Now;
+
             //Receive results, and update the status of each inserted tag
             if (_insertResult != null && _insertResult.Results != null && _insertResult.Results.Count() > 0)
             {
@@ -97,7 +99,7 @@ namespace ECC_AFServices_Layer.Services
 
                 foreach (var tag in successTags)
                 {
-                    var updateStatus = await _tagCreatorStore.UpdateCreatedTag(tag.EAWFT_NUM, tag.ECCPI_POINT_ID, string.Format("Tag Created Successfully in {0}", _eccPIServerName), 'Y');
+                    var updateStatus = await _tagCreatorStore.UpdateCreatedTag(tag.EAWFT_NUM, tag.ECCPI_POINT_ID, string.Format("Tag Created Successfully in {0}", _eccPIServerName), 'Y', creationDate);
                 }
                 Logger.Info(ServiceName, string.Format("{0} Inserted Tags", (successTags != null) ? successTags.Count() : 0));
                 await _tagCreatorStore.Commit();

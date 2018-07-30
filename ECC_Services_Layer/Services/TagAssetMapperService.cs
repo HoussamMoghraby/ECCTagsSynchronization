@@ -43,7 +43,6 @@ namespace ECC_AFServices_Layer.Services
                 {
                     Logger.Info(ServiceName, "Finding Attributes");
 
-                    //piSystem.Connect();
                     // Validate the attributes in AF
                     var queryAttributes = AFAttribute.FindAttributesByPath(tags.DistinctBy(t => t.W_AF_ATTRB_FULL_PATH).MapToListOfAttributePath(), null);
                     Logger.Info(ServiceName, string.Format("Found {0} Attributes", queryAttributes.Count()));
@@ -121,6 +120,8 @@ namespace ECC_AFServices_Layer.Services
                         //Update the found attributes each with its PITag ConfigString
                         Logger.Info(ServiceName, "Updating AF");
                         AFAttribute.SetConfigStrings(attributes, configStrings);
+                        DateTime mappingDate = DateTime.Now;
+
                         piSystem.Databases[_eccAFDatabaseName].CheckIn(AFCheckedOutMode.ObjectsCheckedOutToMe);
                         Logger.Info(ServiceName, "AF Checked in");
 
@@ -128,7 +129,7 @@ namespace ECC_AFServices_Layer.Services
                         var successTags = tags.Where(t => t.IsValidForAssetMapping.HasValue && t.IsValidForAssetMapping.Value == true);
                         foreach (var successTag in successTags)
                         {
-                            var updateStatus = await _tagMapperStore.UpdateMappedTag(successTag.EAWFT_NUM, string.Format("Tag Mapped Successfully in {0}{1}", _eccAFServerName, (successTag.IsValidForAssetMapping == true) ? string.Format(" & Replaced {0}", successTag.ECCPI_AF_MAP_REM) : null), 'Y');
+                            var updateStatus = await _tagMapperStore.UpdateMappedTag(successTag.EAWFT_NUM, string.Format("Tag Mapped Successfully in {0}{1}", _eccAFServerName, (successTag.IsValidForAssetMapping == true) ? string.Format(" & Replaced {0}", successTag.ECCPI_AF_MAP_REM) : null), 'Y', mappingDate);
                         }
                         Logger.Info(ServiceName, string.Format("{0} Mapped Tags", (successTags != null) ? successTags.Count() : 0));
 
