@@ -33,7 +33,7 @@ namespace ECC_PIAFServices_Layer.Helpers
             PISystem piSystem = piSystems[name];
             try
             {
-                piSystem.ConnectionInfo.TimeOut = new TimeSpan(0, 10, 0);
+                piSystem.ConnectionInfo.TimeOut = new TimeSpan(1, 0, 0);
             }
             catch (Exception)
             {
