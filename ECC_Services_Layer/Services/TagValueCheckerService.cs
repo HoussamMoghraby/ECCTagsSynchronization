@@ -132,6 +132,7 @@ namespace ECC_AFServices_Layer.Services
 
             // Valid tags are those who has values from main and area servers
             var checkedTags = tags.Where(t => (t.AreaServerValue != null && t.ECCServerValue != null));
+            checkedTags = checkedTags.Where(t => (t.AreaServerValue.ToString() != string.Empty && t.ECCServerValue.ToString() != string.Empty));
 
             // Itterate result
             foreach (var tag in checkedTags)
@@ -140,9 +141,13 @@ namespace ECC_AFServices_Layer.Services
                 string _matchingRemark = null;
                 bool _isValuesMatching = false;
 
+                double _parseResult = 0.0;
                 // Check if the values are numbers
-                var isECCNumber = Regex.IsMatch(tag.ECCServerValue.ToString(), @"\d");
-                var isAreaNumber = Regex.IsMatch(tag.AreaServerValue.ToString(), @"\d");
+                tag.ECCServerValue = tag.ECCServerValue.ToString().Replace(",", "");
+                var isECCNumber = Regex.IsMatch(tag.ECCServerValue.ToString(), @"\d") && double.TryParse(tag.ECCServerValue.ToString(), out _parseResult);
+
+                tag.AreaServerValue = tag.AreaServerValue.ToString().Replace(",", "");
+                var isAreaNumber = Regex.IsMatch(tag.AreaServerValue.ToString(), @"\d") && double.TryParse(tag.AreaServerValue.ToString(), out _parseResult);
 
                 // Values are numbers => then compare the rounded values
                 if (isECCNumber && isAreaNumber)
