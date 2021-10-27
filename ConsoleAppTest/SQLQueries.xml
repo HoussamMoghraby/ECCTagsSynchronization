@@ -28,4 +28,8 @@
 
   <query name="UpdateTagMatchingStatus">UPDATE eccpi_af_well_found_tags t SET t.pi_tag_flow_flg = '{0}' {1} WHERE  t.eawft_num = {2}</query>
 
+  <!--DBLogger-->
+  <query name="DbLogStartServiceQuery">INSERT INTO ECCPI_AF_SERVICE_RUN(SVC_NAME,SVC_STATUS,SVC_START_DT,REMARKS) Values ('{0}','{1}',CURRENT_DATE,'{2}') Returning EASR_NUM into :ID</query>
+  <query name="DbLogEndServiceQuery">Update ECCPI_AF_SERVICE_RUN SET SVC_STATUS='{0}' , SVC_END_DT = CURRENT_DATE, REMARKS = '{1}' WHERE easr_num = {2}</query>
+  <query name="AddDbLogDetails">INSERT INTO ECCPI_AF_SERVICE_LOGS(EAWFT_NUM,ECCPI_TAG_NAME,AREA_PI_TAG_NAME,SRC_PI_SERVER_CD,EASR_NUM,SVC_NAME,SVC_MSG,SVC_MSG_TYP,SVC_MSG_SEVIRITY,AREA_POINT_ID,SVC_PROPOSED_REMEDY) VALUES({0},'{1}','{2}','{3}',{4},'{5}','{6}','{7}','{8}',{9},'{10}')</query>
 </queries>
