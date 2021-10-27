@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ECC_DataLayer.Repositories
@@ -58,6 +57,29 @@ namespace ECC_DataLayer.Repositories
                 var result = connection.Query<T>(query, arguments, commandType: CommandType.Text);
 
                 return result.FirstOrDefault();
+            }
+        }
+
+        public int InsertAndReturnId(string query)
+        {
+            using (var connection = new OracleConnection(ConnectionFactory.ConnectionString()))
+            {
+                connection.Open();
+                OracleCommand cmd = new OracleCommand
+                {
+
+                    // INSERT statement with RETURNING clause to get the generated ID 
+                    CommandText = query,
+                    Connection = connection
+                };
+                cmd.Parameters.Add(new OracleParameter
+                {
+                    ParameterName = ":ID",
+                    OracleDbType = OracleDbType.Int32,
+                    Direction = ParameterDirection.Output
+                });
+                cmd.ExecuteNonQuery();
+                return Convert.ToInt32(cmd.Parameters[":ID"].Value.ToString());
             }
         }
     }
