@@ -8,6 +8,7 @@ using OSIsoft.AF.PI;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ECC_PIAFServices_Layer.Services
@@ -29,6 +30,7 @@ namespace ECC_PIAFServices_Layer.Services
                 // Get the areas PI Servers
                 IEnumerable<AreaPIServer> areas = await _areaStore.GetAreasPIServers();
                 // Itterate each area
+                StringBuilder exceptionMessage = new StringBuilder();
                 foreach (var area in areas)
                 {
                     try
@@ -45,15 +47,20 @@ namespace ECC_PIAFServices_Layer.Services
                     }
                     catch (Exception e)
                     {
+                        exceptionMessage.AppendLine(e.Message);
                         Logger.Error(ServiceName, e);
                     }
                 }
+                DbLogger._dbLoggerDataModel.SVC_STATUS = Status.Succeed;
+                DbLogger._dbLoggerDataModel.REMARKS = (exceptionMessage.Length > 0) ? "Handled Excpetion: " + exceptionMessage.ToString() : Status.Succeed;
                 LogServiceEnd();
                 return true;
             }
             catch (Exception e)
             {
                 Logger.Error(ServiceName, e);
+                DbLogger._dbLoggerDataModel.SVC_STATUS = Status.Fail;
+                DbLogger._dbLoggerDataModel.REMARKS = $"Exception: Message=\"{e.Message}\", InnerException=\"{e.InnerException}\"";
                 LogServiceEnd();
                 return false;
             }

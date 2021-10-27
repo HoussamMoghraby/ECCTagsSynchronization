@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -22,12 +23,14 @@ namespace ECC_AFServices_Layer.Services
         private TagValueCheckerStore _tagValueCheckerStore = new TagValueCheckerStore();
         private string _eccPIServerName = ConfigurationSettings.AppSettings.Get("ECC_PI_ServerName");
         private static AFTime _pointValueTime;
+        private DbLoggerDetails _dbLoggerDetails = new DbLoggerDetails("ECCPITagValueChecker_Service");
 
         public async Task<bool> StartAsync()
         {
             LogServiceStart();
             // Set reading time to be used for comparison
             SetReadingTime();
+            StringBuilder exceptionMessage = new StringBuilder();
             try
             {
                 Logger.Info(ServiceName, "Getting unchecked tags from database");
@@ -45,10 +48,29 @@ namespace ECC_AFServices_Layer.Services
                     // Itterate the result
                     foreach (var result in queryResult)
                     {
-                        // Get the recorded value at the time
-                        AFValue _recordedValue = GetPointRecordedValue(result);
-                        // Assign the retreived value to the tags list object
-                        AssignRecordedValueToOriginalTagsCollection(tags: tags, tagName: result.Name, recordedValue: _recordedValue);
+                        try
+                        {
+                            // Get the recorded value at the time
+                            AFValue _recordedValue = GetPointRecordedValue(result);
+                            // Assign the retreived value to the tags list object
+                            AssignRecordedValueToOriginalTagsCollection(tags: tags, tagName: result.Name, recordedValue: _recordedValue);
+                        }
+                        catch (Exception ex)
+                        {
+                            var tag = tags.Where(t => t.ECCPI_POINT_ID == result.ID).FirstOrDefault();
+                            _dbLoggerDetails.Log(new DbLoggerDetailsDataModel
+                            {
+                                EAWFT_NUM = tag.EAWFT_NUM,
+                                ECCPI_TAG_NAME = tag.ECCPI_TAG_NAME,
+                                AREA_PI_TAG_NAME = tag.AREA_PI_TAG_NAME,
+                                SRC_PI_SERVER_CD = tag.SRC_PI_SERVER_CD,
+                                SVC_MSG = ex.Message,
+                                SVC_MSG_TYP = svcType.Tag,
+                                SVC_MSG_SEVIRITY = Severity.Exception,
+                                AREA_POINT_ID = tag.AREA_POINT_ID
+                            });
+                            throw;
+                        }
                     }
                     Logger.Info(ServiceName, "Done Reading");
 
@@ -69,14 +91,34 @@ namespace ECC_AFServices_Layer.Services
                             // Itterate the result
                             foreach (var result in _areaQueryResult)
                             {
-                                // Get the recorded value at the time
-                                AFValue _recordedValue = GetPointRecordedValue(result);
-                                // Assign the retreived value to the tags list object
-                                AssignRecordedValueToOriginalTagsCollection(tags: tags, tagName: result.Name, recordedValue: _recordedValue, isECCServerValue: false);
+                                try
+                                {
+                                    // Get the recorded value at the time
+                                    AFValue _recordedValue = GetPointRecordedValue(result);
+                                    // Assign the retreived value to the tags list object
+                                    AssignRecordedValueToOriginalTagsCollection(tags: tags, tagName: result.Name, recordedValue: _recordedValue, isECCServerValue: false);
+                                }
+                                catch (Exception ex)
+                                {
+                                    var tag = tags.Where(t => t.ECCPI_POINT_ID == result.ID).FirstOrDefault();
+                                    _dbLoggerDetails.Log(new DbLoggerDetailsDataModel
+                                    {
+                                        EAWFT_NUM = tag.EAWFT_NUM,
+                                        ECCPI_TAG_NAME = tag.ECCPI_TAG_NAME,
+                                        AREA_PI_TAG_NAME = tag.AREA_PI_TAG_NAME,
+                                        SRC_PI_SERVER_CD = tag.SRC_PI_SERVER_CD,
+                                        SVC_MSG = ex.Message,
+                                        SVC_MSG_TYP = svcType.Tag,
+                                        SVC_MSG_SEVIRITY = Severity.Exception,
+                                        AREA_POINT_ID = tag.AREA_POINT_ID
+                                    });
+                                    throw;
+                                }
                             }
                         }
                         catch (Exception e)
                         {
+                            exceptionMessage.AppendLine(e.Message);
                             Logger.Error(ServiceName, e);
                         }
                     }
@@ -88,9 +130,13 @@ namespace ECC_AFServices_Layer.Services
             catch (Exception e)
             {
                 Logger.Error(ServiceName, e);
+                DbLogger._dbLoggerDataModel.SVC_STATUS = Status.Fail;
+                DbLogger._dbLoggerDataModel.REMARKS = $"Exception: Message=\"{e.Message}\", InnerException=\"{e.InnerException}\"";
                 LogServiceEnd();
                 return false;
             }
+            DbLogger._dbLoggerDataModel.SVC_STATUS = Status.Succeed;
+            DbLogger._dbLoggerDataModel.REMARKS = (exceptionMessage.Length > 0) ? "Handled Excpetion: " + exceptionMessage.ToString() : Status.Succeed;
             LogServiceEnd();
             return true;
         }

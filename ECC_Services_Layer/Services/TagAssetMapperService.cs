@@ -10,8 +10,8 @@ using OSIsoft.AF.Asset;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ECC_AFServices_Layer.Services
@@ -22,7 +22,7 @@ namespace ECC_AFServices_Layer.Services
         private string _eccAFServerName = ConfigurationSettings.AppSettings.Get("ECC_AF_ServerName");
         private string _eccPIServerName = ConfigurationSettings.AppSettings.Get("ECC_PI_ServerName");
         private string _eccAFDatabaseName = ConfigurationSettings.AppSettings.Get("ECC_AF_DatabaseName");
-
+        private DbLoggerDetails _dbLoggerDetails = new DbLoggerDetails("ECCPITagAssetMapper_Service");
 
         /// <summary>
         /// Gets the tags recenly created and not mapped yet from the oracle database
@@ -34,9 +34,10 @@ namespace ECC_AFServices_Layer.Services
         {
             LogServiceStart();
             PISystem piSystem = PIAFUtils.GetPISystem(_eccAFServerName);
+            StringBuilder exceptionMessage = new StringBuilder();
             try
             {
-                
+
                 // Get the created and unmapped tags from oracle
                 var tags = await _tagMapperStore.GetUnmappedTags();
                 if (tags != null && tags.Count() > 0)
@@ -129,7 +130,7 @@ namespace ECC_AFServices_Layer.Services
                         var successTags = tags.Where(t => t.IsValidForAssetMapping.HasValue && t.IsValidForAssetMapping.Value == true);
                         foreach (var successTag in successTags)
                         {
-                            var updateStatus = await _tagMapperStore.UpdateMappedTag(successTag.EAWFT_NUM, string.Format("Tag Mapped Successfully in {0}{1}", _eccAFServerName, (successTag.IsValidForAssetMapping == true) ? string.Format(" & Replaced {0}", successTag.ECCPI_AF_MAP_REM) : null), 'Y', mappingDate);
+                            var updateStatus = await _tagMapperStore.UpdateMappedTag(successTag.EAWFT_NUM, string.Format("Tag Mapped Successfully in {0}{1}", _eccAFServerName, (successTag.IsValidForAssetMapping == true) ? string.Format(" & Replaced {0}", successTag.ECCPI_AF_MAP_REM) : null), successTag.AREA_POINT_ID, successTag.AREA_PI_TAG_NAME, successTag.ECCPI_TAG_NAME, successTag.SRC_PI_SERVER_CD, 'Y', mappingDate);
                         }
                         Logger.Info(ServiceName, string.Format("{0} Mapped Tags", (successTags != null) ? successTags.Count() : 0));
 
@@ -137,7 +138,7 @@ namespace ECC_AFServices_Layer.Services
                         var skippedTags = tags.Where(t => t.IsValidForAssetMapping.HasValue && t.IsValidForAssetMapping.Value == false);
                         foreach (var skippedTag in skippedTags)
                         {
-                            var updateStatus = await _tagMapperStore.UpdateMappedTag(skippedTag.EAWFT_NUM, skippedTag.ECCPI_AF_MAP_REM, 'N');
+                            var updateStatus = await _tagMapperStore.UpdateMappedTag(skippedTag.EAWFT_NUM, skippedTag.ECCPI_AF_MAP_REM, skippedTag.AREA_POINT_ID, skippedTag.AREA_PI_TAG_NAME, skippedTag.ECCPI_TAG_NAME, skippedTag.SRC_PI_SERVER_CD, 'N');
                         }
                         Logger.Info(ServiceName, string.Format("{0} Skipped Tags", (skippedTags != null) ? skippedTags.Count() : 0));
 
@@ -147,6 +148,7 @@ namespace ECC_AFServices_Layer.Services
                     catch (Exception e)
                     {
                         piSystem.Databases[_eccAFDatabaseName].CheckIn(AFCheckedOutMode.ObjectsCheckedOutToMe);
+                        exceptionMessage.AppendLine(e.Message);
                         Logger.Error(ServiceName, e);
                     }
 
@@ -156,7 +158,7 @@ namespace ECC_AFServices_Layer.Services
                         var errorTags = tags.Where(t => queryAttributes.Errors.ContainsKey(t.W_AF_ATTRB_FULL_PATH));
                         foreach (var errorTag in errorTags)
                         {
-                            var updateStatus = await _tagMapperStore.UpdateMappedTag(errorTag.EAWFT_NUM, string.Format(@"{0} not found", errorTag.W_AF_ATTRB_FULL_PATH), 'N');
+                            var updateStatus = await _tagMapperStore.UpdateMappedTag(errorTag.EAWFT_NUM, string.Format(@"{0} not found", errorTag.W_AF_ATTRB_FULL_PATH), errorTag.AREA_POINT_ID, errorTag.AREA_PI_TAG_NAME, errorTag.ECCPI_TAG_NAME, errorTag.SRC_PI_SERVER_CD, 'N');
                         }
                         Logger.Info(ServiceName, string.Format("{0} Error Tags", (errorTags != null) ? errorTags.Count() : 0));
                         await _tagMapperStore.Commit();
@@ -169,10 +171,14 @@ namespace ECC_AFServices_Layer.Services
             {
                 piSystem.Databases[_eccAFDatabaseName].CheckIn(AFCheckedOutMode.ObjectsCheckedOutToMe);
                 Logger.Error(ServiceName, e);
+                DbLogger._dbLoggerDataModel.SVC_STATUS = Status.Fail;
+                DbLogger._dbLoggerDataModel.REMARKS = $"Exception: Message=\"{e.Message}\", InnerException=\"{e.InnerException}\"";
                 LogServiceEnd();
                 return false;
             }
             piSystem.Databases[_eccAFDatabaseName].CheckIn(AFCheckedOutMode.ObjectsCheckedOutToMe);
+            DbLogger._dbLoggerDataModel.SVC_STATUS = Status.Succeed;
+            DbLogger._dbLoggerDataModel.REMARKS = (exceptionMessage.Length > 0) ? "Handled Excpetion: " + exceptionMessage.ToString() : Status.Succeed;
             LogServiceEnd();
             return true;
         }
