@@ -10,7 +10,7 @@ namespace ECC_AFServices_Layer.Helpers
     public class BackgroundJob
     {
         public static IECCService _serviceInstance;
-        
+
 
         public BackgroundJob(IECCService serviceInstance)
         {
@@ -45,39 +45,52 @@ namespace ECC_AFServices_Layer.Helpers
 
         private static string GetConfigurationSchedule()
         {
-            //return ConfigurationSettings.AppSettings.Get("SERVICE_RUN_SCHEDULE");
-            string _runFrequency = "daily";
-            string _cronSchedule = "0 0 0 1/1 * ? *";
-            if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings.Get("RUN_FREQUENCY")))
+            var useCronSetting = ConfigurationSettings.AppSettings.Get("USE_CRON");
+            if (!string.IsNullOrEmpty(useCronSetting) &&
+                bool.TryParse(useCronSetting, out bool useCron) &&
+                useCron)
             {
-                _runFrequency = ConfigurationSettings.AppSettings.Get("RUN_FREQUENCY");
-
-                string _hour = ConfigurationSettings.AppSettings.Get("RUN_HOUR");
-                string _minute = ConfigurationSettings.AppSettings.Get("RUN_MINUTE");
-                switch (_runFrequency.ToLower())
+                Logger.Info("ScheduleJob", "USE_CRON equal true");
+                var scheduleCronSetting = ConfigurationSettings.AppSettings.Get("RUN_SCHEDULE_CRON");
+                if (!string.IsNullOrEmpty(scheduleCronSetting) &&
+                    CronExpression.IsValidExpression(scheduleCronSetting))
                 {
-                    case "daily":
-                        _cronSchedule = string.Format("0 {0} {1} 1/1 * ? *", _minute, _hour);
-                        break;
-                    case "weekly":
-                        _cronSchedule = string.Format("0 {0} {1} ? * SUN *", _minute, _hour);
-                        break;
-                    case "monthly":
-                        _cronSchedule = string.Format("0 {0} {1} 1 1/1 ? *", _minute, _hour);
-                        break;
-                    case "yearly":
-                        _cronSchedule = string.Format("0 {0} {1} 1 1 ? *", _minute, _hour);
-                        break;
-                    case "minute":
-                        _cronSchedule = "0 0/1 * 1/1 * ? *";
-                        break;
-                    default:
-                        break;
+                    return scheduleCronSetting;
                 }
+                Logger.Warning("ScheduleJob", "RUN_SCHEDULE_CRON is invalid");
+            }
+
+            string _cronSchedule = "0 0 0 1/1 * ? *";
+            string _runFrequency = "daily";
+            string _hour = "0";
+            string _minute = "0";
+            if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings.Get("RUN_FREQUENCY")))
+                _runFrequency = ConfigurationSettings.AppSettings.Get("RUN_FREQUENCY");
+            if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings.Get("RUN_HOUR")))
+                _hour = ConfigurationSettings.AppSettings.Get("RUN_HOUR");
+            if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings.Get("RUN_MINUTE")))
+                _minute = ConfigurationSettings.AppSettings.Get("RUN_MINUTE");
+            switch (_runFrequency.ToLower())
+            {
+                case "daily":
+                    _cronSchedule = string.Format("0 {0} {1} 1/1 * ? *", _minute, _hour);
+                    break;
+                case "weekly":
+                    _cronSchedule = string.Format("0 {0} {1} ? * SUN *", _minute, _hour);
+                    break;
+                case "monthly":
+                    _cronSchedule = string.Format("0 {0} {1} 1 1/1 ? *", _minute, _hour);
+                    break;
+                case "yearly":
+                    _cronSchedule = string.Format("0 {0} {1} 1 1 ? *", _minute, _hour);
+                    break;
+                case "minute":
+                    _cronSchedule = "0 0/1 * 1/1 * ? *";
+                    break;
+                default:
+                    break;
             }
             return _cronSchedule;
-
-        }       
-
+        }
     }
 }
