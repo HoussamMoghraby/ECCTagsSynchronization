@@ -8,13 +8,14 @@ namespace ECC_DataLayer.DataModels
         public long EAWFT_NUM { get; set; }
         public string ECCPI_TAG_NAME { get; set; }
         public string AREA_PI_TAG_NAME { get; set; }
+        public int AREA_POINT_ID { get; set; }
         public string SRC_PI_SERVER_CD { get; set; }
         public int EASR_NUM { get; set; }
         public string SVC_NAME { get; set; }
+        public int EASMR_NUM { get; set; }
         public string SVC_MSG { get; set; }
         public string SVC_MSG_TYP { get; set; }
         public string SVC_MSG_SEVIRITY { get; set; }
-        public int AREA_POINT_ID { get; set; }
         public string SVC_PROPOSED_REMEDY { get; set; }
     }
 

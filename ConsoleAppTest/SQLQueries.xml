@@ -29,7 +29,18 @@
   <query name="UpdateTagMatchingStatus">UPDATE eccpi_af_well_found_tags t SET t.pi_tag_flow_flg = '{0}' {1} WHERE  t.eawft_num = {2}</query>
 
   <!--DBLogger-->
-  <query name="DbLogStartServiceQuery">INSERT INTO ECCPI_AF_SERVICE_RUN(SVC_NAME,SVC_STATUS,SVC_START_DT,REMARKS) Values ('{0}','{1}',CURRENT_DATE,'{2}') Returning EASR_NUM into :ID</query>
-  <query name="DbLogEndServiceQuery">Update ECCPI_AF_SERVICE_RUN SET SVC_STATUS='{0}' , SVC_END_DT = CURRENT_DATE, REMARKS = '{1}' WHERE easr_num = {2}</query>
-  <query name="AddDbLogDetails">INSERT INTO ECCPI_AF_SERVICE_LOGS(EAWFT_NUM,ECCPI_TAG_NAME,AREA_PI_TAG_NAME,SRC_PI_SERVER_CD,EASR_NUM,SVC_NAME,SVC_MSG,SVC_MSG_TYP,SVC_MSG_SEVIRITY,AREA_POINT_ID,SVC_PROPOSED_REMEDY) VALUES({0},'{1}','{2}','{3}',{4},'{5}','{6}','{7}','{8}',{9},'{10}')</query>
+  <query name="DbLogStartServiceQuery">INSERT INTO ECCPI_AF_SVC_RUN(SVC_NAME,SVC_START_DT,REMARKS) Values ('{0}',CURRENT_DATE,'{1}') Returning EASR_NUM into :ID</query>
+  <query name="DbLogEndServiceQuery">Update ECCPI_AF_SVC_RUN SET SVC_END_DT = CURRENT_DATE, REMARKS = '{0}' WHERE easr_num = {1}</query>
+  <query name="AddDbLogDetails">
+    DECLARE tempInt NUMBER;
+    BEGIN
+    select count(1) INTO tempInt from ECCPI_AF_SVC_MSG_REMEDY where SVC_MSG='{6}';
+    IF tempInt=0 then
+    INSERT INTO ECCPI_AF_SVC_MSG_REMEDY(SVC_MSG,SVC_MSG_TYP,SVC_MSG_SEVIRITY) Values ('{6}','{7}','{8}');
+    commit;
+    END IF;
+    select EASMR_NUM into tempInt from ECCPI_AF_SVC_MSG_REMEDY where SVC_MSG='{6}';
+    INSERT INTO ECCPI_AF_SVC_LOGS(EAWFT_NUM,ECCPI_TAG_NAME,AREA_PI_TAG_NAME,SRC_PI_SERVER_CD,EASR_NUM,SVC_NAME,EASMR_NUM,SVC_MSG,AREA_POINT_ID) VALUES({0},'{1}','{2}','{3}',{4},'{5}',tempInt,'{6}','{9}');
+    END;
+  </query>
 </queries>

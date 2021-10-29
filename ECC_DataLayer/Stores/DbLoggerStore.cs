@@ -33,7 +33,6 @@ namespace ECC_DataLayer.Stores
             try
             {
                 string query = string.Format(QueryReader.ReadQuery("DbLogEndServiceQuery"),
-                    ResolveQueryParam(status),
                     ResolveQueryParam(SafeLogMessage(remarks)),
                     ResolveQueryParam(id));
                 await _repo.ExecuteScalarAsync(query, new { });
@@ -58,11 +57,10 @@ namespace ECC_DataLayer.Stores
                     ResolveQueryParam(dbLoggerDetailsDataModel.SRC_PI_SERVER_CD),
                     ResolveQueryParam(dbLoggerDetailsDataModel.EASR_NUM),
                     ResolveQueryParam(dbLoggerDetailsDataModel.SVC_NAME),
-                    ResolveQueryParam(dbLoggerDetailsDataModel.SVC_MSG),
+                    ResolveQueryParam(SafeLogMessage(dbLoggerDetailsDataModel.SVC_MSG)),
                     ResolveQueryParam(dbLoggerDetailsDataModel.SVC_MSG_TYP),
                     ResolveQueryParam(dbLoggerDetailsDataModel.SVC_MSG_SEVIRITY),
-                    ResolveQueryParam(dbLoggerDetailsDataModel.AREA_POINT_ID),
-                    ResolveQueryParam(dbLoggerDetailsDataModel.SVC_PROPOSED_REMEDY));
+                    ResolveQueryParam(dbLoggerDetailsDataModel.AREA_POINT_ID));
                 await _repo.ExecuteScalarAsync(query, new { });
                 await Commit();
                 return 1;
