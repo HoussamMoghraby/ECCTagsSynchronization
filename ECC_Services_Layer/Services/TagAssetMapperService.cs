@@ -171,14 +171,12 @@ namespace ECC_AFServices_Layer.Services
             {
                 piSystem.Databases[_eccAFDatabaseName].CheckIn(AFCheckedOutMode.ObjectsCheckedOutToMe);
                 Logger.Error(ServiceName, e);
-                DbLogger._dbLoggerDataModel.SVC_STATUS = Status.Fail;
-                DbLogger._dbLoggerDataModel.REMARKS = $"Exception: Message=\"{e.Message}\", InnerException=\"{e.InnerException}\"";
+                DbLogger._dbLoggerDataModel.REMARKS = $"Status: {Status.Fail}; Exception: Message=\"{e.Message}\", InnerException=\"{e.InnerException}\"";
                 LogServiceEnd();
                 return false;
             }
             piSystem.Databases[_eccAFDatabaseName].CheckIn(AFCheckedOutMode.ObjectsCheckedOutToMe);
-            DbLogger._dbLoggerDataModel.SVC_STATUS = Status.Succeed;
-            DbLogger._dbLoggerDataModel.REMARKS = (exceptionMessage.Length > 0) ? "Handled Excpetion: " + exceptionMessage.ToString() : Status.Succeed;
+            DbLogger._dbLoggerDataModel.REMARKS = "Status: " + Status.Succeed + ((exceptionMessage.Length > 0) ? "; Handled Excpetion: " + exceptionMessage.ToString() : "");
             LogServiceEnd();
             return true;
         }

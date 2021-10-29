@@ -19,11 +19,11 @@ namespace ECC_DataLayer.Helpers
         public int LogStart()
         {
             _dbLoggerDataModel = new DbLoggerDataModel();
-            return _dbLoggerStore.ExecuteDbLogStartServiceQuery(_serviceName,Status.Running, "Service is currently running");
+            return _dbLoggerStore.ExecuteDbLogStartServiceQuery(_serviceName, "Service is currently running");
         }
         public async void LogEnd()
         {
-            await _dbLoggerStore.ExecuteDbLogEndServiceQuery(_dbLoggerDataModel.EASR_NUM, _dbLoggerDataModel.SVC_STATUS,
+            await _dbLoggerStore.ExecuteDbLogEndServiceQuery(_dbLoggerDataModel.EASR_NUM,
                 _dbLoggerDataModel.REMARKS);
         }
     }

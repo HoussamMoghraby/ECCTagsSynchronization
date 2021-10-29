@@ -9,13 +9,12 @@ namespace ECC_DataLayer.Stores
 {
     public class DbLoggerStore : DataStore
     {
-        public int ExecuteDbLogStartServiceQuery(string serviceName, string status, string remarks)
+        public int ExecuteDbLogStartServiceQuery(string serviceName, string remarks)
         {
             try
             {
                 string query = string.Format(QueryReader.ReadQuery("DbLogStartServiceQuery"),
                     ResolveQueryParam(serviceName),
-                    ResolveQueryParam(status),
                     ResolveQueryParam(remarks));
 
                 var id = _repo.InsertAndReturnId(query);
@@ -28,7 +27,7 @@ namespace ECC_DataLayer.Stores
             }
         }
 
-        public async Task<int> ExecuteDbLogEndServiceQuery(int id, string status, string remarks)
+        public async Task<int> ExecuteDbLogEndServiceQuery(int id, string remarks)
         {
             try
             {

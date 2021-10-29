@@ -30,7 +30,6 @@ namespace ECC_DataLayer.DataModels
         public DateTime SVC_START_DT { get; set; }
         public DateTime SVC_END_DT { get; set; }
         public string REMARKS { get; set; }
-        public string SVC_STATUS { get; set; }
     }
 
     public class Severity
