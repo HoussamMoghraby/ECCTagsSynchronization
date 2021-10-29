@@ -130,7 +130,18 @@ namespace ECC_AFServices_Layer.Services
                         var successTags = tags.Where(t => t.IsValidForAssetMapping.HasValue && t.IsValidForAssetMapping.Value == true);
                         foreach (var successTag in successTags)
                         {
-                            var updateStatus = await _tagMapperStore.UpdateMappedTag(successTag.EAWFT_NUM, string.Format("Tag Mapped Successfully in {0}{1}", _eccAFServerName, (successTag.IsValidForAssetMapping == true) ? string.Format(" & Replaced {0}", successTag.ECCPI_AF_MAP_REM) : null), successTag.AREA_POINT_ID, successTag.AREA_PI_TAG_NAME, successTag.ECCPI_TAG_NAME, successTag.SRC_PI_SERVER_CD, 'Y', mappingDate);
+                            var updateStatus = await _tagMapperStore.UpdateMappedTag(successTag.EAWFT_NUM, string.Format("Tag Mapped Successfully in {0}{1}", _eccAFServerName, (successTag.IsValidForAssetMapping == true) ? string.Format(" & Replaced {0}", successTag.ECCPI_AF_MAP_REM) : null), 'Y', mappingDate);
+                            _dbLoggerDetails.Log(new DbLoggerDetailsDataModel
+                            {
+                                EAWFT_NUM = successTag.EAWFT_NUM,
+                                ECCPI_TAG_NAME = successTag.ECCPI_TAG_NAME,
+                                AREA_PI_TAG_NAME = successTag.AREA_PI_TAG_NAME,
+                                SRC_PI_SERVER_CD = successTag.SRC_PI_SERVER_CD,
+                                SVC_MSG = "Tag Mapped Successfully",
+                                SVC_MSG_TYP = svcType.Tag,
+                                SVC_MSG_SEVIRITY = updateStatus == 1 ? Severity.Information : Severity.Error,
+                                AREA_POINT_ID = successTag.AREA_POINT_ID
+                            });
                         }
                         Logger.Info(ServiceName, string.Format("{0} Mapped Tags", (successTags != null) ? successTags.Count() : 0));
 
@@ -138,7 +149,18 @@ namespace ECC_AFServices_Layer.Services
                         var skippedTags = tags.Where(t => t.IsValidForAssetMapping.HasValue && t.IsValidForAssetMapping.Value == false);
                         foreach (var skippedTag in skippedTags)
                         {
-                            var updateStatus = await _tagMapperStore.UpdateMappedTag(skippedTag.EAWFT_NUM, skippedTag.ECCPI_AF_MAP_REM, skippedTag.AREA_POINT_ID, skippedTag.AREA_PI_TAG_NAME, skippedTag.ECCPI_TAG_NAME, skippedTag.SRC_PI_SERVER_CD, 'N');
+                            var updateStatus = await _tagMapperStore.UpdateMappedTag(skippedTag.EAWFT_NUM, skippedTag.ECCPI_AF_MAP_REM, 'N');
+                            _dbLoggerDetails.Log(new DbLoggerDetailsDataModel
+                            {
+                                EAWFT_NUM = skippedTag.EAWFT_NUM,
+                                ECCPI_TAG_NAME = skippedTag.ECCPI_TAG_NAME,
+                                AREA_PI_TAG_NAME = skippedTag.AREA_PI_TAG_NAME,
+                                SRC_PI_SERVER_CD = skippedTag.SRC_PI_SERVER_CD,
+                                SVC_MSG = "Update skipped tags",
+                                SVC_MSG_TYP = svcType.Tag,
+                                SVC_MSG_SEVIRITY = updateStatus == 1 ? Severity.Information : Severity.Error,
+                                AREA_POINT_ID = skippedTag.AREA_POINT_ID
+                            });
                         }
                         Logger.Info(ServiceName, string.Format("{0} Skipped Tags", (skippedTags != null) ? skippedTags.Count() : 0));
 
@@ -158,7 +180,18 @@ namespace ECC_AFServices_Layer.Services
                         var errorTags = tags.Where(t => queryAttributes.Errors.ContainsKey(t.W_AF_ATTRB_FULL_PATH));
                         foreach (var errorTag in errorTags)
                         {
-                            var updateStatus = await _tagMapperStore.UpdateMappedTag(errorTag.EAWFT_NUM, string.Format(@"{0} not found", errorTag.W_AF_ATTRB_FULL_PATH), errorTag.AREA_POINT_ID, errorTag.AREA_PI_TAG_NAME, errorTag.ECCPI_TAG_NAME, errorTag.SRC_PI_SERVER_CD, 'N');
+                            var updateStatus = await _tagMapperStore.UpdateMappedTag(errorTag.EAWFT_NUM, string.Format(@"{0} not found", errorTag.W_AF_ATTRB_FULL_PATH), 'N');
+                            _dbLoggerDetails.Log(new DbLoggerDetailsDataModel
+                            {
+                                EAWFT_NUM = errorTag.EAWFT_NUM,
+                                ECCPI_TAG_NAME = errorTag.ECCPI_TAG_NAME,
+                                AREA_PI_TAG_NAME = errorTag.AREA_PI_TAG_NAME,
+                                SRC_PI_SERVER_CD = errorTag.SRC_PI_SERVER_CD,
+                                SVC_MSG = "Element/Attribute Not found",
+                                SVC_MSG_TYP = svcType.Attribute,
+                                SVC_MSG_SEVIRITY = updateStatus == 1 ? Severity.Information : Severity.Error,
+                                AREA_POINT_ID = errorTag.AREA_POINT_ID
+                            });
                         }
                         Logger.Info(ServiceName, string.Format("{0} Error Tags", (errorTags != null) ? errorTags.Count() : 0));
                         await _tagMapperStore.Commit();
