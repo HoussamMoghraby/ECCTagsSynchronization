@@ -47,6 +47,9 @@ namespace ECC_AFServices_Layer.Services
                         // Check and handle the tags before creation
                         await CheckForExistingTagsAsync(tags);
 
+                        //Update existing tags in ECC PI Server if changed
+                        await CheckForExistingTagsByPointIdAsync(tags);
+
                         // Create the tags in central PI server
                         await CreateTagsAsync(tags);
                     }
@@ -68,6 +71,125 @@ namespace ECC_AFServices_Layer.Services
                 return false;
             }
         }
+
+
+        private async Task CheckForExistingTagsByPointIdAsync(IEnumerable<PITagDataModel> tags)
+        {
+            int _foundTagsNum = 0;
+            int _start = 0;
+            int _limit = 500;
+            var _existingTags = tags.Where(t => t.ECCPI_POINT_ID.HasValue); //TODO: to check the re-process flag
+            while (_start <= _existingTags.Count())
+            {
+                var _iTags = _existingTags.Skip(_start).Take(_limit);
+
+                // Construct the query to search the PI server by PointId
+                IList<IEnumerable<PIPointQuery>> _queries = new List<IEnumerable<PIPointQuery>>();
+                foreach (var tag in _iTags)
+                {
+                    try
+                    {
+                        List<PIPointQuery> _query = new List<PIPointQuery>();
+                        _query.Add(new PIPointQuery(PICommonPointAttributes.PointID, OSIsoft.AF.Search.AFSearchOperator.Equal, tag.ECCPI_POINT_ID.ToString()));
+                        _queries.Add(_query);
+                    }
+                    catch (Exception ex)
+                    {
+                        _dbLoggerDetails.Log(new DbLoggerDetailsDataModel
+                        {
+                            EAWFT_NUM = tag.EAWFT_NUM,
+                            ECCPI_TAG_NAME = tag.ECCPI_TAG_NAME,
+                            AREA_PI_TAG_NAME = tag.AREA_PI_TAG_NAME,
+                            SRC_PI_SERVER_CD = tag.SRC_PI_SERVER_CD,
+                            SVC_MSG = ex.Message,
+                            SVC_MSG_TYP = svcType.Tag,
+                            SVC_MSG_SEVIRITY = Severity.Exception,
+                            AREA_POINT_ID = tag.AREA_POINT_ID
+                        });
+                        throw;
+                    }
+                }
+
+                // Execute the search query
+                var findExistingTags = await PIPoint.FindPIPointsAsync(piServer, queries: _queries, attributeNames: new List<string>() { PICommonPointAttributes.PointID });
+
+                // Itterate the result
+                foreach (var foundTag in findExistingTags)
+                {
+                    // Find the tag with matching instrumenttag name
+                    var originalTag = _existingTags.Where(t => t.ECCPI_POINT_ID.Value.ToString() == foundTag.GetAttribute(PICommonPointAttributes.PointID).ToString()).FirstOrDefault();
+                    try
+                    {
+                        // Rename the tag in PI and update existing tag name accordinaly in oracle
+                        foundTag.SaveAttributes(new Dictionary<string, object>() {
+                        { PICommonPointAttributes.Tag, originalTag.ECCPI_TAG_NAME},
+                        { PICommonPointAttributes.Descriptor, originalTag.PI_TAG_DESCRIPTOR},
+                        { PICommonPointAttributes.EngineeringUnits, originalTag.ENGUNITS},
+                        { PICommonPointAttributes.DigitalSetName, originalTag.ECCPI_DIGITAL_SET},
+                        { PICommonPointAttributes.PointType, originalTag.POINTTYPE},
+                        { PICommonPointAttributes.Location2, originalTag.LOCATION2},
+                        { PICommonPointAttributes.Location3, originalTag.LOCATION3},
+                        { PICommonPointAttributes.Location5, originalTag.LOCATION5},
+                        { PICommonPointAttributes.UserInt1, originalTag.USERINT1},
+                        { PICommonPointAttributes.UserInt2, originalTag.USERINT2},
+                        { PICommonPointAttributes.UserReal1, originalTag.USERREAL1},
+                        { PICommonPointAttributes.UserReal2, originalTag.USERREAL2},
+                        { PICommonPointAttributes.Compressing, originalTag.COMPRESSING},
+                        { PICommonPointAttributes.CompressionDeviation, originalTag.COMPDEV},
+                        { PICommonPointAttributes.CompressionMaximum, originalTag.COMPMAX},
+                        { PICommonPointAttributes.CompressionMinimum, originalTag.COMPMIN},
+                        { PICommonPointAttributes.CompressionPercentage, originalTag.COMPDEVPERCENT},
+                        { PICommonPointAttributes.ExceptionDeviation, originalTag.EXCDEV},
+                        { PICommonPointAttributes.ExceptionMaximum, originalTag.EXCMAX},
+                        { PICommonPointAttributes.ExceptionMinimum, originalTag.EXCMIN},
+                        { PICommonPointAttributes.ExceptionPercentage, originalTag.EXCDEVPERCENT},
+                        { PICommonPointAttributes.Span, originalTag.SPAN},
+                        { PICommonPointAttributes.Step, originalTag.STEP},
+                        { PICommonPointAttributes.TypicalValue, originalTag.TYPICALVALUE},
+                        { PICommonPointAttributes.Zero, originalTag.ZERO}
+                        });
+
+                        //TODO: flag the tag as updated in oracle database and flag to stop reprocessing.
+
+                        //// Flag the tag as renamed in oracle database
+                        //var updateRenamedExistingTag = await _tagCreatorStore.UpdateExistingTag(originalTag.EAWFT_NUM, originalTag.ECCPI_TAG_NAME, renamedInPIServerFlag: true);
+                        //originalTag.ECCPI_TAG_CRE_FLG = "Y";
+
+                        //_dbLoggerDetails.Log(new DbLoggerDetailsDataModel
+                        //{
+                        //    EAWFT_NUM = originalTag.EAWFT_NUM,
+                        //    ECCPI_TAG_NAME = originalTag.ECCPI_TAG_NAME,
+                        //    AREA_PI_TAG_NAME = originalTag.AREA_PI_TAG_NAME,
+                        //    SRC_PI_SERVER_CD = originalTag.SRC_PI_SERVER_CD,
+                        //    SVC_MSG = "Updating Tag name successfully",
+                        //    SVC_MSG_TYP = svcType.Tag,
+                        //    SVC_MSG_SEVIRITY = Severity.Information,
+                        //    AREA_POINT_ID = originalTag.AREA_POINT_ID
+                        //});
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        _dbLoggerDetails.Log(new DbLoggerDetailsDataModel
+                        {
+                            EAWFT_NUM = originalTag.EAWFT_NUM,
+                            ECCPI_TAG_NAME = originalTag.ECCPI_TAG_NAME,
+                            AREA_PI_TAG_NAME = originalTag.AREA_PI_TAG_NAME,
+                            SRC_PI_SERVER_CD = originalTag.SRC_PI_SERVER_CD,
+                            SVC_MSG = ex.Message,
+                            SVC_MSG_TYP = svcType.Tag,
+                            SVC_MSG_SEVIRITY = Severity.Exception,
+                            AREA_POINT_ID = originalTag.AREA_POINT_ID,
+                        });
+                        throw;
+                    }
+                }
+                _foundTagsNum += findExistingTags.Count();
+                _start += _limit;
+            }
+        }
+
 
         /// <summary>
         /// Create the valid tags in central PI server
