@@ -3,12 +3,12 @@
   <!--ECCPIAreaSearcher-->
   <query name="GetAreasPIServers">SELECT * From ECCPI_SERVERS_LIST</query>
 
-  <query name="InsertAreaTags">INSERT INTO ECCPI_AF_WELL_FOUND_TAGS(AREA_PI_TAG_NAME,PI_TAG_DESCRIPTOR,SRC_PI_SERVER_CD,AREA_POINT_ID,ENGUNITS,AREA_DIGITAL_SET,POINTTYPE,LOCATION2,LOCATION3,LOCATION5,USERINT1,USERINT2,USERREAL1,USERREAL2,COMPRESSING,COMPDEV,COMPMAX,COMPMIN,COMPDEVPERCENT,EXCDEV,EXCMAX,EXCMIN,EXCDEVPERCENT,SPAN,STEP,TYPICALVALUE,ZERO)  SELECT '{0}','{1}','{2}',{3},'{4}','{5}','{6}',{7},{8},{9},{10},{11},{12},{13},'{14}',{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26} from DUAL where NOT EXISTS(select AREA_POINT_ID from ECCPI_AF_WELL_FOUND_TAGS where AREA_POINT_ID = {3} and AREA_PI_TAG_NAME = '{0}')</query>
+  <query name="MergeAreaTags">INSERT INTO ECCPI_AF_WELL_FOUND_TAGS(AREA_PI_TAG_NAME,PI_TAG_DESCRIPTOR,SRC_PI_SERVER_CD,AREA_POINT_ID,ENGUNITS,AREA_DIGITAL_SET,POINTTYPE,LOCATION2,LOCATION3,LOCATION5,USERINT1,USERINT2,USERREAL1,USERREAL2,COMPRESSING,COMPDEV,COMPMAX,COMPMIN,COMPDEVPERCENT,EXCDEV,EXCMAX,EXCMIN,EXCDEVPERCENT,SPAN,STEP,TYPICALVALUE,ZERO,ECCPI_TAG_SRCH_CRE_DT)  SELECT '{0}','{1}','{2}',{3},'{4}','{5}','{6}',{7},{8},{9},{10},{11},{12},{13},'{14}',{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},CURRENT_DATE from DUAL where NOT EXISTS(select AREA_POINT_ID from ECCPI_AF_WELL_FOUND_TAGS where AREA_POINT_ID = {3}); UPDATE eccpi_af_well_found_tags SET area_pi_tag_name = '{0}', pi_tag_descriptor = '{1}', src_pi_server_cd = '{2}', engunits = '{4}', area_digital_set = '{5}', pointtype = '{6}', location2 = {7}, location3 = {8}, location5 = {9}, userint1 = {10}, userint2 = {11}, userreal1 = {12}, userreal2 = {13}, compressing = '{14}', compdev = {15}, compmax = {16}, compmin = {17}, compdevpercent = {18}, excdev = {19}, excmax = {20}, excmin = {21}, excdevpercent = {22}, span = {23}, step = {24}, typicalvalue = {25}, zero = {26}, ECCPI_TAG_SRCH_UPD_DT = CURRENT_DATE, ECCPI_TAG_CRE_REPRC_FLG = 'Y' where AREA_POINT_ID = {3};</query>
 
   <query name="UpdatePIServerLastPullDate">UPDATE ECCPI_SERVERS_LIST set PI_LAST_TAG_PULL_DT = CURRENT_DATE where PI_SERVER_CD LIKE '{0}'</query>
 
   <!--ECCPITagCreator-->
-  <query name="GetNonCreatedTags">SELECT t.*, m.w_af_attrb_full_path, m.w_af_attrb_scrty, m.w_af_attrb_pt_scrty, m.w_gnr_name, m.w_eqp_attrib_name FROM eccpi_af_well_eqp_tag_masks m, eccpi_af_well_found_tags t WHERE t.eawetm_num = m.eawetm_num AND t.pi_tag_sel_flg = 'Y' and t.eccpi_tag_cre_flg = 'N'</query>
+  <query name="GetNonCreatedTags">SELECT t.*, m.w_af_attrb_full_path, m.w_af_attrb_scrty, m.w_af_attrb_pt_scrty, m.w_gnr_name, m.w_eqp_attrib_name FROM eccpi_af_well_eqp_tag_masks m, eccpi_af_well_found_tags t WHERE t.eawetm_num = m.eawetm_num AND t.pi_tag_sel_flg = 'Y' and (t.eccpi_tag_cre_flg = 'N' OR t.ECCPI_TAG_CRE_REPRC_FLG = 'Y')</query>
 
   <query name="UpdateExistingTag">UPDATE ECCPI_AF_WELL_FOUND_TAGS set ECCPI_EXST_TAG_NAME = '{0}', ECCPI_TAG_CRE_FLG = '{1}', ECCPI_TAG_CRE_REM = '{2}' {3} where eawft_num ={4}</query>
 
@@ -29,7 +29,18 @@
   <query name="UpdateTagMatchingStatus">UPDATE eccpi_af_well_found_tags t SET t.pi_tag_flow_flg = '{0}' {1} WHERE  t.eawft_num = {2}</query>
 
   <!--DBLogger-->
-  <query name="DbLogStartServiceQuery">INSERT INTO ECCPI_AF_SERVICE_RUN(SVC_NAME,SVC_STATUS,SVC_START_DT,REMARKS) Values ('{0}','{1}',CURRENT_DATE,'{2}') Returning EASR_NUM into :ID</query>
-  <query name="DbLogEndServiceQuery">Update ECCPI_AF_SERVICE_RUN SET SVC_STATUS='{0}' , SVC_END_DT = CURRENT_DATE, REMARKS = '{1}' WHERE easr_num = {2}</query>
-  <query name="AddDbLogDetails">INSERT INTO ECCPI_AF_SERVICE_LOGS(EAWFT_NUM,ECCPI_TAG_NAME,AREA_PI_TAG_NAME,SRC_PI_SERVER_CD,EASR_NUM,SVC_NAME,SVC_MSG,SVC_MSG_TYP,SVC_MSG_SEVIRITY,AREA_POINT_ID,SVC_PROPOSED_REMEDY) VALUES({0},'{1}','{2}','{3}',{4},'{5}','{6}','{7}','{8}',{9},'{10}')</query>
+  <query name="DbLogStartServiceQuery">INSERT INTO ECCPI_AF_SVC_RUN(SVC_NAME,SVC_START_DT,REMARKS) Values ('{0}',CURRENT_DATE,'{1}') Returning EASR_NUM into :ID</query>
+  <query name="DbLogEndServiceQuery">Update ECCPI_AF_SVC_RUN SET SVC_END_DT = CURRENT_DATE, REMARKS = '{0}' WHERE easr_num = {1}</query>
+  <query name="AddDbLogDetails">
+    DECLARE tempInt NUMBER;
+    BEGIN
+    select count(1) INTO tempInt from ECCPI_AF_SVC_MSG_REMEDY where SVC_MSG='{6}';
+    IF tempInt=0 then
+    INSERT INTO ECCPI_AF_SVC_MSG_REMEDY(SVC_MSG,SVC_MSG_TYP,SVC_MSG_SEVIRITY) Values ('{6}','{7}','{8}');
+    commit;
+    END IF;
+    select EASMR_NUM into tempInt from ECCPI_AF_SVC_MSG_REMEDY where SVC_MSG='{6}';
+    INSERT INTO ECCPI_AF_SVC_LOGS(EAWFT_NUM,ECCPI_TAG_NAME,AREA_PI_TAG_NAME,SRC_PI_SERVER_CD,EASR_NUM,SVC_NAME,EASMR_NUM,SVC_MSG,AREA_POINT_ID) VALUES({0},'{1}','{2}','{3}',{4},'{5}',tempInt,'{6}','{9}');
+    END;
+  </query>
 </queries>

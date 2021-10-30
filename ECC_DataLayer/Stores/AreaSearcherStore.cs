@@ -22,11 +22,11 @@ namespace ECC_DataLayer.Stores
             return await _areaRepo.GetAsync(QueryReader.ReadQuery("GetAreasPIServers"), new { });
         }
 
-        public async Task<int> InsertAreaTags(PITagDataModel tag)
+        public async Task<int> MergeAreaTags(PITagDataModel tag)
         {
             try
             {
-                string _query = string.Format(QueryReader.ReadQuery("InsertAreaTags"),
+                string _query = string.Format(QueryReader.ReadQuery("MergeAreaTags"),
                     ResolveQueryParam(tag.AREA_PI_TAG_NAME),
                     ResolveQueryParam(tag.PI_TAG_DESCRIPTOR),
                     ResolveQueryParam(tag.SRC_PI_SERVER_CD),
@@ -56,7 +56,7 @@ namespace ECC_DataLayer.Stores
                     ResolveQueryParam(tag.TYPICALVALUE),
                     ResolveQueryParam(tag.ZERO));
                 var result = await _repo.ExecuteScalarAsync(_query, new { });
-                Logger.Info("AreaSearcherService", $"InsertAreaTags() result{result}");
+                Logger.Info("AreaSearcherService", $"MergeAreaTags() result{result}");
                 return 1;
             }
             catch (Exception e)

@@ -42,8 +42,8 @@ namespace ECC_PIAFServices_Layer.Services
                         //Execute the search query
                         IEnumerable<PIPoint> _piPoints = QueryPIPoints(piServer, _query);
 
-                        // Insert the results and flag the required flags in oracle database
-                        await InsertPIPointsAsync(_piPoints, sourcePIServerCode: area.PI_SERVER_CD);
+                        // Insert / Update the results and flag the required flags in oracle database
+                        await MergePIPointsAsync(_piPoints, sourcePIServerCode: area.PI_SERVER_CD);
                     }
                     catch (Exception e)
                     {
@@ -78,11 +78,11 @@ namespace ECC_PIAFServices_Layer.Services
 
 
         /// <summary>
-        /// Insert the resulted queries into oracle database and finally update last pull date of pi server
+        /// Insert / Update the resulted queries into oracle database and finally update last pull date of pi server
         /// </summary>
         /// <param name="points">PI Points to be inserted</param>
         /// <param name="sourcePIServerCode">Area source server code</param>
-        private async Task InsertPIPointsAsync(IEnumerable<PIPoint> points, string sourcePIServerCode)
+        private async Task MergePIPointsAsync(IEnumerable<PIPoint> points, string sourcePIServerCode)
         {
             int _tagsInserted = 0;
             foreach (var point in points)
@@ -91,7 +91,7 @@ namespace ECC_PIAFServices_Layer.Services
                 if (!string.IsNullOrEmpty(point.Name))
                 {
                     var _tag = point.MapToPITagDataModel(sourcePIServerCode);
-                    var insertPITag = await _areaStore.InsertAreaTags(_tag);
+                    var insertPITag = await _areaStore.MergeAreaTags(_tag);
 
                     if (insertPITag == 1)
                         _tagsInserted++;
