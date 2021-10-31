@@ -156,7 +156,7 @@ namespace ECC_AFServices_Layer.Services
                                 ECCPI_TAG_NAME = skippedTag.ECCPI_TAG_NAME,
                                 AREA_PI_TAG_NAME = skippedTag.AREA_PI_TAG_NAME,
                                 SRC_PI_SERVER_CD = skippedTag.SRC_PI_SERVER_CD,
-                                SVC_MSG = "Update skipped tags",
+                                SVC_MSG = "Tag mapping skipped",
                                 SVC_MSG_TYP = svcType.Tag,
                                 SVC_MSG_SEVIRITY = updateStatus == 1 ? Severity.Information : Severity.Error,
                                 AREA_POINT_ID = skippedTag.AREA_POINT_ID

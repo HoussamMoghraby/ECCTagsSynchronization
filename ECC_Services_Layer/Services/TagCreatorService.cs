@@ -364,7 +364,7 @@ namespace ECC_AFServices_Layer.Services
                                     ECCPI_TAG_NAME = originalTag.ECCPI_TAG_NAME,
                                     AREA_PI_TAG_NAME = originalTag.AREA_PI_TAG_NAME,
                                     SRC_PI_SERVER_CD = originalTag.SRC_PI_SERVER_CD,
-                                    SVC_MSG = "Updating Tag name successfully",
+                                    SVC_MSG = "Updated Tag name successfully",
                                     SVC_MSG_TYP = svcType.Tag,
                                     SVC_MSG_SEVIRITY = Severity.Information,
                                     AREA_POINT_ID = originalTag.AREA_POINT_ID
