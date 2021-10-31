@@ -151,23 +151,21 @@ namespace ECC_AFServices_Layer.Services
 
                         //TODO: flag the tag as updated in oracle database and flag to stop reprocessing.
 
-                        //// Flag the tag as renamed in oracle database
-                        //var updateRenamedExistingTag = await _tagCreatorStore.UpdateExistingTag(originalTag.EAWFT_NUM, originalTag.ECCPI_TAG_NAME, renamedInPIServerFlag: true);
-                        //originalTag.ECCPI_TAG_CRE_FLG = "Y";
+                        // Flag the tag as renamed in oracle database
+                        var updateModifiedExistingTag = await _tagCreatorStore.UpdateModifiedTag(originalTag.EAWFT_NUM, originalTag.ECCPI_POINT_ID, "Tag updated in ECCPI Server", 'Y');
+                        originalTag.ECCPI_TAG_CRE_FLG = "Y";
 
-                        //_dbLoggerDetails.Log(new DbLoggerDetailsDataModel
-                        //{
-                        //    EAWFT_NUM = originalTag.EAWFT_NUM,
-                        //    ECCPI_TAG_NAME = originalTag.ECCPI_TAG_NAME,
-                        //    AREA_PI_TAG_NAME = originalTag.AREA_PI_TAG_NAME,
-                        //    SRC_PI_SERVER_CD = originalTag.SRC_PI_SERVER_CD,
-                        //    SVC_MSG = "Updating Tag name successfully",
-                        //    SVC_MSG_TYP = svcType.Tag,
-                        //    SVC_MSG_SEVIRITY = Severity.Information,
-                        //    AREA_POINT_ID = originalTag.AREA_POINT_ID
-                        //});
-
-
+                        _dbLoggerDetails.Log(new DbLoggerDetailsDataModel
+                        {
+                            EAWFT_NUM = originalTag.EAWFT_NUM,
+                            ECCPI_TAG_NAME = originalTag.ECCPI_TAG_NAME,
+                            AREA_PI_TAG_NAME = originalTag.AREA_PI_TAG_NAME,
+                            SRC_PI_SERVER_CD = originalTag.SRC_PI_SERVER_CD,
+                            SVC_MSG = "Tag updated in ECCPI Server",
+                            SVC_MSG_TYP = svcType.Tag,
+                            SVC_MSG_SEVIRITY = Severity.Information,
+                            AREA_POINT_ID = originalTag.AREA_POINT_ID
+                        });
                     }
                     catch (Exception ex)
                     {
@@ -182,7 +180,7 @@ namespace ECC_AFServices_Layer.Services
                             SVC_MSG_SEVIRITY = Severity.Exception,
                             AREA_POINT_ID = originalTag.AREA_POINT_ID,
                         });
-                        throw;
+                        //throw;
                     }
                 }
                 _foundTagsNum += findExistingTags.Count();
@@ -387,7 +385,7 @@ namespace ECC_AFServices_Layer.Services
                             SVC_MSG_SEVIRITY = Severity.Exception,
                             AREA_POINT_ID = originalTag.AREA_POINT_ID,
                         });
-                        throw;
+                        //throw;
                     }
                 }
                 _foundTagsNum += findExistingTags.Count();
