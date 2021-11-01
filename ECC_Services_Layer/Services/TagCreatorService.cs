@@ -105,6 +105,17 @@ namespace ECC_AFServices_Layer.Services
                 foreach (var tag in successTags)
                 {
                     var updateStatus = await _tagCreatorStore.UpdateCreatedTag(tag.EAWFT_NUM, tag.ECCPI_POINT_ID, string.Format("Tag Created Successfully in {0}", _eccPIServerName), 'Y', creationDate);
+                    _dbLoggerDetails.Log(new DbLoggerDetailsDataModel
+                    {
+                        EAWFT_NUM = tag.EAWFT_NUM,
+                        ECCPI_TAG_NAME = tag.ECCPI_TAG_NAME,
+                        AREA_PI_TAG_NAME = tag.AREA_PI_TAG_NAME,
+                        SRC_PI_SERVER_CD = tag.SRC_PI_SERVER_CD,
+                        SVC_MSG = "Tag created successfully",
+                        SVC_MSG_TYP = svcType.Tag,
+                        SVC_MSG_SEVIRITY = Severity.Information,
+                        AREA_POINT_ID = tag.AREA_POINT_ID
+                    });
                 }
                 Logger.Info(ServiceName, string.Format("{0} Inserted Tags", (successTags != null) ? successTags.Count() : 0));
                 await _tagCreatorStore.Commit();
@@ -138,6 +149,17 @@ namespace ECC_AFServices_Layer.Services
                     foreach (var tag in existingTags)
                     {
                         var updateStatus = await _tagCreatorStore.UpdateCreatedTag(tag.EAWFT_NUM, tag.ECCPI_POINT_ID, string.Format("Tag Already Exists in {0}", _eccPIServerName), 'Y');
+                        _dbLoggerDetails.Log(new DbLoggerDetailsDataModel
+                        {
+                            EAWFT_NUM = tag.EAWFT_NUM,
+                            ECCPI_TAG_NAME = tag.ECCPI_TAG_NAME,
+                            AREA_PI_TAG_NAME = tag.AREA_PI_TAG_NAME,
+                            SRC_PI_SERVER_CD = tag.SRC_PI_SERVER_CD,
+                            SVC_MSG = "Tag already exists",
+                            SVC_MSG_TYP = svcType.Tag,
+                            SVC_MSG_SEVIRITY = Severity.Error,
+                            AREA_POINT_ID = tag.AREA_POINT_ID
+                        });
                     }
                     Logger.Info(ServiceName, string.Format("{0} Existing Tags", existingTags.Count()));
                     await _tagCreatorStore.Commit();
@@ -149,7 +171,19 @@ namespace ECC_AFServices_Layer.Services
                 {
                     foreach (var tag in otherErrorTags)
                     {
-                        var updateStatus = await _tagCreatorStore.UpdateCreatedTag(tag.EAWFT_NUM, null, _insertResult.Errors.Where(e => e.Key == tag.ECCPI_TAG_NAME).FirstOrDefault().Value.Message, 'N');
+                        var errorMessage = _insertResult.Errors.Where(e => e.Key == tag.ECCPI_TAG_NAME).FirstOrDefault().Value.Message;
+                        var updateStatus = await _tagCreatorStore.UpdateCreatedTag(tag.EAWFT_NUM, null, errorMessage, 'N');
+                        _dbLoggerDetails.Log(new DbLoggerDetailsDataModel
+                        {
+                            EAWFT_NUM = tag.EAWFT_NUM,
+                            ECCPI_TAG_NAME = tag.ECCPI_TAG_NAME,
+                            AREA_PI_TAG_NAME = tag.AREA_PI_TAG_NAME,
+                            SRC_PI_SERVER_CD = tag.SRC_PI_SERVER_CD,
+                            SVC_MSG = $"Unhandled PI errors: {errorMessage}",
+                            SVC_MSG_TYP = svcType.Tag,
+                            SVC_MSG_SEVIRITY = Severity.Error,
+                            AREA_POINT_ID = tag.AREA_POINT_ID
+                        });
                     }
                     Logger.Info(ServiceName, string.Format("{0} Tags failed to be created, check remarks column for more details)", otherErrorTags.Count()));
                     await _tagCreatorStore.Commit();
