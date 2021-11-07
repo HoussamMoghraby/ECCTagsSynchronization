@@ -211,7 +211,7 @@ namespace ECC_AFServices_Layer.Services
                 tag.MatchingValuesRemark = _matchingRemark;
 
                 // Update the tag status in oracle database
-                var updateStatus = await _tagValueCheckerStore.UpdateTagMatchingStatus(tag.EAWFT_NUM, eccMatchingFlag: _matchingStatus, remark: _matchingRemark);
+                var updateStatus = await _tagValueCheckerStore.UpdateTagMatchingStatus(tag.EAWFT_NUM, eccMatchingFlag: _matchingStatus, remark: _matchingRemark,tag.ECCPI_TAG_VALUECHECK_REPRC_FLG);
             }
             // Commit changes
             await _tagValueCheckerStore.Commit();

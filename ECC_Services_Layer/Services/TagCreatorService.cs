@@ -150,9 +150,9 @@ namespace ECC_AFServices_Layer.Services
                         });
 
                         //TODO: flag the tag as updated in oracle database and flag to stop reprocessing.
-
+                        DateTime modifidationDate = DateTime.Now;
                         // Flag the tag as renamed in oracle database
-                        var updateModifiedExistingTag = await _tagCreatorStore.UpdateModifiedTag(originalTag.EAWFT_NUM, originalTag.ECCPI_POINT_ID, "Tag updated in ECCPI Server", 'Y');
+                        var updateModifiedExistingTag = await _tagCreatorStore.UpdateModifiedTag(originalTag.EAWFT_NUM, originalTag.ECCPI_POINT_ID, "Tag updated in ECCPI Server", 'Y', modifidationDate);
                         originalTag.ECCPI_TAG_CRE_FLG = "Y";
 
                         _dbLoggerDetails.Log(new DbLoggerDetailsDataModel

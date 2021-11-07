@@ -73,6 +73,9 @@ namespace ECC_DataLayer.DataModels
 
         public bool? IsValidForAssetMapping { get; set; } = null;
 
+        public char ECCPI_TAG_MAPPED_REPRC_FLG { get; set; } = 'N';
+        public char ECCPI_TAG_VALUECHECK_REPRC_FLG { get; set; } = 'N';
+
         public PITagDataModel()
         {
             //Parameterless contructor
