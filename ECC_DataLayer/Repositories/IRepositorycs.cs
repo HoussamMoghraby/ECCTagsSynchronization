@@ -15,5 +15,6 @@ namespace ECC_DataLayer.Repositories
         Task<string> ExecuteScalarAsyncStr(string query, object arguments);
         Task<Guid> ExecuteScalarAsyncGuid(string query, object arguments);
         T GetSingleOrDefault(string query, object arguments);
+        int InsertAndReturnId(string query);
     }
 }

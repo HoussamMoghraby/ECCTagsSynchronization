@@ -4,8 +4,6 @@ using ECC_DataLayer.Repositories;
 using ECC_DataLayer.Stores.Abstract;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ECC_DataLayer.Stores
@@ -24,11 +22,11 @@ namespace ECC_DataLayer.Stores
             return await _areaRepo.GetAsync(QueryReader.ReadQuery("GetAreasPIServers"), new { });
         }
 
-        public async Task<int> InsertAreaTags(PITagDataModel tag)
+        public async Task<int> MergeAreaTags(PITagDataModel tag)
         {
             try
             {
-                string _query = string.Format(QueryReader.ReadQuery("InsertAreaTags"),
+                string _query = string.Format(QueryReader.ReadQuery("MergeAreaTags"),
                     ResolveQueryParam(tag.AREA_PI_TAG_NAME),
                     ResolveQueryParam(tag.PI_TAG_DESCRIPTOR),
                     ResolveQueryParam(tag.SRC_PI_SERVER_CD),
@@ -58,7 +56,7 @@ namespace ECC_DataLayer.Stores
                     ResolveQueryParam(tag.TYPICALVALUE),
                     ResolveQueryParam(tag.ZERO));
                 var result = await _repo.ExecuteScalarAsync(_query, new { });
-                //Logger.Info("Area Searcher Service", "InsertAreaTags() successful");
+                Logger.Info("AreaSearcherService", $"MergeAreaTags() result{result}");
                 return 1;
             }
             catch (Exception e)
@@ -75,7 +73,7 @@ namespace ECC_DataLayer.Stores
             {
                 string _query = string.Format(QueryReader.ReadQuery("UpdatePIServerLastPullDate"), piServerCode);
                 var result = await _repo.ExecuteScalarAsync(_query, new { });
-                //Logger.Info("Area Searcher Service", "UpdatePIServerLastPullDate() successful");
+                Logger.Info("AreaSearcherService", $"UpdatePIServerLastPullDate() result{result}");
                 await Commit();
                 return 1;
             }
